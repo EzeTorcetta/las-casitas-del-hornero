@@ -63,7 +63,7 @@ module.exports = (sequelize) => {
         ),
         allowNull: false,
       },
-      location: DataTypes.GEOGRAPHY,
+      location: DataTypes.STRING, //* .GEOGRAPHY ARROJA ERROR
     },
     {
       timestamps: false,
