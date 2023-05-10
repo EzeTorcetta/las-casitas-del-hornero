@@ -1,6 +1,7 @@
 const { User, Hotel, RoomType, Service } = require("../db");
 
 
+
 const CreateService = () => {
     const services = [];
 
@@ -54,33 +55,35 @@ const CreateService = () => {
 const CreateUsers = () => {
     const user = [];
 
-    user.push({
-        username: "Juan Martin",
-        password: "contrasenia",
-        email: "juanmartin@gmail.com",
-        admin: true,
-    });
 
-    user.push({
-        username: "Jose",
-        password: "contrasenia",
-        email: "jose@gmail.com",
-        admin: false,
-    });
+  user.push({
+    username: "Juan Martin",
+    password: "contrasenia",
+    email: "juanmartin@gmail.com",
+    admin: true,
+  });
 
-    user.push({
-        username: "Eze",
-        password: "contraseña",
-        email: "eze@gmail.com",
-        admin: false,
-    });
+  user.push({
+    username: "Jose",
+    password: "contrasenia",
+    email: "jose@gmail.com",
+    admin: false,
+  });
 
-    user.push({
-        username: "Manuel",
-        password: "contrasenia",
-        email: "manuel@gmail.com",
-        admin: true,
-    });
+  user.push({
+    username: "Eze",
+    password: "contraseña",
+    email: "eze@gmail.com",
+    admin: false,
+  });
+
+  user.push({
+    username: "Manuel",
+    password: "contrasenia",
+    email: "manuel@gmail.com",
+    admin: true,
+  });
+
 
     User.bulkCreate(user);
 }
@@ -88,21 +91,27 @@ const CreateUsers = () => {
 const CreateHotels = async () => {
     const hoteles = []
 
-    hoteles.push({
-        name:"MustafaHotel",
-        email:"mustafahotel@gmail.com",
-        phoneNumber:"01134531",
-        province:"BUENOS AIRES",
-        location: [1200, -1200],
-    })
 
-    hoteles.push({
-        name:"MarioHotel",
-        email:"MarioHotel@gmail.com",
-        phoneNumber:"0264454531",
-        province:"SAN JUAN",
-        location: [300, -300],
-    })
+  hoteles.push({
+    name: "MustafaHotel",
+    email: "mustafahotel@gmail.com",
+    phoneNumber: "01134531",
+    province: "BUENOS AIRES",
+    location: [1200, -1200],
+    image:
+      "https://media-cdn.tripadvisor.com/media/photo-s/16/1a/ea/54/hotel-presidente-4s.jpg",
+  });
+
+  hoteles.push({
+    name: "MarioHotel",
+    email: "MarioHotel@gmail.com",
+    phoneNumber: "0264454531",
+    province: "SAN JUAN",
+    location: [300, -300],
+    image:
+      "https://media-cdn.tripadvisor.com/media/photo-s/16/1a/ea/54/hotel-presidente-4s.jpg",
+  });
+
 
     hoteles.push({
         name:"FabricioHotel",
@@ -259,3 +268,4 @@ const createInformation = async () => {
 }
 
 module.exports = createInformation;
+
