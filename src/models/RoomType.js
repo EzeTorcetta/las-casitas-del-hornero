@@ -22,7 +22,6 @@ module.exports = (sequelize) => {
         name:{
             type: STRING,
             allowNull: false,
-            unique: true,
         }
     },
     {
