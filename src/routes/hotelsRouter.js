@@ -1,9 +1,13 @@
-const {Router} = require ("express");
+const { Router } = require("express");
 const hotelsRouter = Router();
-const {getAllHotelsHandler, getDetailHotelHandler, postHotelHandler} = require ("../handlers/hotelHandler")
+const {
+  getAllHotelsHandler,
+  getDetailHotelHandler,
+  postHotelHandler,
+} = require("../handlers/hotelHandler");
 
-hotelsRouter.get("/", getAllHotelsHandler)
-hotelsRouter.get("/:id", getDetailHotelHandler)
-hotelsRouter.post("/", postHotelHandler)
+hotelsRouter.get("/", getAllHotelsHandler);
+hotelsRouter.get("/:id", getDetailHotelHandler);
+hotelsRouter.post("/", postHotelHandler);
 
-module.exports = hotelsRouter
+module.exports = hotelsRouter;

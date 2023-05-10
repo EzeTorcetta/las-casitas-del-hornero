@@ -35,6 +35,10 @@ module.exports = (sequelize) => {
           },
         },
       },
+      image: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
       province: {
         type: DataTypes.ENUM(
           "BUENOS AIRES",
