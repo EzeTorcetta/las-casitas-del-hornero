@@ -2,10 +2,10 @@ const { getUser, postUser } = require("../controllers/userControllers");
 
 //* Handler que verifica en la DB si existe el User
 const getUserHandler = async (req, res) => {
-  const data = req.body;
+  const { password, email } = req.body;
   try {
-    const user = getUser(data);
-    console.log("Verificado con exito");
+    const user = await getUser(password, email);
+    res.status(200).json({ user });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -13,10 +13,10 @@ const getUserHandler = async (req, res) => {
 
 //* Handler que postea el user en la DB
 const postUserHandler = async (req, res) => {
-  const data = req.body;
+  const { username, password, email, admin } = req.body;
   try {
-    await postUser(data);
-    console.log("Usuario posteado");
+    await postUser({ username, password, email, admin });
+    res.status(200).json("Usuario posteado con exito");
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
