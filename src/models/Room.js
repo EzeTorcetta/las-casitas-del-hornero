@@ -14,7 +14,6 @@ module.exports = (sequelize) => {
         number:{
             type: INTEGER,
             allowNull: false,
-            unique: true,
         }
     },
     {

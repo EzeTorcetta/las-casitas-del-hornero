@@ -50,8 +50,10 @@ Room.belongsTo(RoomType);
 Hotel.belongsToMany(Service, { through: "HotelServices" });
 Service.belongsToMany(Hotel, { through: "HotelServices" });
 
-Hotel.belongsToMany(User, { through: "Favorites" });
-User.belongsToMany(Hotel, { through: "Favorites" });
+
+// Hotel.belongsToMany(User, {through:"Favorites"});
+// User.belongsToMany(Hotel, {through:"Favorites"});
+
 
 // const {} = sequelize.models
 
