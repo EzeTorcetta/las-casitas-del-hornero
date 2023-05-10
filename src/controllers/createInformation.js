@@ -1,4 +1,6 @@
-const createInformation = () => {
+const { User, Hotel } = require("../db");
+
+const createInformation = async () => {
     user = [];
 
     user.push({
@@ -6,19 +8,6 @@ const createInformation = () => {
         password: "contrasenia",
         email: "juanmartin@gmail.com",
         admin: true,
-        /*Hotel:[{
-            name:"MustafaHotel",
-            email:"mustafahotel@gmail.com",
-            phoneNumber:"01134531",
-            province:"BUENOS AIRES",
-            location: [1200, -1200],
-        },{
-            name:"MustafaHotel",
-            email:"mustafahotel@gmail.com",
-            phoneNumber:"01134531",
-            province:"BUENOS AIRES",
-            location: [1200, -1200],
-        },]*/
     });
 
     user.push({
@@ -30,7 +19,7 @@ const createInformation = () => {
 
     user.push({
         username: "Eze",
-        password: "contrasenia",
+        password: "contraseña",
         email: "eze@gmail.com",
         admin: false,
     });
@@ -42,6 +31,39 @@ const createInformation = () => {
         admin: true,
     });
 
+    User.bulkCreate(user);
+    const hoteles = []
+
+    hoteles.push({
+        name:"MustafaHotel",
+        email:"mustafahotel@gmail.com",
+        phoneNumber:"01134531",
+        province:"BUENOS AIRES",
+        location: [1200, -1200],
+    })
+
+    hoteles.push({
+        name:"MarioHotel",
+        email:"MarioHotel@gmail.com",
+        phoneNumber:"0264454531",
+        province:"SAN JUAN",
+        location: [300, -300],
+    })
+
+    Hotel.bulkCreate(hoteles);
+
+
+    const usuario = await User.findOne({ where: { username: "Juan Martin" }})
+    const hotel1 = await Hotel.findByPk(1);
+    const hotel2 = await Hotel.findByPk(2);
+
+    // console.log(usuario)
+    // console.log(hotel1)
+
+    usuario.addHotel(hotel1);
+    usuario.addHotel(hotel2);
+
+    const mostrar = await Hotel.findOne({ where:{ province: "SAN JUAN" } })
 }
 
 module.exports = createInformation;
