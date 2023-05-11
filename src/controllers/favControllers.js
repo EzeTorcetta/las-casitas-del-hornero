@@ -14,7 +14,8 @@ const getFavs = async (id_user) => {
 
 const postFav = async (id_user, id_hotel) => {
   const user = await User.findByPk(id_user);
-  await user.addHotel(id_hotel);
+  const hotel = await Hotel.findByPk(id_hotel);
+  await user.addHotel(hotel);
   return;
 };
 
@@ -27,6 +28,8 @@ const deleteFav = async (id_user, id_hotel) => {
       id: id_hotel,
     },
   });
+  // const hotel = await Hotel.findByPk(id_hotel);
+  // await user.removeHotel(hotel);
   return;
 };
 
