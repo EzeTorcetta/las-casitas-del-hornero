@@ -6,7 +6,6 @@ const {
 
 //* Handler que trae todos los hoteles de la DB
 const getAllHotelsHandler = async (req, res) => {
-  
   try {
     const allHotels = await getAllHotels();
     res.status(200).json({ allHotels });
@@ -29,7 +28,17 @@ const getDetailHotelHandler = async (req, res) => {
 //* Handler que postea el hotel en la DB
 const postHotelHandler = async (req, res) => {
   const { id_user } = req.query;
-  const { name, email, phoneNumber, image, province, location } = req.body;
+  const {
+    name,
+    email,
+    phoneNumber,
+    image,
+    province,
+    description,
+    rating,
+    // location,
+    services,
+  } = req.body;
   try {
     if (id_user) {
       {
@@ -37,10 +46,13 @@ const postHotelHandler = async (req, res) => {
           {
             name,
             email,
+            description,
+            rating,
             phoneNumber,
             image,
             province,
-            location,
+            // location,
+            services,
           },
           id_user
         );

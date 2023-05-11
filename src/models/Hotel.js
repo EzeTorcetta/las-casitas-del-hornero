@@ -35,8 +35,20 @@ module.exports = (sequelize) => {
           },
         },
       },
+      rating: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+          min: 1,
+          max: 5,
+        },
+      },
+      description: {
+        type: DataTypes.TEXT,
+        allowNull: true,
+      },
       image: {
-        type: DataTypes.STRING,
+        type: DataTypes.ARRAY(DataTypes.STRING),
         allowNull: false,
       },
       province: {
@@ -67,7 +79,7 @@ module.exports = (sequelize) => {
         ),
         allowNull: false,
       },
-      location: DataTypes.STRING, //* .GEOGRAPHY ARROJA ERROR
+      location: { type: DataTypes.ARRAY(DataTypes.DOUBLE), allowNull: false },
     },
     {
       timestamps: false,

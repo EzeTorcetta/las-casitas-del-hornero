@@ -1,21 +1,38 @@
 //?----------------------------IMPORTS--------------------------------
-const { Hotel, User } = require("../db");
+const { Hotel, User, Service } = require("../db");
 
 //?----------------------------CONTROLLERS------------------------------
 
 //*------------GET ALL HOTELS-------------------
 const getAllHotels = async () => {
-  const allHotels = await Hotel.findAll();
+  const allHotels = await Hotel.findAll({
+    include: {
+      model: Service,
+      attributes: ["name"],
+      through: {
+        attributes: [],
+      },
+    },
+  });
   if (!allHotels.length) {
     throw new Error("Hotel not found");
   } else {
     return allHotels;
   }
 };
+
 //*------------GET HOTEL DETAIL-------------------
 const getDetailHotel = async (id) => {
   const hotel = await Hotel.findOne({
     where: { id },
+
+    include: {
+      model: Service,
+      attributes: ["name"],
+      through: {
+        attributes: [],
+      },
+    },
   });
 
   if (hotel) {
@@ -26,7 +43,17 @@ const getDetailHotel = async (id) => {
 };
 //*------------CREATE HOTEL-------------------
 const createHotel = async (
-  { name, email, phoneNumber, image, province, location },
+  {
+    name,
+    email,
+    phoneNumber,
+    image,
+    province,
+    location,
+    rating,
+    description,
+    services,
+  },
   id
 ) => {
   userFind = await User.findOne({
@@ -46,8 +73,11 @@ const createHotel = async (
     image,
     province,
     location,
+    rating,
+    description,
   });
 
+  await newHotel.addServices(services);
   await userFind.addHotel(newHotel);
 
   return newHotel;

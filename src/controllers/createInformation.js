@@ -92,8 +92,11 @@ const CreateHotels = async () => {
     phoneNumber: "01134531",
     province: "BUENOS AIRES",
     location: [1200, -1200],
-    image:
+    rating: 2,
+    description: "BLABLALBALABLA",
+    image: [
       "https://media-cdn.tripadvisor.com/media/photo-s/16/1a/ea/54/hotel-presidente-4s.jpg",
+    ],
   });
 
   hoteles.push({
@@ -102,8 +105,11 @@ const CreateHotels = async () => {
     phoneNumber: "0264454531",
     province: "SAN JUAN",
     location: [300, -300],
-    image:
+    rating: 3,
+    description: "BLABLALBALABLA",
+    image: [
       "https://media-cdn.tripadvisor.com/media/photo-s/16/1a/ea/54/hotel-presidente-4s.jpg",
+    ],
   });
 
   hoteles.push({
@@ -112,8 +118,14 @@ const CreateHotels = async () => {
     phoneNumber: "0467897123",
     province: "RIO NEGRO",
     location: [-2340, -3892],
-    image:
+    rating: 5,
+    description: "BLABLALBALABLA",
+    image: [
       "https://media-cdn.tripadvisor.com/media/photo-s/16/1a/ea/54/hotel-presidente-4s.jpg",
+      "https://media-cdn.tripadvisor.com/media/photo-s/16/1a/ea/54/hotel-presidente-4s.jpg",
+      "https://media-cdn.tripadvisor.com/media/photo-s/16/1a/ea/54/hotel-presidente-4s.jpg",
+      "https://media-cdn.tripadvisor.com/media/photo-s/16/1a/ea/54/hotel-presidente-4s.jpg",
+    ],
   });
 
   Hotel.bulkCreate(hoteles);
