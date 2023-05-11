@@ -5,7 +5,7 @@ const getUserHandler = async (req, res) => {
   const { password, email } = req.body;
   try {
     const user = await getUser(password, email);
-    res.status(200).json({ user });
+    res.status(200).json(user);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }

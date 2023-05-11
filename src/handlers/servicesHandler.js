@@ -8,7 +8,7 @@ const {
 const getAllServicesHandler = async (req, res) => {
   try {
     const allServices = await getAllServices();
-    res.status(200).json({ allServices });
+    res.status(200).json(allServices);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }

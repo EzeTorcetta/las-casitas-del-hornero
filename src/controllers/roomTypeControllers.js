@@ -7,7 +7,7 @@ const { RoomType,Hotel } = require("../db");
 const getAllRoomTypes = async () => {
     const roomTypes = await RoomType.findAll()
 
-    roomTypes? roomTypes : new Error("Room types not found") 
+    return roomTypes? roomTypes : new Error("Room types not found") 
 };
 
 //*------------GET ALL TYPES ROOMS BY HOTEL ID-------------------
@@ -16,7 +16,7 @@ const getRoomTypesByHotel = async (id_hotel) => {
         where: {id: id_hotel}
     });
 
-    hotelRoomTypes? hotelRoomTypes : new Error("Hotel room types not found")
+    return hotelRoomTypes? hotelRoomTypes : new Error("Hotel room types not found")
 };
 
 
