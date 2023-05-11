@@ -8,7 +8,7 @@ const {
 const getAllRoomTypesHandler = async (req, res) => {
     try {
         const allRoomTypes = await getAllRoomTypes();
-        res.status(200).json({ allRoomTypes })
+        res.status(200).json(allRoomTypes)
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
@@ -20,7 +20,7 @@ const getRoomTypesHandler = async (req, res) => {
 
     try {
         const roomType = await getRoomTypesByHotel(id_hotel)
-        res.status(200).json({ roomType });
+        res.status(200).json(roomType);
     } catch (error) {
         res.status(400).json({ error: error.message })
     }
@@ -33,7 +33,7 @@ const createRoomTypesHandler = async (req, res) => {
 
     try {
         const roomTypeCreated = await createRoomTypesByHotel({ people, price, name }, id_hotel)
-        res.status(200).json({ roomTypeCreated })
+        res.status(200).json(roomTypeCreated)
     } catch (error) {
         res.status(400).json({ error: error.message })
     }
