@@ -36,9 +36,8 @@ const createHotel = async (
     },
   });
 
-  if (!userFind) {
-    return "User not found or User is not Admin";
-  }
+  if (!userFind) throw new Error("User not found or User is not Admin");
+  
 
   const newHotel = await Hotel.create({
     name,
