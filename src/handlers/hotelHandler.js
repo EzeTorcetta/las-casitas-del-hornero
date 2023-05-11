@@ -6,6 +6,7 @@ const {
 
 //* Handler que trae todos los hoteles de la DB
 const getAllHotelsHandler = async (req, res) => {
+  
   try {
     const allHotels = await getAllHotels();
     res.status(200).json({ allHotels });
