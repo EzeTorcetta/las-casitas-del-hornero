@@ -5,11 +5,12 @@ const {
 } = require("../controllers/favControllers");
 
 //* Handler que me trae todos los Favoritos
+
 const getFavHandler = async (req, res) => {
   const { id_user } = req.params;
   try {
-    const Fav = await getFavs(id_user);
-    res.status(200).json({ Fav });
+    const favs = await getFavs(id_user);
+    res.status(200).json(favs);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
