@@ -1,25 +1,72 @@
-//?----------------------------IMPORTS--------------------------------
+//?----------------------------IMPORTS----------------------------------
 const { Hotel, User, Service } = require("../db");
+const { Op } = require("sequelize");
 
 //?----------------------------CONTROLLERS------------------------------
 
-//*------------GET ALL HOTELS-------------------
+//*------------GET ALL HOTELS QUERY-------------------
 const getAllHotels = async () => {
   const allHotels = await Hotel.findAll({
-    include: {
-      model: Service,
-      attributes: ["name"],
-      through: {
-        attributes: [],
-      },
-    },
+    include:{
+        model: Service,
+        attributes: ["name"],
+        required: true,
+        through: {
+          attributes: [],
+        },
+      }
   });
-  if (!allHotels.length) {
-    throw new Error("Hotel not found");
-  } else {
-    return allHotels;
+
+  return allHotels;
+}
+
+//*------------GET ALL HOTELS QUERY-------------------
+const getAllHotelsQuery = async (servicio, provincia, rating) => {
+  const whereClause = {};
+
+  if (provincia) {
+    const provinces = [];
+    if (!(typeof provincia === 'string'))provincia.map((pro)=>{ provinces.push(pro) });
+    else provinces.push(provincia)
+
+    whereClause.province = {
+      [Op.in]: provinces,
+    };  
   }
-};
+
+  if (rating) {
+    rating = Number(rating)
+    whereClause.rating = {
+      [Op.eq]: rating,
+    };
+  }
+
+  const allHotels = await Hotel.findAll({
+    where: whereClause,
+    include:{
+        model: Service,
+        attributes: ["name"],
+        required: true,
+        through: {
+          attributes: [],
+        },
+      }
+  });
+
+  let hoteles = allHotels;
+
+  if(servicio){
+    const services= [];
+    if (!(typeof servicio === 'string'))servicio.map((ser)=>{ services.push(ser) });
+    else services.push(servicio)
+
+    hoteles = allHotels.filter(hotel => {
+      return services.every(servicio => hotel.dataValues.Services.some(s => s.dataValues.name === servicio));
+    });
+  }
+
+  return hoteles;
+}
 
 //*------------GET HOTEL DETAIL-------------------
 const getDetailHotel = async (id) => {
@@ -41,6 +88,7 @@ const getDetailHotel = async (id) => {
     throw new Error("Hotel not found");
   }
 };
+
 //*------------CREATE HOTEL-------------------
 const createHotel = async (
   {
@@ -65,7 +113,6 @@ const createHotel = async (
 
   if (!userFind) throw new Error("User not found or User is not Admin");
   
-
   const newHotel = await Hotel.create({
     name,
     email,
@@ -87,4 +134,5 @@ module.exports = {
   getAllHotels,
   getDetailHotel,
   createHotel,
+  getAllHotelsQuery
 };
