@@ -13,7 +13,7 @@ const getAllRoomTypes = async () => {
 //*------------GET ALL TYPES ROOMS BY HOTEL ID-------------------
 const getRoomTypesByHotel = async (id_hotel) => {
     const hotelRoomTypes = await RoomType.findAll({
-        where: {id: id_hotel}
+        where: {HotelId: id_hotel}
     });
 
     return hotelRoomTypes? hotelRoomTypes : new Error("Hotel room types not found")
