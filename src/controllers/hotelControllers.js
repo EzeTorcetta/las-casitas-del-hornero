@@ -4,7 +4,7 @@ const { Op } = require("sequelize");
 
 //?----------------------------CONTROLLERS------------------------------
 
-//*------------GET ALL HOTELS QUERY-------------------
+//*------------GET ALL HOTELS -------------------
 const getAllHotels = async () => {
   const allHotels = await Hotel.findAll({
     include:{
@@ -20,7 +20,7 @@ const getAllHotels = async () => {
   return allHotels;
 }
 
-//*------------GET ALL HOTELS-------------------
+//*------------GET ALL HOTELS QUERY-------------------
 const getAllHotelsQuery = async (servicio, provincia, rating) => {
   const whereClause = {};
 
