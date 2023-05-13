@@ -10,17 +10,17 @@ const checkUserProperties = (req, res, next) => {
     return postUserHandler(req, res, next);
   }
 
-  if (email && password && (typeof admin !== "boolean" || !username)) {
-    return res.status(400).json({ error: "Falta información en la solicitud" });
-  }
+//   if (email && password && (typeof admin !== "boolean" || !username)) {
+//     return res.status(400).json({ error: "Falta información en la solicitud" });
+//   }
 
-  if (email && password && !admin && !username) {
-    return res.status(400).json({ error: "Falta información en la solicitud" });
-  }
+//   if (email && password && !admin && !username) {
+//     return res.status(400).json({ error: "Falta información en la solicitud" });
+//   }
 
-  if (email && password && typeof admin === "boolean") {
-    return postUserHandler(req, res, next);
-  }
+//   if (email && password && typeof admin === "boolean") {
+//     return postUserHandler(req, res, next);
+//   }
 
   if (email && password) {
     return getUserHandler(req, res, next);
