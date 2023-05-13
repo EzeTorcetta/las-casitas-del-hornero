@@ -10,7 +10,7 @@ const getAllHotelsHandler = async (req, res) => {
   const { services, provinces, rating } = req.query;
   try {
     let allHotels;
-    (services || provinces || rating)? allHotels = await getAllHotelsQuery(services, provinces, rating) : allHotels = await getAllHotels(services, provinces, rating);
+    (services || provinces || rating)? allHotels = await getAllHotelsQuery(services, provinces, rating) : allHotels = await getAllHotels();
     if(allHotels.length){
       res.status(200).json(allHotels);
     }
