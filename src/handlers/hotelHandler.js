@@ -10,6 +10,7 @@ const getAllHotelsHandler = async (req, res) => {
   const { services, provinces, rating, order } = req.query;
   try {
     let allHotels;
+
     services || provinces || rating
       ? (allHotels = await getAllHotelsQuery(
           services,
@@ -19,6 +20,7 @@ const getAllHotelsHandler = async (req, res) => {
         ))
       : (allHotels = await getAllHotels(order));
     if (allHotels.length) {
+
       res.status(200).json(allHotels);
     } else res.status(400).json("No hotel was found with the date sent");
   } catch (error) {

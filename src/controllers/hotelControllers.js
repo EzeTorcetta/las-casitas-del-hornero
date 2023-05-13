@@ -181,6 +181,7 @@ const getAllHotelsQuery = async (servicio, provincia, rating, order) => {
   }
 
   return hoteles;
+
 };
 
 //*------------GET HOTEL DETAIL-------------------
