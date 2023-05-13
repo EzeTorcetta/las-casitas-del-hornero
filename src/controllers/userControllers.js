@@ -19,6 +19,7 @@ const getUser = async (password, email) => {
       if (!findUser2) {
         throw new Error("Missing password");
       }
+
       return findUser2;
     }
   }
@@ -27,7 +28,7 @@ const getUser = async (password, email) => {
 //*---------------CREATE USER---------------------
 
 const postUser = async ({ username, password, email, admin }) => {
-  if (!username || !password || !email || !admin) {
+  if (!username || !password || !email || !(typeof admin === "boolean")) {
     throw new Error("Faltan datos");
   } else {
     const findUserByUsername = await User.findOne({ where: { username } });
@@ -51,5 +52,5 @@ const postUser = async ({ username, password, email, admin }) => {
 
 module.exports = {
   getUser,
-  postUser,
+  postUser,
 };
