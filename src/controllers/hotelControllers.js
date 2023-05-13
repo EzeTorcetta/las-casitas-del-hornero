@@ -20,7 +20,7 @@ const getAllHotels = async () => {
   return allHotels;
 }
 
-//*------------GET ALL HOTELS QUERY-------------------
+//*------------GET ALL HOTELS-------------------
 const getAllHotelsQuery = async (servicio, provincia, rating) => {
   const whereClause = {};
 
