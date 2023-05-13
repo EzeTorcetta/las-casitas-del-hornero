@@ -64,9 +64,13 @@ const getAllHotelsQuery = async (servicio, provincia, rating) => {
       return services.every(servicio => hotel.dataValues.Services.some(s => s.dataValues.name === servicio));
     });
   }
-
-  return hoteles;
-}
+  
+  if (hoteles) {
+    return hoteles;
+  } else {
+    throw new Error("No hotels found");
+  }
+};
 
 //*------------GET HOTEL DETAIL-------------------
 const getDetailHotel = async (id) => {
