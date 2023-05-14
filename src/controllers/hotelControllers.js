@@ -5,11 +5,19 @@ const { Op } = require("sequelize");
 //?----------------------------CONTROLLERS------------------------------
 
 //*------------GET ALL HOTELS -------------------
-const getAllHotels = async (order) => {
+
+
+const getAllHotels = async (order, page) => {
+
   let allHotels;
+  const limit = 5;
+  const offset = (page - 1) * limit;
+
   if (order === "RATINGASC") {
     allHotels = await Hotel.findAll({
       order: [["rating", "ASC"]],
+      limit,
+      offset,
       include: {
         model: Service,
         attributes: ["name"],
@@ -22,6 +30,8 @@ const getAllHotels = async (order) => {
   } else if (order === "RATINGDESC") {
     allHotels = await Hotel.findAll({
       order: [["rating", "DESC"]],
+      limit,
+      offset,
       include: {
         model: Service,
         attributes: ["name"],
@@ -34,6 +44,8 @@ const getAllHotels = async (order) => {
   } else if (order === "NAMEASC") {
     allHotels = await Hotel.findAll({
       order: [["name", "ASC"]],
+      limit,
+      offset,
       include: {
         model: Service,
         attributes: ["name"],
@@ -46,6 +58,8 @@ const getAllHotels = async (order) => {
   } else if (order === "NAMEDESC") {
     allHotels = await Hotel.findAll({
       order: [["name", "DESC"]],
+      limit,
+      offset,
       include: {
         model: Service,
         attributes: ["name"],
@@ -57,6 +71,8 @@ const getAllHotels = async (order) => {
     });
   } else {
     allHotels = await Hotel.findAll({
+      limit,
+      offset,
       include: {
         model: Service,
         attributes: ["name"],
@@ -68,11 +84,18 @@ const getAllHotels = async (order) => {
     });
   }
 
-  return allHotels;
+  const count = allHotels.length
+  const numPages = Math.ceil(count / limit);
+
+  return {allHotels, numPages};
 };
 
 //*------------GET ALL HOTELS QUERY-------------------
-const getAllHotelsQuery = async (servicio, provincia, rating, order) => {
+
+
+
+const getAllHotelsQuery = async (servicio, provincia, rating, order, page) => {
+  
   const whereClause = {};
 
   if (provincia) {
@@ -95,6 +118,7 @@ const getAllHotelsQuery = async (servicio, provincia, rating, order) => {
     };
   }
 
+  
   let allHotels;
 
   if (order === "NAMEASC") {
@@ -180,11 +204,22 @@ const getAllHotelsQuery = async (servicio, provincia, rating, order) => {
     });
   }
 
-  return hoteles;
+  
+  const limit = 5;
+  const count = hoteles.length
+  const numPages = Math.ceil(count / limit);
+
+  allHotels = hoteles.slice((page-1) * limit , (page-1) * limit + limit)
+  
+  return {allHotels, numPages};
 
 };
 
+
+
 //*------------GET HOTEL DETAIL-------------------
+
+
 const getDetailHotel = async (id) => {
   const hotel = await Hotel.findOne({
     where: { id },
@@ -205,7 +240,10 @@ const getDetailHotel = async (id) => {
   }
 };
 
+
 //*------------CREATE HOTEL-------------------
+
+
 const createHotel = async (
   {
     name,
