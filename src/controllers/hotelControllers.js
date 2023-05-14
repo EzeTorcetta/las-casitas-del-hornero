@@ -72,7 +72,7 @@ const getAllHotels = async (order, page) => {
     });
   }
 
-  const limit = 1;
+  const limit = 5;
   const count = allHotels.length
   const numPages = Math.ceil(count / limit);
 
