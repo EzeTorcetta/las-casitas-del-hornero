@@ -6,10 +6,20 @@ const { User, Hotel } = require("../db");
 
 //*------------GET ALL FAVS-------------------
 const getFavs = async (id_user) => {
-  const user = await User.findByPk(id_user);
-  const favs = await user.getHotels();
-  return favs;
+  const favs = await Favorites.findAll({
+    where: {UserId: id_user}
+  })
+
+  const hotelsPromises = favs.map(async (fav) => {
+    const hotel = await Hotel.findByPk(fav.HotelId);
+    return hotel;
+  });
+
+  const hotels = await Promise.all(hotelsPromises);
+
+  return hotels;
 };
+
 //*------------ADD FAV-------------------
 
 const postFav = async (id_user, id_hotel) => {
