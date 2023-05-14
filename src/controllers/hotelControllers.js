@@ -10,14 +10,10 @@ const { Op } = require("sequelize");
 const getAllHotels = async (order, page) => {
 
   let allHotels;
-  const limit = 5;
-  const offset = (page - 1) * limit;
 
   if (order === "RATINGASC") {
     allHotels = await Hotel.findAll({
       order: [["rating", "ASC"]],
-      limit,
-      offset,
       include: {
         model: Service,
         attributes: ["name"],
@@ -30,8 +26,6 @@ const getAllHotels = async (order, page) => {
   } else if (order === "RATINGDESC") {
     allHotels = await Hotel.findAll({
       order: [["rating", "DESC"]],
-      limit,
-      offset,
       include: {
         model: Service,
         attributes: ["name"],
@@ -44,8 +38,6 @@ const getAllHotels = async (order, page) => {
   } else if (order === "NAMEASC") {
     allHotels = await Hotel.findAll({
       order: [["name", "ASC"]],
-      limit,
-      offset,
       include: {
         model: Service,
         attributes: ["name"],
@@ -58,8 +50,6 @@ const getAllHotels = async (order, page) => {
   } else if (order === "NAMEDESC") {
     allHotels = await Hotel.findAll({
       order: [["name", "DESC"]],
-      limit,
-      offset,
       include: {
         model: Service,
         attributes: ["name"],
@@ -71,8 +61,6 @@ const getAllHotels = async (order, page) => {
     });
   } else {
     allHotels = await Hotel.findAll({
-      limit,
-      offset,
       include: {
         model: Service,
         attributes: ["name"],
@@ -84,8 +72,11 @@ const getAllHotels = async (order, page) => {
     });
   }
 
+  const limit = 1;
   const count = allHotels.length
   const numPages = Math.ceil(count / limit);
+
+  allHotels = allHotels.slice((page-1) * limit , (page-1) * limit + limit)
 
   return {allHotels, numPages};
 };
