@@ -15,15 +15,15 @@ const getFavs = async (id_user) => {
 const postFav = async (id_user, id_hotel) => {
   const user = await User.findByPk(id_user);
   const hotel = await Hotel.findByPk(id_hotel);
-  await user.addHotel(hotel);
+  await hotel.addUser(user);
   return;
 };
 
 //*------------DELETE FAV-------------------
 
 const deleteFav = async (id_user, id_hotel) => {
-  const user = await User.findByPk(id_user);
-  await user.removeHotel(id_hotel);
+ const hotel = await Hotel.findByPk(id_hotel);
+  await hotel.removeUser(id_user);
   return;
 };
 
