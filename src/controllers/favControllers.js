@@ -1,6 +1,6 @@
 //?----------------------------IMPORTS--------------------------------
 
-const { User, Hotel } = require("../db");
+const { User, Hotel, Favorites } = require("../db");
 
 //?----------------------------CONTROLLERS------------------------------
 
