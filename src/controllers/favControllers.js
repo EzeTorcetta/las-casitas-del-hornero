@@ -23,13 +23,7 @@ const postFav = async (id_user, id_hotel) => {
 
 const deleteFav = async (id_user, id_hotel) => {
   const user = await User.findByPk(id_user);
-  await user.removeHotel({
-    where: {
-      id: id_hotel,
-    },
-  });
-  // const hotel = await Hotel.findByPk(id_hotel);
-  // await user.removeHotel(hotel);
+  await user.removeHotel(id_hotel);
   return;
 };
 
