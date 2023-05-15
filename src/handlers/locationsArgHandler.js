@@ -40,16 +40,10 @@ const getMunicipalitiesByIdHandler = async (req, res, id_province) => {
 
 const getLocalitiesByIdHandler = async (req, res, id_municipality) => {
   try {
-    const localities = await getLocalitiesById(id_municipality);
+    const { id_municipality } = req.query;
+    const localities = await getLocalitiesById(id_municipaliy);
     res.status(200).json(localities);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
-};
-
-module.exports = {
-  getLocationsHandler,
-  // getAllProvincesHandler,
-  // getMunicipalitiesByIdHandler,
-  // getLocalitiesByIdHandler,
 };
