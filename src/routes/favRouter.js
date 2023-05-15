@@ -8,7 +8,7 @@ const {
 } = require("../handlers/favHandler");
 
 favRouter.get("/:id_user", getFavHandler);
-favRouter.delete("/:id_hotel/:id_user", deleteFavHandler);
+favRouter.delete("/:id_user/:id_hotel", deleteFavHandler);
 favRouter.post("/:id_user/:id_hotel", postFavHandler);
 
 module.exports = favRouter;

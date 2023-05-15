@@ -1,4 +1,5 @@
 const {
+  getAllHotelsQuery,
   getAllHotels,
   getDetailHotel,
   createHotel,
@@ -6,9 +7,25 @@ const {
 
 //* Handler que trae todos los hoteles de la DB
 const getAllHotelsHandler = async (req, res) => {
+  const { services, provinces, rating, order, page} = req.query;
+  
+ 
+  
+
   try {
-    const allHotels = await getAllHotels();
-    res.status(200).json(allHotels);
+    let allHotels;
+    services || provinces || rating
+      ? (allHotels = await getAllHotelsQuery(
+          services,
+          provinces,
+          rating,
+          order,
+          page
+        ))
+      : (allHotels = await getAllHotels(order, page));
+    if (allHotels.allHotels?.length) {
+      res.status(200).json(allHotels);
+    } else res.status(400).json({error: "No hotel was found with the date sent"});
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -36,7 +53,7 @@ const postHotelHandler = async (req, res) => {
     province,
     description,
     rating,
-    // location,
+    location,
     services,
   } = req.body;
   try {
@@ -51,7 +68,7 @@ const postHotelHandler = async (req, res) => {
             phoneNumber,
             image,
             province,
-            // location,
+            location,
             services,
           },
           id_user
