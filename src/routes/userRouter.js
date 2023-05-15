@@ -1,26 +1,19 @@
 const { Router } = require("express");
 const userRouter = Router();
 
-const { getUserHandler, postUserHandler } = require("../handlers/userHandler");
+const {
+  getUserHandler,
+  postUserHandler,
+  getAllUsersHandler,
+  putRolUserHandler,
+} = require("../handlers/userHandler");
 
 const checkUserProperties = (req, res, next) => {
-  const { email, password, username, admin } = req.body;
+  const { email, password, username } = req.body;
 
-  if (email && password && username && typeof admin === "boolean") {
+  if (email && password && username) {
     return postUserHandler(req, res, next);
   }
-
-//   if (email && password && (typeof admin !== "boolean" || !username)) {
-//     return res.status(400).json({ error: "Falta información en la solicitud" });
-//   }
-
-//   if (email && password && !admin && !username) {
-//     return res.status(400).json({ error: "Falta información en la solicitud" });
-//   }
-
-//   if (email && password && typeof admin === "boolean") {
-//     return postUserHandler(req, res, next);
-//   }
 
   if (email && password) {
     return getUserHandler(req, res, next);
@@ -30,11 +23,9 @@ const checkUserProperties = (req, res, next) => {
 };
 
 userRouter.post("/", checkUserProperties);
-
-module.exports = userRouter;
-
-
-
+userRouter.get("/:id_user", getAllUsersHandler);
+userRouter.put("/", putRolUserHandler);
+module.exports = userRouter;
 
 // const { Router } = require("express");
 // const userRouter = Router();

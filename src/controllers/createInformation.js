@@ -56,28 +56,28 @@ const CreateUsers = () => {
     username: "Juan Martin",
     password: "contrasenia",
     email: "juanmartin@gmail.com",
-    admin: true,
+    rol: 3,
   });
 
   user.push({
     username: "Jose",
     password: "contrasenia",
     email: "jose@gmail.com",
-    admin: false,
+    rol: 1,
   });
 
   user.push({
     username: "Eze",
     password: "contraseña",
     email: "eze@gmail.com",
-    admin: false,
+    rol: 2,
   });
 
   user.push({
     username: "Manuel",
     password: "contrasenia",
     email: "manuel@gmail.com",
-    admin: true,
+    rol: 1,
   });
 
   User.bulkCreate(user);
