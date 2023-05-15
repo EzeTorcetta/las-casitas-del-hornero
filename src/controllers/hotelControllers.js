@@ -6,9 +6,7 @@ const { Op } = require("sequelize");
 
 //*------------GET ALL HOTELS -------------------
 
-
 const getAllHotels = async (order, page) => {
-
   let allHotels;
 
   if (order === "RATINGASC") {
@@ -73,43 +71,17 @@ const getAllHotels = async (order, page) => {
   }
 
   const limit = 5;
-  const count = allHotels.length
+  const count = allHotels.length;
   const numPages = Math.ceil(count / limit);
 
-  allHotels = allHotels.slice((page-1) * limit , (page-1) * limit + limit)
+  allHotels = allHotels.slice((page - 1) * limit, (page - 1) * limit + limit);
 
-  return {allHotels, numPages};
+  return { allHotels, numPages };
 };
-//*------------GET HOTEL BY QUERY-------------------
-
-//*provinces = req .query.filter(query => allProvinces.includes(query))
-//*services = req .query.filter(query => allServices.includes(query))
-
-const provinces = ["mendoza", "buenos aires"];
-const services = ["ascensor", "otracosa"];
-const hoteles = [];
-if (provinces.length) {
-  hoteles = await Hotel.findAll({
-    where: {
-      province: provinces,
-    },
-  });
-}
-
-if (provinces.length) {
-  hoteles = await Hotel.findAll({
-    where: {
-      province: provinces,
-    },
-  });
-}
 
 //*------------GET ALL HOTELS QUERY-------------------
 
-
-
 const getAllHotelsQuery = async (servicio, provincia, rating, order, page) => {
-  
   const whereClause = {};
 
   if (provincia) {
@@ -132,7 +104,6 @@ const getAllHotelsQuery = async (servicio, provincia, rating, order, page) => {
     };
   }
 
-  
   let allHotels;
 
   if (order === "NAMEASC") {
@@ -218,21 +189,16 @@ const getAllHotelsQuery = async (servicio, provincia, rating, order, page) => {
     });
   }
 
-  
   const limit = 5;
-  const count = hoteles.length
+  const count = hoteles.length;
   const numPages = Math.ceil(count / limit);
 
-  allHotels = hoteles.slice((page-1) * limit , (page-1) * limit + limit)
-  
-  return {allHotels, numPages};
+  allHotels = hoteles.slice((page - 1) * limit, (page - 1) * limit + limit);
 
+  return { allHotels, numPages };
 };
 
-
-
 //*------------GET HOTEL DETAIL-------------------
-
 
 const getDetailHotel = async (id) => {
   const hotel = await Hotel.findOne({
@@ -254,9 +220,7 @@ const getDetailHotel = async (id) => {
   }
 };
 
-
 //*------------CREATE HOTEL-------------------
-
 
 const createHotel = async (
   {
@@ -265,6 +229,8 @@ const createHotel = async (
     phoneNumber,
     image,
     province,
+    department,
+    locality,
     location,
     rating,
     description,
@@ -287,6 +253,8 @@ const createHotel = async (
     phoneNumber,
     image,
     province,
+    department,
+    locality,
     location,
     rating,
     description,
