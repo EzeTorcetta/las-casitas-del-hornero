@@ -20,6 +20,29 @@ const getAllHotels = async () => {
     return allHotels;
   }
 };
+//*------------GET HOTEL BY QUERY-------------------
+
+//*provinces = req .query.filter(query => allProvinces.includes(query))
+//*services = req .query.filter(query => allServices.includes(query))
+
+const provinces = ["mendoza", "buenos aires"];
+const services = ["ascensor", "otracosa"];
+const hoteles = [];
+if (provinces.length) {
+  hoteles = await Hotel.findAll({
+    where: {
+      province: provinces,
+    },
+  });
+}
+
+if (provinces.length) {
+  hoteles = await Hotel.findAll({
+    where: {
+      province: provinces,
+    },
+  });
+}
 
 //*------------GET HOTEL DETAIL-------------------
 const getDetailHotel = async (id) => {
@@ -64,7 +87,6 @@ const createHotel = async (
   });
 
   if (!userFind) throw new Error("User not found or User is not Admin");
-  
 
   const newHotel = await Hotel.create({
     name,

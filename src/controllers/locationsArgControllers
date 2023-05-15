@@ -1,0 +1,83 @@
+//?----------------------------IMPORTS--------------------------------
+
+const { default: axios } = require("axios");
+
+//?----------------------------CONTROLLERS------------------------------
+
+//*----------------- GET ALL PROVINCES---------------------
+
+const getAllProvinces = async () => {
+  const { data } = await axios.get(
+    `https://apis.datos.gob.ar/georef/api/provincias?campos=id,nombre`
+  );
+  const provinces = data.provincias; //es arreglo de {id y nombre}
+
+  if (!provinces.length) {
+    throw new Error("Provinces not found");
+  } else {
+    return provinces;
+  }
+};
+
+//*----------------- GET MUNICIPALITIES BY PROVINCE_ID ---------------------
+
+const getMunicipalitiesById = async (province_id) => {
+  const { data } = await axios.get(
+    `https://apis.datos.gob.ar/georef/api/municipios?provincia=${province_id}&campos=id,nombre&max=100`
+  );
+  const municipalities = data.municipios; // es arreglo de {id y nombre}
+  if (!municipalities.length) {
+    throw new Error(
+      `Municipalities of Province with id ${province_id} not found`
+    );
+  } else {
+    return municipalities;
+  }
+};
+
+//*----------------- GET LOCALITIES BY MUNICIPALITY_ID---------------------
+
+const getLocalitiesById = async (municipality_id) => {
+  const { data } = await axios.get(
+    `https://apis.datos.gob.ar/georef/api/localidades?municipio${municipality_id}&campos=id,nombre&max=100`
+  );
+  const localities = data.localidades;
+
+  if (!localities.length) {
+    throw new Error(
+      `Localities of Municipality with id ${municipality_id} not found`
+    );
+  } else {
+    return localities;
+  }
+};
+
+//? Estos controladores se podrían hacer tambien segun si viene la query o no en los anteriores, pero no sabia muy de que manera hacerlo. Funcionarían para el detail, para mostrar los nombres. Tambien se podria evitar guardando en la base de datos directamente los nombres y NO los id de cada provincia, municipio y localidad.
+
+//*Busca por id y trae la provincia que coincide
+const getProvinceById = async (province_id) => {
+  const { data } = await axios.get(
+    `https://apis.datos.gob.ar/georef/api/provincias?campos=id,nombre&id=${id_province}`
+  );
+  const province = data.provincias[0]; // objeto con id y nombre
+};
+const getMunicipalityById = async (municipality_id) => {
+  const { data } = await axios.get(
+    `https://apis.datos.gob.ar/georef/api/municipios?campos=id,nombre&id=${id_municipality}`
+  );
+  const municipality = data.municipios[0]; //objeto con id y nombre
+};
+
+const getLocalityById = async (locality_id) => {
+  const { data } = await axios.get(
+    `https://apis.datos.gob.ar/georef/api/localidades?campos=id,nombre&id=${id_locality}`
+  );
+  const locality = data.localidades[0];
+  return locality; // objeto con id y nombre
+};
+
+module.exports = {
+  getAllProvinces,
+  getLocalitiesById,
+  getMunicipalitiesById,
+};
