@@ -6,6 +6,7 @@ const favRouter = require("./favRouter");
 const userRouter = require("./userRouter");
 const roomTypesRouter = require("./roomTypesRouter");
 const servicesRouter = require("./servicesRouter");
+const cartRouter = require("./cartRouter");
 
 const router = Router();
 
@@ -16,6 +17,7 @@ router.use("/hotels", hotelsRouter);
 router.use("/favorites", favRouter);
 router.use("/roomTypes", roomTypesRouter);
 router.use("/services", servicesRouter);
+router.use("/cart", cartRouter);
 
 //****************************************/
 module.exports = router;
