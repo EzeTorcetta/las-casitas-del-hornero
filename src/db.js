@@ -60,7 +60,12 @@ const Favorites = sequelize.define("Favorites");
 Hotel.belongsToMany(User, { through: Favorites });
 User.belongsToMany(Hotel, { through: Favorites });
 
-// const {} = sequelize.models
+
+const Cart = sequelize.define('Cart');
+
+RoomType.belongsToMany(User, { through: Cart });
+User.belongsToMany(RoomType, { through: Cart });
+
 
 module.exports = {
   ...sequelize.models,

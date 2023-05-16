@@ -37,8 +37,18 @@ const deleteFav = async (id_user, id_hotel) => {
   return;
 };
 
+//*----------- DELETE ALL FAVORITES----------------
+const deteleAllFavs = async (id_user) => {
+  await Favorites.destroy({
+      where: { UserId: id_user },
+    });
+
+return;
+};
+
 module.exports = {
   getFavs,
   postFav,
   deleteFav,
+  deteleAllFavs,
 };
