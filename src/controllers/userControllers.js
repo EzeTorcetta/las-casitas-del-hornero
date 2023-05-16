@@ -15,7 +15,10 @@ const getUser = async (password, email) => {
     if (!findUser) {
       throw new Error("User not exist");
     } else {
-      const findUser2 = await User.findOne({ where: { password, email } });
+      const findUser2 = await User.findOne({
+        where: { password, email },
+        attributes: ["id", "username", "email", "rol"],
+      });
       if (!findUser2) {
         throw new Error("Missing password");
       }
