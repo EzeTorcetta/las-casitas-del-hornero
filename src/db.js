@@ -55,6 +55,7 @@ Service.belongsToMany(Hotel, { through: "HotelServices" });
 Hotel.hasMany(Review);
 Review.belongsTo(Hotel);
 
+
 const Favorites = sequelize.define("Favorites");
 
 Hotel.belongsToMany(User, { through: Favorites });
@@ -65,6 +66,7 @@ const Cart = sequelize.define('Cart');
 
 RoomType.belongsToMany(User, { through: Cart });
 User.belongsToMany(RoomType, { through: Cart });
+
 
 
 module.exports = {
