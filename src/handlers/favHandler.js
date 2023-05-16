@@ -2,10 +2,10 @@ const {
   getFavs,
   postFav,
   deleteFav,
+  deteleAllFavs
 } = require("../controllers/favControllers");
 
 //* Handler que me trae todos los Favoritos
-
 const getFavHandler = async (req, res) => {
   const { id_user } = req.params;
   try {
@@ -27,6 +27,7 @@ const postFavHandler = async (req, res) => {
   }
 };
 
+//* Handler que elimina un fav del user en la DB
 const deleteFavHandler = async (req, res) => {
   const { id_user, id_hotel } = req.params;
   try {
@@ -37,8 +38,21 @@ const deleteFavHandler = async (req, res) => {
   }
 };
 
+
+//* Handler que elimina todos los favs de un user en la DB
+const deleteAllFavsHandler = async (req, res) => {
+  const { id_user } = req.params;
+  try {
+    await deteleAllFavs(id_user);
+    res.status(200).json("All favorites were removed");
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
 module.exports = {
   getFavHandler,
   postFavHandler,
   deleteFavHandler,
+  deleteAllFavsHandler,
 };

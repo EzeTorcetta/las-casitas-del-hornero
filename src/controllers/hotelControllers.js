@@ -1,92 +1,67 @@
 //?----------------------------IMPORTS----------------------------------
-const { Hotel, User, Service } = require("../db");
+const { Hotel, User, Service, Review, RoomType } = require("../db");
 const { Op } = require("sequelize");
 
 //?----------------------------CONTROLLERS------------------------------
 
 //*------------GET ALL HOTELS -------------------
 
-
 const getAllHotels = async (order, page) => {
-
   let allHotels;
 
-  if (order === "RATINGASC") {
+  let includeOptions = {
+    model: Service,
+    attributes: ["name"],
+    required: true,
+    through: {
+      attributes: [],
+    },
+  };
+
+  const getOrderOptions = (order) => {
+    switch (order) {
+      case "RATINGASC":
+        return [["rating", "ASC"]];
+      case "RATINGDESC":
+        return [["rating", "DESC"]];
+      case "NAMEASC":
+        return [["name", "ASC"]];
+      case "NAMEDESC":
+        return [["name", "DESC"]];
+      case "VALORATIONASC":
+        return [["valoration", "ASC"]];
+      case "VALORATIONDESC":
+        return [["valoration", "DESC"]];
+      default:
+        return null;
+    }
+  };
+
+  const orderOptions = getOrderOptions(order);
+
+  if (orderOptions) {
     allHotels = await Hotel.findAll({
-      order: [["rating", "ASC"]],
-      include: {
-        model: Service,
-        attributes: ["name"],
-        required: true,
-        through: {
-          attributes: [],
-        },
-      },
-    });
-  } else if (order === "RATINGDESC") {
-    allHotels = await Hotel.findAll({
-      order: [["rating", "DESC"]],
-      include: {
-        model: Service,
-        attributes: ["name"],
-        required: true,
-        through: {
-          attributes: [],
-        },
-      },
-    });
-  } else if (order === "NAMEASC") {
-    allHotels = await Hotel.findAll({
-      order: [["name", "ASC"]],
-      include: {
-        model: Service,
-        attributes: ["name"],
-        required: true,
-        through: {
-          attributes: [],
-        },
-      },
-    });
-  } else if (order === "NAMEDESC") {
-    allHotels = await Hotel.findAll({
-      order: [["name", "DESC"]],
-      include: {
-        model: Service,
-        attributes: ["name"],
-        required: true,
-        through: {
-          attributes: [],
-        },
-      },
+      order: orderOptions,
+      include: includeOptions,
     });
   } else {
     allHotels = await Hotel.findAll({
-      include: {
-        model: Service,
-        attributes: ["name"],
-        required: true,
-        through: {
-          attributes: [],
-        },
-      },
+      include: includeOptions,
     });
   }
 
   const limit = 5;
-  const count = allHotels.length
+  const count = allHotels.length;
   const numPages = Math.ceil(count / limit);
 
-  allHotels = allHotels.slice((page-1) * limit , (page-1) * limit + limit)
+  allHotels = allHotels.slice((page - 1) * limit, (page - 1) * limit + limit);
 
-  return {allHotels, numPages};
+  return { allHotels, numPages };
 };
 
 //*------------GET ALL HOTELS QUERY-------------------
 
-
-
 const getAllHotelsQuery = async (servicio, provincia, rating, order, page) => {
-  
   const whereClause = {};
 
   if (provincia) {
@@ -109,7 +84,6 @@ const getAllHotelsQuery = async (servicio, provincia, rating, order, page) => {
     };
   }
 
-  
   let allHotels;
 
   if (order === "NAMEASC") {
@@ -164,6 +138,32 @@ const getAllHotelsQuery = async (servicio, provincia, rating, order, page) => {
         },
       },
     });
+  } else if (order === "VALORATIONASC") {
+    allHotels = await Hotel.findAll({
+      where: whereClause,
+      order: [["valoration", "ASC"]],
+      include: {
+        model: Service,
+        attributes: ["name"],
+        required: true,
+        through: {
+          attributes: [],
+        },
+      },
+    });
+  } else if (order === "VALORATIONDESC") {
+    allHotels = await Hotel.findAll({
+      where: whereClause,
+      order: [["valoration", "DESC"]],
+      include: {
+        model: Service,
+        attributes: ["name"],
+        required: true,
+        through: {
+          attributes: [],
+        },
+      },
+    });
   } else {
     allHotels = await Hotel.findAll({
       where: whereClause,
@@ -195,35 +195,41 @@ const getAllHotelsQuery = async (servicio, provincia, rating, order, page) => {
     });
   }
 
-  
   const limit = 5;
-  const count = hoteles.length
+  const count = hoteles.length;
   const numPages = Math.ceil(count / limit);
 
-  allHotels = hoteles.slice((page-1) * limit , (page-1) * limit + limit)
-  
-  return {allHotels, numPages};
+  allHotels = hoteles.slice((page - 1) * limit, (page - 1) * limit + limit);
 
+  return { allHotels, numPages };
 };
 
-
-
 //*------------GET HOTEL DETAIL-------------------
-
 
 const getDetailHotel = async (id) => {
   const hotel = await Hotel.findOne({
     where: { id },
 
-    include: {
-      model: Service,
-      attributes: ["name"],
-      through: {
-        attributes: [],
+    include: [
+      {
+        model: Service,
+        attributes: ["name"],
+        through: {
+          attributes: [],
+        },
       },
-    },
+      {
+        model: RoomType,
+        attributes: ["id", "people", "price", "name", "image"],
+      },
+      {
+        model: Review,
+        attributes: ["id", "username", "punctuation", "review"],
+      },
+    ],
   });
 
+  console.log(hotel);
   if (hotel) {
     return hotel;
   } else {
@@ -231,9 +237,7 @@ const getDetailHotel = async (id) => {
   }
 };
 
-
 //*------------CREATE HOTEL-------------------
-
 
 const createHotel = async (
   {
@@ -252,7 +256,7 @@ const createHotel = async (
   userFind = await User.findOne({
     where: {
       id,
-      admin: true,
+      rol: 2,
     },
   });
 
