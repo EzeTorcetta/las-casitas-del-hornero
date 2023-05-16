@@ -2,10 +2,10 @@ const {
     getCart,
     postCart,
     deteleCart,
+    deteleAllCart,
   } = require("../controllers/cartControllers");
   
   //* Handler que me trae todos los Favoritos
-  
   const getCartHandler = async (req, res) => {
     const { id_user } = req.params;
     console.log(id_user);
@@ -28,6 +28,7 @@ const {
     }
   };
   
+  //* Handler que elimita una roomType del carrito
   const deleteCartHandler = async (req, res) => {
     const { id_user, id_roomtype } = req.params;
     try {
@@ -38,8 +39,20 @@ const {
     }
   };
   
+  //* Handler que vacìa el carrito
+  const deleteAllCartHandler = async (req, res) => {
+    const { id_user } = req.params;
+    try {
+      await deteleAllCart(id_user);
+      res.status(200).json("The cart was emptied");
+    } catch (error) {
+      res.status(400).json({ error: error.message });
+    }
+  };
+  
   module.exports = {
     getCartHandler,
   postCartHandler,
   deleteCartHandler,
+  deleteAllCartHandler,
   };

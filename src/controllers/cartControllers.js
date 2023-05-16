@@ -31,7 +31,7 @@ const postCart = async (id_user, id_roomtype) => {
   return;
 };
 
-//*------------ DELETE CART -------------------
+//*------------ DELETE ITEM OF CART -------------------
 
 const deteleCart = async (id_user, id_roomtype) => {
   const room = await RoomType.findByPk(id_roomtype);
@@ -39,8 +39,20 @@ const deteleCart = async (id_user, id_roomtype) => {
   return;
 };
 
+//*------------ DELETE ALL ITEMS OF CART -------------------
+
+const deteleAllCart = async (id_user) => {
+    await Cart.destroy({
+        where: { UserId: id_user },
+      });
+  
+  return;
+};
+
+
 module.exports = {
     getCart,
     postCart,
     deteleCart,
+    deteleAllCart,
 };
