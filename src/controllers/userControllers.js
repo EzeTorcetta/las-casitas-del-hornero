@@ -1,7 +1,7 @@
 //?----------------------------IMPORTS--------------------------------
 
 const { User } = require("../db");
-
+const { Op } = require("sequelize");
 //?----------------------------CONTROLLERS------------------------------
 
 //*-----------------GET USER---------------------
@@ -19,6 +19,7 @@ const getUser = async (password, email) => {
       if (!findUser2) {
         throw new Error("Missing password");
       }
+
       return findUser2;
     }
   }
@@ -27,7 +28,7 @@ const getUser = async (password, email) => {
 //*---------------CREATE USER---------------------
 
 const postUser = async ({ username, password, email, admin }) => {
-  if (!username || !password || !email || !admin) {
+  if (!username || !password || !email) {
     throw new Error("Faltan datos");
   } else {
     const findUserByUsername = await User.findOne({ where: { username } });
@@ -42,14 +43,52 @@ const postUser = async ({ username, password, email, admin }) => {
         username,
         password,
         email,
-        admin,
+        rol: 1,
       });
       return;
     }
   }
 };
 
+//*---------------GET ALL USERS---------------------
+const getAllUsers = async (id_user) => {
+  const findUser = await User.findOne({ where: { id: id_user } });
+
+  if (findUser.rol == 3) {
+    findAllUsers = await User.findAll({
+      where: {
+        id: {
+          [Op.not]: id_user,
+        },
+      },
+      attributes: ["id", "username", "email", "rol"],
+    });
+  } else {
+    throw new Error("Permission denied, you are not an administrator");
+  }
+
+  return findAllUsers;
+};
+
+//*---------------PUT ROL USER---------------------
+const putRolUser = async (id_user, rol) => {
+  const findUser = await User.findByPk(id_user);
+
+  if (findUser) {
+    findUser.rol = rol;
+
+    await findUser.save();
+  } else {
+    throw new Error("User does not exist");
+  }
+
+  return findUser;
+};
+
+//*-----------------GET ALL USERS---------------------
 module.exports = {
   getUser,
   postUser,
+  getAllUsers,
+  putRolUser,
 };

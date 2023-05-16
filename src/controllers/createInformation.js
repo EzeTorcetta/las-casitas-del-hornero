@@ -56,28 +56,28 @@ const CreateUsers = () => {
     username: "Juan Martin",
     password: "contrasenia",
     email: "juanmartin@gmail.com",
-    admin: true,
+    rol: 3,
   });
 
   user.push({
     username: "Jose",
     password: "contrasenia",
     email: "jose@gmail.com",
-    admin: false,
+    rol: 1,
   });
 
   user.push({
     username: "Eze",
     password: "contraseña",
     email: "eze@gmail.com",
-    admin: false,
+    rol: 2,
   });
 
   user.push({
     username: "Manuel",
     password: "contrasenia",
     email: "manuel@gmail.com",
-    admin: true,
+    rol: 1,
   });
 
   User.bulkCreate(user);
@@ -181,18 +181,24 @@ const CreateRoomTypes = async () => {
     people: 1,
     price: 1450.3,
     name: "Individual",
+    image:
+      "https://i0.wp.com/yieldfanstravel.com/wp-content/uploads/2017/04/Precio-habitacio%CC%81n-hotel.jpg?resize=752%2C440&ssl=1",
   });
 
   roomType.push({
     people: 3,
     price: 2600.6,
     name: "Familiar",
+    image:
+      "https://i0.wp.com/yieldfanstravel.com/wp-content/uploads/2017/04/Precio-habitacio%CC%81n-hotel.jpg?resize=752%2C440&ssl=1",
   });
 
   roomType.push({
     people: 4,
     price: 10000,
     name: "Suite",
+    image:
+      "https://i0.wp.com/yieldfanstravel.com/wp-content/uploads/2017/04/Precio-habitacio%CC%81n-hotel.jpg?resize=752%2C440&ssl=1",
   });
 
   //MarioHotel
@@ -200,12 +206,16 @@ const CreateRoomTypes = async () => {
     people: 1,
     price: 640.3,
     name: "Individual",
+    image:
+      "https://i0.wp.com/yieldfanstravel.com/wp-content/uploads/2017/04/Precio-habitacio%CC%81n-hotel.jpg?resize=752%2C440&ssl=1",
   });
 
   roomType.push({
     people: 3,
     price: 1500.6,
     name: "Familiar",
+    image:
+      "https://i0.wp.com/yieldfanstravel.com/wp-content/uploads/2017/04/Precio-habitacio%CC%81n-hotel.jpg?resize=752%2C440&ssl=1",
   });
 
   //FabricioHotel
@@ -213,18 +223,24 @@ const CreateRoomTypes = async () => {
     people: 1,
     price: 1400.3,
     name: "Individual",
+    image:
+      "https://i0.wp.com/yieldfanstravel.com/wp-content/uploads/2017/04/Precio-habitacio%CC%81n-hotel.jpg?resize=752%2C440&ssl=1",
   });
 
   roomType.push({
     people: 3,
     price: 3700.6,
     name: "Familiar",
+    image:
+      "https://i0.wp.com/yieldfanstravel.com/wp-content/uploads/2017/04/Precio-habitacio%CC%81n-hotel.jpg?resize=752%2C440&ssl=1",
   });
 
   roomType.push({
     people: 4,
     price: 15000,
     name: "Suite",
+    image:
+      "https://i0.wp.com/yieldfanstravel.com/wp-content/uploads/2017/04/Precio-habitacio%CC%81n-hotel.jpg?resize=752%2C440&ssl=1",
   });
 
   RoomType.bulkCreate(roomType);

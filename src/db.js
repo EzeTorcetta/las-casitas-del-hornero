@@ -2,10 +2,11 @@ require("dotenv").config();
 const { Sequelize } = require("sequelize");
 const fs = require("fs");
 const path = require("path");
-const { DB_USER, DB_PASSWORD, DB_HOST, DB_NAME } = process.env;
+const { DB_USER, DB_PASSWORD, DB_HOST, DB_NAME, DB_DEPLOY } = process.env;
 
 const sequelize = new Sequelize(
-  `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}`,
+  // `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}`,
+   DB_DEPLOY,
   { logging: false, native: false }
 );
 
@@ -49,6 +50,8 @@ Room.belongsTo(RoomType);
 
 Hotel.belongsToMany(Service, { through: "HotelServices" });
 Service.belongsToMany(Hotel, { through: "HotelServices" });
+
+const Favorites = sequelize.define('Favorites');
 
 Hotel.belongsToMany(User, { through: "Favorites" });
 User.belongsToMany(Hotel, { through: "Favorites" });
