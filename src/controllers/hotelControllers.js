@@ -54,7 +54,7 @@ const getAllHotels = async (order, page) => {
   const count = allHotels.length;
   const numPages = Math.ceil(count / limit);
 
-  allHotels = hoteles.slice((page - 1) * limit, (page - 1) * limit + limit);
+  allHotels = allHotels.slice((page - 1) * limit, (page - 1) * limit + limit);
 
   return { allHotels, numPages };
 };
