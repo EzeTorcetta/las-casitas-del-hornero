@@ -40,7 +40,7 @@ const postUserHandler = async (req, res) => {
 };
 
 const putRolUserHandler = async (req, res) => {
-  const { id_user, rol } = req.body;
+  const { id_user, rol } = req.body; //ID DEL USUARIO QUE LE VAMOS A CAMBIAR EL ROL
 
   try {
     putUser = await putRolUser(id_user, rol);
