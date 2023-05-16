@@ -65,7 +65,7 @@ const Cart = sequelize.define('Cart');
 
 RoomType.belongsToMany(User, { through: Cart });
 User.belongsToMany(RoomType, { through: Cart });
-// const {} = sequelize.models
+
 
 module.exports = {
   ...sequelize.models,
