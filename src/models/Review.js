@@ -14,10 +14,14 @@ module.exports = (sequelize) => {
         type: DataTypes.TEXT,
         allowNull: false,
       },
-      punctuation:{
+      punctuation: {
         type: INTEGER,
         allowNull: false,
-      }
+      },
+      username: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
     },
     {
       timestamps: false,
