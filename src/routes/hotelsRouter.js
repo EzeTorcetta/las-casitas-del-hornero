@@ -1,4 +1,5 @@
 const { Router } = require("express");
+const { validateCreate } = require("../validators/hotels");
 const hotelsRouter = Router();
 const {
   getAllHotelsHandler,
@@ -8,6 +9,6 @@ const {
 
 hotelsRouter.get("/", getAllHotelsHandler);
 hotelsRouter.get("/:id", getDetailHotelHandler);
-hotelsRouter.post("/", postHotelHandler);
+hotelsRouter.post("/", validateCreate, postHotelHandler);
 
 module.exports = hotelsRouter;

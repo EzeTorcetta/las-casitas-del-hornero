@@ -1,5 +1,5 @@
 //?----------------------------IMPORTS----------------------------------
-const { Hotel, User, Service } = require("../db");
+const { Hotel, User, Service, Review } = require("../db");
 const { Op } = require("sequelize");
 
 //?----------------------------CONTROLLERS------------------------------
@@ -204,15 +204,22 @@ const getDetailHotel = async (id) => {
   const hotel = await Hotel.findOne({
     where: { id },
 
-    include: {
-      model: Service,
-      attributes: ["name"],
-      through: {
-        attributes: [],
+    include: [
+      {
+        model: Service,
+        attributes: ["name"],
+        through: {
+          attributes: [],
+        },
       },
-    },
+      {
+        model: Review,
+        attributes: ["username", "punctuation", "review"],
+      },
+    ],
   });
 
+  console.log(hotel);
   if (hotel) {
     return hotel;
   } else {
