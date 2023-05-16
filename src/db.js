@@ -53,8 +53,8 @@ Service.belongsToMany(Hotel, { through: "HotelServices" });
 
 const Favorites = sequelize.define('Favorites');
 
-Hotel.belongsToMany(User, { through: "Favorites" });
-User.belongsToMany(Hotel, { through: "Favorites" });
+Hotel.belongsToMany(User, { through: Favorites });
+User.belongsToMany(Hotel, { through: Favorites });
 
 // const {} = sequelize.models
 
