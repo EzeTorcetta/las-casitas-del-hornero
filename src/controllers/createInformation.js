@@ -54,28 +54,28 @@ const CreateUsers = () => {
 
   user.push({
     username: "Juan Martin",
-    password: "contrasenia",
+    password: "Contrasenia1",
     email: "juanmartin@gmail.com",
     rol: 3,
   });
 
   user.push({
     username: "Jose",
-    password: "contrasenia",
+    password: "Contrasenia1",
     email: "jose@gmail.com",
     rol: 1,
   });
 
   user.push({
     username: "Eze",
-    password: "contraseña",
+    password: "Contrasenia1",
     email: "eze@gmail.com",
     rol: 2,
   });
 
   user.push({
     username: "Manuel",
-    password: "contrasenia",
+    password: "Contrasenia1",
     email: "manuel@gmail.com",
     rol: 1,
   });
