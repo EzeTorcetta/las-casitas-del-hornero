@@ -250,6 +250,7 @@ const createHotel = async (
     rating,
     description,
     services,
+    valoration
   },
   id
 ) => {
@@ -271,6 +272,7 @@ const createHotel = async (
     location,
     rating,
     description,
+    valoration
   });
 
   await newHotel.addServices(services);
