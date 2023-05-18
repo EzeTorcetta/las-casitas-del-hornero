@@ -52,7 +52,7 @@ module.exports = (sequelize) => {
         allowNull: false,
       },
       valoration: {
-        type: DataTypes.FLOAT,
+        type: DataTypes.FLOAT(3),
         validate: {
           min: 1,
           max: 10,
