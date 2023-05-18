@@ -57,7 +57,6 @@ module.exports = (sequelize) => {
           min: 1,
           max: 10,
         },
-
         allowNull: false,
       },
       province: {
@@ -77,34 +76,5 @@ module.exports = (sequelize) => {
     {
       timestamps: false,
     }
-    // province: {
-    //   type: DataTypes.ENUM(
-    //     "BUENOS AIRES",
-    //     "CATAMARCA",
-    //     "CHACO",
-    //     "CHUBUT",
-    //     "CORDOBA",
-    //     "CORRIENTES",
-    //     "ENTRE RIOS",
-    //     "FORMOSA",
-    //     "JUJUY",
-    //     "LA PAMPA",
-    //     "LA RIOJA",
-    //     "MENDOZA",
-    //     "MISIONES",
-    //     "NEUQUEN",
-    //     "RIO NEGRO",
-    //     "SALTA",
-    //     "SAN JUAN",
-    //     "SAN LUIS",
-    //     "SANTA CRUZ",
-    //     "SANTA FE",
-    //     "SANTIAGO DEL ESTERO",
-    //     "TIERRA DEL FUEGO",
-    //     "TUCUMAN"
-    //   ),
-    //   allowNull: false,
-    // },
-    //?Correcion de base de datos
   );
 };
