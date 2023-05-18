@@ -4,6 +4,17 @@ const {
   deleteReviews,
 } = require("../controllers/reviewsControllers");
 
+//* Handler que trae todas las review del  user
+const getReviewsHandler = async (req, res) => {
+  const { username } = req.params;
+  try {
+    const reviews = await getReviews(username);
+    res.status(200).json(reviews);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
 //* Handler que postea la review al hotel enviado por params
 
 const postReviewHandler = async (req, res) => {
@@ -28,6 +39,10 @@ const deleteReviewHandler = async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 };
-const getReviewHandler = async (req, res) => {};
 
-module.exports = { postReviewHandler, getReviewHandler, deleteReviewHandler };
+module.exports = {
+  postReviewHandler,
+
+  deleteReviewHandler,
+  getReviewsHandler,
+};

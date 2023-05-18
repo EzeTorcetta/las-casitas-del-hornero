@@ -1,17 +1,17 @@
-const { DataTypes, INTEGER } = require("sequelize");
+const { INTEGER, UUID, UUIDV4, TEXT, STRING, DATE } = require("sequelize");
 
 module.exports = (sequelize) => {
   sequelize.define(
     "Review",
     {
       id: {
-        type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4,
+        type: UUID,
+        defaultValue: UUIDV4,
         primaryKey: true,
         allowNull: false,
       },
       review: {
-        type: DataTypes.TEXT,
+        type: TEXT,
         allowNull: false,
       },
       punctuation: {
@@ -19,9 +19,16 @@ module.exports = (sequelize) => {
         allowNull: false,
       },
       username: {
-        type: DataTypes.STRING,
+        type: STRING,
         allowNull: false,
       },
+      date: {
+        type: DATE,
+        defaultValue: sequelize.literal("CURRENT_TIMESTAMP"),
+      },
+      image: {
+        type: STRING,
+      }
     },
     {
       timestamps: false,

@@ -19,7 +19,7 @@ module.exports = (sequelize) => {
           },
       },
       price:{
-        type: FLOAT,
+        type: FLOAT(2),
         allowNull: false,
       },
       date: {

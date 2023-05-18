@@ -16,7 +16,7 @@ module.exports = (sequelize) => {
         allowNull: false,
       },
       price: {
-        type: FLOAT,
+        type: FLOAT(2),
         allowNull: false,
       },
       name: {
