@@ -8,9 +8,12 @@ mercadopago.configure({
 });
 const mercadoPagoHandler = async (req, res) => {
   //? Objeto que se va a vender
+  const { product } = req.body;
   let preference = {
     //?Propiedades de lo que se va a vender (vienen atraves de un body desde el front)
     items: {
+      // id:
+      // title: product.title
       //* id. title, currency_id, picture-url,description, categoryid, quantity, unit-price
     },
     back_urls: {
@@ -28,6 +31,8 @@ const mercadoPagoHandler = async (req, res) => {
     .catch((error) => res.status(400).send({ error: error.message }));
   //   res.status(200).send("Funciona");
 };
+
+response.init_point;
 //!La propiedad "init_point" de response nos redirige al pago
 module.exports = {
   mercadoPagoHandler,
