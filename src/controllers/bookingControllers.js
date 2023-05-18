@@ -1,52 +1,63 @@
-const {Booking, User, RoomType, Hotel} = require("../db")
-
+const { Booking, User, RoomType, Hotel } = require("../db");
 
 //*-------- GET ALL BOOKINGS-----------------
-const getAllBookings = async(id_user) => {
-    console.log(id_user)
-    const findUser = await User.findByPk(id_user)
-    console.log(findUser)
+const getAllBookings = async (id_user) => {
+  const findUser = await User.findByPk(id_user);
 
-
-     if (findUser.rol == 3){
-        findAllBooking = await Booking.findAll()
-        return findAllBooking
-     } else {
-         throw new Error("Permission denied, you are not an administrator");
-     }
-
-}
+  if (findUser.rol == 3) {
+    findAllBooking = await Booking.findAll();
+    return findAllBooking;
+  } else {
+    throw new Error("Permission denied, you are not an administrator");
+  }
+};
 
 //*-------- GET ALL BOOKINGS OF HOTEL--------------
-const getBookingHotel = async(id_hotel) => {       //* ID HOTEL
-    
-    const bookingsHotel = await Booking.findAll({where:{
-        HotelId: id_hotel
-    }})
+const getBookingHotel = async (id_user, id_hotel) => {
+  const findHotel = await Hotel.findOne({
+    where: {
+      id: id_hotel,
+      UserId: id_user,
+    },
+  });
 
-    return bookingsHotel
-}
+  if (!findHotel) {
+    throw new Error("Permission denied or Hotel does not exist");
+  }
+
+  const bookingsHotel = await Booking.findAll({
+    where: {
+      HotelId: id_hotel,
+    },
+  });
+
+  return bookingsHotel;
+};
+
 //*-------- GET ALL BOOKINGS OF USER--------------
-const getBookingUser = async(id_user) => {
+const getBookingUser = async (id_user) => {
+  const bookingUser = await Booking.findAll({
+    where: {
+      UserId: id_user,
+    },
+  });
 
-    const bookingUser = await Booking.findAll({where:{
-        UserId: id_user
-    }})
-
-    return bookingUser
-}
+  return bookingUser;
+};
 
 //*-------- POST BOOKING ---------------------
 const postBooking = async (body, id_user) => {
-  const roomTypeIds = body.map(item => item.id);
+  const roomTypeIds = body.map((item) => item.id);
   const roomTypes = await RoomType.findAll({ where: { id: roomTypeIds } });
 
   const updates = [];
   const bookings = [];
 
   for (let i = 0; i < body.length; i++) {
-    const roomType = roomTypes.find(rt => rt.id === body[i].id);
-    if(body[i].amount == 0) throw new Error("Debes mandar al menos 1")
+    const roomType = roomTypes.find((rt) => rt.id === body[i].id);
+
+    if (body[i].amount == 0) throw new Error("Debes mandar al menos 1");
+
     const newStock = roomType.stock - body[i].amount;
 
     if (newStock < 0) {
@@ -54,11 +65,12 @@ const postBooking = async (body, id_user) => {
     }
 
     roomType.stock = newStock;
+
     updates.push(roomType.save());
 
     const bookingData = {
       amount: body[i].amount,
-      price: roomType.price
+      price: roomType.price,
     };
     bookings.push(bookingData);
   }
@@ -71,7 +83,7 @@ const postBooking = async (body, id_user) => {
   await user.addBooking(createdBookings);
 
   for (let i = 0; i < body.length; i++) {
-    const roomType = roomTypes.find(rt => rt.id === body[i].id);
+    const roomType = roomTypes.find((rt) => rt.id === body[i].id);
 
     await roomType.addBooking(createdBookings[i]);
 
@@ -82,10 +94,9 @@ const postBooking = async (body, id_user) => {
   return "Todo joya!";
 };
 
-
 module.exports = {
-    getAllBookings,
-    getBookingUser,
-    getBookingHotel,
-    postBooking
-}    
+  getAllBookings,
+  getBookingUser,
+  getBookingHotel,
+  postBooking,
+};
