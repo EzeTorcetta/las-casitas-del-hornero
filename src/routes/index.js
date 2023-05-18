@@ -8,6 +8,7 @@ const roomTypesRouter = require("./roomTypesRouter");
 const servicesRouter = require("./servicesRouter");
 const cartRouter = require("./cartRouter");
 const reviewRouter = require("./reviewRouter");
+const bookingRouter = require("./bookingRouter");
 const router = Router();
 
 //* RUTAS *//
@@ -19,6 +20,7 @@ router.use("/roomTypes", roomTypesRouter);
 router.use("/services", servicesRouter);
 router.use("/cart", cartRouter);
 router.use("/review", reviewRouter);
+router.use("/booking", bookingRouter);
 
 //****************************************/
 module.exports = router;

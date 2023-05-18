@@ -220,7 +220,7 @@ const getDetailHotel = async (id) => {
       },
       {
         model: RoomType,
-        attributes: ["id", "people", "price", "name", "image"],
+        attributes: ["id", "people", "price", "name", "image","stock"],
       },
       {
         model: Review,
@@ -250,6 +250,7 @@ const createHotel = async (
     rating,
     description,
     services,
+    valoration
   },
   id
 ) => {
@@ -271,6 +272,7 @@ const createHotel = async (
     location,
     rating,
     description,
+    valoration
   });
 
   await newHotel.addServices(services);

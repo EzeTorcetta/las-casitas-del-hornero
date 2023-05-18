@@ -55,6 +55,7 @@ const postHotelHandler = async (req, res) => {
     rating,
     location,
     services,
+    valoration
   } = req.body;
   try {
     if (id_user) {
@@ -70,6 +71,7 @@ const postHotelHandler = async (req, res) => {
             province,
             location,
             services,
+            valoration
           },
           id_user
         );

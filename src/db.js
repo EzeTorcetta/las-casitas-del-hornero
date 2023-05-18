@@ -5,7 +5,7 @@ const path = require("path");
 const { DB_USER, DB_PASSWORD, DB_HOST, DB_NAME, DB_DEPLOY } = process.env;
 
 const sequelize = new Sequelize(
-//   `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}`,
+  // `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}`,
    DB_DEPLOY,
   { logging: false, native: false }
 );
@@ -37,7 +37,7 @@ sequelize.models = Object.fromEntries(capsEntries);
 
 // En sequelize.models están todos los modelos importados como propiedades
 // Para relacionar los hacemos un destructuring
-const { Check, Hotel, Room, RoomType, Service, User, Review } =
+const { Check, Hotel, Room, RoomType, Service, User, Review,Booking } =
   sequelize.models;
 
 User.hasMany(Hotel);
@@ -67,7 +67,14 @@ const Cart = sequelize.define('Cart');
 RoomType.belongsToMany(User, { through: Cart });
 User.belongsToMany(RoomType, { through: Cart });
 
+User.hasMany(Booking);
+Booking.belongsTo(User);
 
+RoomType.hasMany(Booking);
+Booking.belongsTo(RoomType);
+
+Hotel.hasMany(Booking);
+Booking.belongsTo(Hotel);
 
 module.exports = {
   ...sequelize.models,
