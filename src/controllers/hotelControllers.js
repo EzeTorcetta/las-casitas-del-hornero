@@ -61,7 +61,7 @@ const getAllHotels = async (order, page) => {
 
 //*------------GET ALL HOTELS QUERY-------------------
 
-const getAllHotelsQuery = async (servicio, provincia, rating, order, page) => {
+const getAllHotelsQuery = async (servicio, provincia, rating, order, page, name) => {
   const whereClause = {};
 
   if (provincia) {
@@ -84,6 +84,12 @@ const getAllHotelsQuery = async (servicio, provincia, rating, order, page) => {
     };
   }
 
+  if (name) {
+    whereClause.name = {
+      [Op.iLike]: `%${name}%`,
+    };
+  }
+  
   let allHotels;
 
   if (order === "NAMEASC") {
@@ -220,7 +226,7 @@ const getDetailHotel = async (id) => {
       },
       {
         model: RoomType,
-        attributes: ["id", "people", "price", "name", "image"],
+        attributes: ["id", "people", "price", "name", "image","stock"],
       },
       {
         model: Review,
@@ -252,6 +258,7 @@ const createHotel = async (
     rating,
     description,
     services,
+    valoration
   },
   id
 ) => {
@@ -275,6 +282,7 @@ const createHotel = async (
     location,
     rating,
     description,
+    valoration
   });
 
   await newHotel.addServices(services);

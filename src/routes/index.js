@@ -9,6 +9,7 @@ const servicesRouter = require("./servicesRouter");
 const locationsRouter = require("./locationsRouter");
 const cartRouter = require("./cartRouter");
 const reviewRouter = require("./reviewRouter");
+const bookingRouter = require("./bookingRouter");
 
 const router = Router();
 
@@ -22,6 +23,7 @@ router.use("/services", servicesRouter);
 router.use("/locations", locationsRouter);
 router.use("/cart", cartRouter);
 router.use("/review", reviewRouter);
+router.use("/booking", bookingRouter);
 
 
 //****************************************/
