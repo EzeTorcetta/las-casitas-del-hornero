@@ -5,7 +5,7 @@ const {
   getDepartmentsById,
   getLocalitiesById,
 } = require("../controllers/locationsArgControllers");
-
+const compareByname = require("../helpers/compareByName");
 //?----------------------------HANDLERS-------------------------------
 
 //*Handler que segun el query redirige a otros handlers
@@ -23,8 +23,9 @@ const getLocationsHandler = (req, res) => {
 
 const getAllProvincesHandler = async (req, res) => {
   try {
-    const provinces = await getAllProvinces();
-    res.status(200).json(provinces);
+    const provincesDisorder = await getAllProvinces();
+    const provinces = provincesDisorder.sort(compareByname);
+    res.status(200).json(provinces); //arreglo ordenado
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -35,8 +36,9 @@ const getAllProvincesHandler = async (req, res) => {
 const getDepartmentsByIdHandler = async (req, res, id_province) => {
   try {
     // const { id_province } = req.query;
-    const departments = await getDepartmentsById(id_province);
-    res.status(200).json(departments);
+    const departamentsDisorder = await getDepartmentsById(id_province);
+    const departments = departamentsDisorder.sort(compareByname);
+    res.status(200).json(departments); //arreglo ordenado
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -47,7 +49,8 @@ const getDepartmentsByIdHandler = async (req, res, id_province) => {
 const getLocalitiesByIdHandler = async (req, res, id_department) => {
   try {
     // const { id_department } = req.query;
-    const localities = await getLocalitiesById(id_department);
+    const localitiesDisorder = await getLocalitiesById(id_department);
+    const localities = localitiesDisorder.sort(compareByname);
     res.status(200).json(localities);
   } catch (error) {
     res.status(400).json({ error: error.message });
