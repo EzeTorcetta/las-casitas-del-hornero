@@ -51,6 +51,8 @@ const postHotelHandler = async (req, res) => {
     phoneNumber,
     image,
     province,
+    department,
+    locality,
     description,
     rating,
     location,
@@ -69,6 +71,8 @@ const postHotelHandler = async (req, res) => {
             phoneNumber,
             image,
             province,
+            department,
+            locality,
             location,
             services,
             valoration
