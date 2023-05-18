@@ -61,31 +61,15 @@ module.exports = (sequelize) => {
         allowNull: false,
       },
       province: {
-        type: DataTypes.ENUM(
-          "BUENOS AIRES",
-          "CATAMARCA",
-          "CHACO",
-          "CHUBUT",
-          "CORDOBA",
-          "CORRIENTES",
-          "ENTRE RIOS",
-          "FORMOSA",
-          "JUJUY",
-          "LA PAMPA",
-          "LA RIOJA",
-          "MENDOZA",
-          "MISIONES",
-          "NEUQUEN",
-          "RIO NEGRO",
-          "SALTA",
-          "SAN JUAN",
-          "SAN LUIS",
-          "SANTA CRUZ",
-          "SANTA FE",
-          "SANTIAGO DEL ESTERO",
-          "TIERRA DEL FUEGO",
-          "TUCUMAN"
-        ),
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      department: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      locality: {
+        type: DataTypes.STRING,
         allowNull: false,
       },
       location: { type: DataTypes.ARRAY(DataTypes.DOUBLE), allowNull: false },
@@ -93,5 +77,34 @@ module.exports = (sequelize) => {
     {
       timestamps: false,
     }
+    // province: {
+    //   type: DataTypes.ENUM(
+    //     "BUENOS AIRES",
+    //     "CATAMARCA",
+    //     "CHACO",
+    //     "CHUBUT",
+    //     "CORDOBA",
+    //     "CORRIENTES",
+    //     "ENTRE RIOS",
+    //     "FORMOSA",
+    //     "JUJUY",
+    //     "LA PAMPA",
+    //     "LA RIOJA",
+    //     "MENDOZA",
+    //     "MISIONES",
+    //     "NEUQUEN",
+    //     "RIO NEGRO",
+    //     "SALTA",
+    //     "SAN JUAN",
+    //     "SAN LUIS",
+    //     "SANTA CRUZ",
+    //     "SANTA FE",
+    //     "SANTIAGO DEL ESTERO",
+    //     "TIERRA DEL FUEGO",
+    //     "TUCUMAN"
+    //   ),
+    //   allowNull: false,
+    // },
+    //?Correcion de base de datos
   );
 };

@@ -52,6 +52,7 @@ Room.belongsTo(RoomType);
 Hotel.belongsToMany(Service, { through: "HotelServices" });
 Service.belongsToMany(Hotel, { through: "HotelServices" });
 
+
 Hotel.hasMany(Review);
 Review.belongsTo(Hotel);
 
@@ -75,6 +76,7 @@ Booking.belongsTo(RoomType);
 
 Hotel.hasMany(Booking);
 Booking.belongsTo(Hotel);
+
 
 module.exports = {
   ...sequelize.models,
