@@ -27,9 +27,13 @@ module.exports = (sequelize) => {
           isEmail: true,
         },
       },
-      admin: {
-        type: DataTypes.BOOLEAN,
+      rol: {
+        type: DataTypes.INTEGER,
         allowNull: false,
+        validate: {
+          min: 1,
+          max: 3,
+        },
       },
     },
     {

@@ -51,6 +51,15 @@ module.exports = (sequelize) => {
         type: DataTypes.ARRAY(DataTypes.STRING),
         allowNull: false,
       },
+      valoration: {
+        type: DataTypes.FLOAT,
+        validate: {
+          min: 1,
+          max: 10,
+        },
+
+        allowNull: false,
+      },
       province: {
         type: DataTypes.STRING,
         allowNull: false,
