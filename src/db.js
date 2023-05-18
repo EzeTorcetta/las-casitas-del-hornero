@@ -52,6 +52,7 @@ Room.belongsTo(RoomType);
 Hotel.belongsToMany(Service, { through: "HotelServices" });
 Service.belongsToMany(Hotel, { through: "HotelServices" });
 
+
 Hotel.hasMany(Review);
 Review.belongsTo(Hotel);
 
@@ -66,6 +67,7 @@ const Cart = sequelize.define('Cart');
 
 RoomType.belongsToMany(User, { through: Cart });
 User.belongsToMany(RoomType, { through: Cart });
+
 
 
 
