@@ -8,14 +8,16 @@ const {
 //* Handler que trae todos los hoteles de la DB
 const getAllHotelsHandler = async (req, res) => {
 
-  const { services, provinces, rating, order, page, name} = req.query;
+  const { services, province, locality, department, rating, order, page, name} = req.query;
 
   try {
     let allHotels;
-    services || provinces || rating || name
+    services || province || rating || name
       ? (allHotels = await getAllHotelsQuery(
           services,
-          provinces,
+          province,
+          locality,
+          department,
           rating,
           order,
           page,
