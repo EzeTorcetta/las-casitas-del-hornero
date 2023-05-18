@@ -1,4 +1,4 @@
-const { DataTypes, INTEGER } = require("sequelize");
+const { STRING, INTEGER, FLOAT, TEXT, ARRAY, DOUBLE } = require("sequelize");
 
 module.exports = (sequelize) => {
   sequelize.define(
@@ -11,11 +11,11 @@ module.exports = (sequelize) => {
         allowNull: false,
       },
       name: {
-        type: DataTypes.STRING,
+        type: STRING,
         allowNull: false,
       },
       email: {
-        type: DataTypes.STRING,
+        type: STRING,
         allowNull: false,
         unique: true,
         validate: {
@@ -23,7 +23,7 @@ module.exports = (sequelize) => {
         },
       },
       phoneNumber: {
-        type: DataTypes.STRING,
+        type: STRING,
         allowNull: false,
         validate: {
           isPhoneNumber: function (value) {
@@ -36,7 +36,7 @@ module.exports = (sequelize) => {
         },
       },
       rating: {
-        type: DataTypes.INTEGER,
+        type: INTEGER,
         allowNull: false,
         validate: {
           min: 1,
@@ -44,15 +44,15 @@ module.exports = (sequelize) => {
         },
       },
       description: {
-        type: DataTypes.TEXT,
+        type: TEXT,
         allowNull: true,
       },
       image: {
-        type: DataTypes.ARRAY(DataTypes.STRING),
+        type: ARRAY(STRING),
         allowNull: false,
       },
       valoration: {
-        type: DataTypes.FLOAT,
+        type: FLOAT(2),
         validate: {
           min: 1,
           max: 10,
@@ -61,18 +61,18 @@ module.exports = (sequelize) => {
         allowNull: false,
       },
       province: {
-        type: DataTypes.STRING,
+        type: STRING,
         allowNull: false,
       },
       department: {
-        type: DataTypes.STRING,
+        type: STRING,
         allowNull: false,
       },
       locality: {
-        type: DataTypes.STRING,
+        type: STRING,
         allowNull: false,
       },
-      location: { type: DataTypes.ARRAY(DataTypes.DOUBLE), allowNull: false },
+      location: { type: ARRAY(DOUBLE), allowNull: false },
     },
     {
       timestamps: false,

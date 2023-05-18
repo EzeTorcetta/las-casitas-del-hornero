@@ -23,7 +23,7 @@ const getRoomTypesByHotel = async (id_hotel) => {
 
 //*------------CREATE NEW ROOM TYPE-------------------
 const createRoomTypesByHotel = async (
-  { people, price, name, image },
+  { people, price, name, image,stock },
   id_hotel
 ) => {
   const hotelFind = await Hotel.findOne({
@@ -48,6 +48,7 @@ const createRoomTypesByHotel = async (
     price,
     name,
     image,
+    stock
   });
 
   await hotelFind.addRoomType(newRoomType);

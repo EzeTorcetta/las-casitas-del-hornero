@@ -7,7 +7,7 @@ const {
 } = require("../handlers/hotelHandler");
 
 hotelsRouter.get("/", getAllHotelsHandler);
-hotelsRouter.get("/:id", getDetailHotelHandler);
-hotelsRouter.post("/", postHotelHandler);
+hotelsRouter.get("/:id_hotel", getDetailHotelHandler);
+hotelsRouter.post("/:id_user", postHotelHandler);
 
 module.exports = hotelsRouter;
