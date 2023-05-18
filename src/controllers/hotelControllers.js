@@ -61,26 +61,39 @@ const getAllHotels = async (order, page) => {
 
 //*------------GET ALL HOTELS QUERY-------------------
 
-const getAllHotelsQuery = async (servicio, provincia, rating, order, page) => {
+const getAllHotelsQuery = async (servicio, province, locality, department, rating, order, page, name) => {
   const whereClause = {};
 
-  if (provincia) {
-    const provinces = [];
-    if (!(typeof provincia === "string"))
-      provincia.map((pro) => {
-        provinces.push(pro);
-      });
-    else provinces.push(provincia);
 
+  if (province) {
     whereClause.province = {
-      [Op.in]: provinces,
+      [Op.iLike]: `%${province}`,
     };
+
+    if (department) {
+      whereClause.department = {
+        [Op.iLike]: `%${department}`,
+      };
+
+      if (locality) {
+        whereClause.locality = {
+          [Op.iLike]: `%${locality}`,
+        };
+      }
+    }
   }
+
 
   if (rating) {
     rating = Number(rating);
     whereClause.rating = {
       [Op.eq]: rating,
+    };
+  }
+
+  if (name) {
+    whereClause.name = {
+      [Op.iLike]: `%${name}%`,
     };
   }
 
@@ -220,7 +233,7 @@ const getDetailHotel = async (id) => {
       },
       {
         model: RoomType,
-        attributes: ["id", "people", "price", "name", "image"],
+        attributes: ["id", "people", "price", "name", "image", "stock"],
       },
       {
         model: Review,
@@ -246,6 +259,8 @@ const createHotel = async (
     phoneNumber,
     image,
     province,
+    department,
+    locality,
     location,
     rating,
     description,
@@ -269,6 +284,8 @@ const createHotel = async (
     phoneNumber,
     image,
     province,
+    department,
+    locality,
     location,
     rating,
     description,

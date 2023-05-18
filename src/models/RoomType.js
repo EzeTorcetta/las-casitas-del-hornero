@@ -16,7 +16,7 @@ module.exports = (sequelize) => {
         allowNull: false,
       },
       price: {
-        type: FLOAT,
+        type: FLOAT(2),
         allowNull: false,
       },
       name: {
@@ -27,6 +27,14 @@ module.exports = (sequelize) => {
         type: STRING,
         allowNull: false,
       },
+      stock: {
+        type: INTEGER,
+        allowNull: false,
+        validate: {
+          min: 0,
+        },
+      },
+      
     },
     {
       timestamps: false,

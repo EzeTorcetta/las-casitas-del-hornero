@@ -7,25 +7,27 @@ const {
 
 //* Handler que trae todos los hoteles de la DB
 const getAllHotelsHandler = async (req, res) => {
-  const { services, provinces, rating, order, page} = req.query;
-  
- 
-  
+
+  const { services, province, locality, department, rating, order, page, name} = req.query;
 
   try {
     let allHotels;
-    services || provinces || rating
+    services || province || rating || name
       ? (allHotels = await getAllHotelsQuery(
           services,
-          provinces,
+          province,
+          locality,
+          department,
           rating,
           order,
-          page
+          page,
+          name
         ))
       : (allHotels = await getAllHotels(order, page));
     if (allHotels.allHotels?.length) {
       res.status(200).json(allHotels);
-    } else res.status(400).json({error: "No hotel was found with the date sent"});
+    } else
+      res.status(400).json({ error: "No hotel was found with the date sent" });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -33,9 +35,9 @@ const getAllHotelsHandler = async (req, res) => {
 
 //* Handler que trae el hotel especifico de la DB
 const getDetailHotelHandler = async (req, res) => {
-  const { id } = req.params;
+  const { id_hotel } = req.params;
   try {
-    const detailHotel = await getDetailHotel(id);
+    const detailHotel = await getDetailHotel(id_hotel);
     res.status(200).json(detailHotel);
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -44,13 +46,15 @@ const getDetailHotelHandler = async (req, res) => {
 
 //* Handler que postea el hotel en la DB
 const postHotelHandler = async (req, res) => {
-  const { id_user } = req.query;
+  const { id_user } = req.params;
   const {
     name,
     email,
     phoneNumber,
     image,
     province,
+    department,
+    locality,
     description,
     rating,
     location,
@@ -69,6 +73,8 @@ const postHotelHandler = async (req, res) => {
             phoneNumber,
             image,
             province,
+            department,
+            locality,
             location,
             services,
             valoration

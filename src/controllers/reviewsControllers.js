@@ -1,11 +1,32 @@
-const { Hotel, User, Review } = require("../db");
+const { Hotel, Review } = require("../db");
 
-const getReviews = () => {};
+
+//*----------GET ONE USER REVIEWS----------------------
+const getReviews = async (username) => {
+  const allReviewsUser = await Review.findAll({
+    where: {
+      username,
+    },
+  });
+
+  return allReviewsUser;
+};
 
 //*------------POST REVIEW-------------------
 
 const postReviews = async (id_hotel, punctuation, review, username) => {
   const hotel = await Hotel.findByPk(id_hotel);
+
+  const findUser = await Review.findOne({
+    where: {
+      username,
+      HotelId: id_hotel,
+    },
+  });
+
+  if (findUser) {
+    throw new Error("You cannot post more than one review of the same hotel");
+  }
 
   const newReview = await Review.create({
     punctuation,
@@ -16,7 +37,7 @@ const postReviews = async (id_hotel, punctuation, review, username) => {
   await hotel.addReview(newReview);
 
   const totalReviews = await Review.count({ where: { HotelId: id_hotel } });
- 
+
   const currentValoration = hotel.valoration || 0;
   const newValoration =
     (currentValoration * totalReviews + punctuation) / (totalReviews + 1);
@@ -41,4 +62,4 @@ const deleteReviews = async (id_review) => {
   }
 };
 
-module.exports = { getReviews, postReviews, deleteReviews };
+module.exports = { getReviews, postReviews, deleteReviews };

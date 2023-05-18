@@ -3,11 +3,11 @@ const reviewRouter = Router();
 
 const {
   postReviewHandler,
-  getReviewHandler,
+  getReviewsHandler,
   deleteReviewHandler,
 } = require("../handlers/reviewHandler");
 
-reviewRouter.get("/:id_hotel", getReviewHandler);
+reviewRouter.get("/:username", getReviewsHandler);
 reviewRouter.post("/:id_hotel", postReviewHandler);
 reviewRouter.delete("/:id_review", deleteReviewHandler);
-module.exports = reviewRouter;
+module.exports = reviewRouter;
