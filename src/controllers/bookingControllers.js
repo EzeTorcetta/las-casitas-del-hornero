@@ -1,14 +1,31 @@
 const { Booking, User, RoomType, Hotel } = require("../db");
 
 //*-------- GET ALL BOOKINGS-----------------
+
 const getAllBookings = async (id_user) => {
   const findUser = await User.findByPk(id_user);
 
-  if (findUser.rol == 3) {
-    findAllBooking = await Booking.findAll();
-    return findAllBooking;
-  } else {
+  if (!findUser.rol == 3) {
     throw new Error("Permission denied, you are not an administrator");
+  } else {
+    const findAllBooking = await Booking.findAll();
+    const bookings = await Promise.all(
+      findAllBooking.map(async (booking) => {
+        const user = await User.findByPk(booking.UserId);
+        const hotel = await Hotel.findByPk(booking.HotelId);
+
+        return {
+          userEmail: user.email,
+          amount: booking.amount,
+          individualPrice: booking.price,
+          totalPrice: booking.amount * booking.price,
+          date: booking.date,
+          hotelName: hotel.name,
+        };
+      })
+    );
+
+    return bookings;
   }
 };
 
@@ -56,17 +73,17 @@ const postBooking = async (body, id_user) => {
   for (let i = 0; i < body.length; i++) {
     const roomType = roomTypes.find((rt) => rt.id === body[i].id);
 
-    if (body[i].amount == 0) throw new Error("Debes mandar al menos 1");
+    if (body[i].amount == 0) throw new Error("Quantity cannot be 0");
 
     const newStock = roomType.stock - body[i].amount;
 
     if (newStock < 0) {
-      throw new Error("No queda stock");
+      throw new Error("Out of stock");
     }
 
     roomType.stock = newStock;
 
-    updates.push(roomType.save());
+    updates.push(roomType); //* SI SE HACIA SAVE() ACA, SI EL SIGUIENTE NO TENIA STOCK, ARROJABA ERROR PERO LOS ANTERIORES SE LES RESTABA EL STOCK
 
     const bookingData = {
       amount: body[i].amount,
@@ -76,6 +93,9 @@ const postBooking = async (body, id_user) => {
   }
 
   await Promise.all(updates);
+
+  //* SAQUE EL SAVE AFUERA DEL BUCLE, ASI SE GUARDAN SOLO SI NO HUBO NINGUN ERROR
+  await updates.map((roomtype) => roomtype.save());
 
   const createdBookings = await Booking.bulkCreate(bookings);
 
@@ -91,7 +111,14 @@ const postBooking = async (body, id_user) => {
     await hotel.addBooking(createdBookings[i]);
   }
 
-  return "Todo joya!";
+  await Cart.destroy({
+    where: {
+      UserId: id_user,
+      RoomTypeId: body[i].id,
+    },
+  });
+
+  return "Reservation made successfully";
 };
 
 module.exports = {

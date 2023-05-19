@@ -1,6 +1,6 @@
 //?----------------------------IMPORTS--------------------------------
 
-const { User, RoomType, Cart } = require("../db");
+const { User, RoomType, Cart, Hotel } = require("../db");
 
 //?----------------------------CONTROLLERS------------------------------
 
@@ -10,14 +10,22 @@ const getCart = async (id_user) => {
     where: { UserId: id_user },
   });
 
-  const roomsPromises = cart.map(async (saved) => {
-    const room = await RoomType.findByPk(saved.RoomTypeId);
-    return room;
-  });
+  const carts = await Promise.all(
+    cart.map(async (cart) => {
+      const roomtype = await RoomType.findByPk(cart.RoomTypeId);
+      const hotel = await Hotel.findByPk(roomtype.HotelId);
 
-  const rooms = await Promise.all(roomsPromises);
+      const roomtypeWithAmount = {
+        ...roomtype.toJSON(),
+        amount: cart.amount,
+        hotelName: hotel.name,
+      };
 
-  if (rooms.length) return rooms;
+      return roomtypeWithAmount;
+    })
+  );
+
+  if (carts.length) return carts;
   else throw new Error("Cart is empty");
 };
 
@@ -105,7 +113,7 @@ const putAmountCart = async (id_user, id_roomtype, putAmount) => {
     await room.save();
   }
 
-  return room;
+  return room.amount;
 };
 
 module.exports = {
