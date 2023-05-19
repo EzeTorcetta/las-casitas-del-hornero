@@ -43,6 +43,7 @@ const postCart = async (id_user, id_roomtype) => {
     throw new Error("Room not found");
   }
 
+
   const findCart = await Cart.findOne({
     where: {
       UserId: user.id,
@@ -58,11 +59,14 @@ const postCart = async (id_user, id_roomtype) => {
     RoomTypeId: room.id,
   });
   return cart;
+
 };
 
 //*------------ DELETE ITEM OF CART -------------------
 
+
 const deleteCart = async (id_user, id_roomtype) => {
+
   const user = await User.findByPk(id_user);
   const room = await RoomType.findByPk(id_roomtype);
   if (!room) {
@@ -79,6 +83,7 @@ const deleteCart = async (id_user, id_roomtype) => {
       RoomTypeId: room.id,
     },
   });
+
   return;
 };
 

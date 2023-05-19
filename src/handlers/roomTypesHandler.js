@@ -29,11 +29,11 @@ const getRoomTypesHandler = async (req, res) => {
 //* Handler que postea todos los tipos de habitación de un hotel (por id_hotel)
 const createRoomTypesHandler = async (req, res) => {
   const { id_hotel } = req.params;
-  const { people, price, name, image } = req.body;
+  const { people, price, name, image,stock } = req.body;
 
   try {
     const roomTypeCreated = await createRoomTypesByHotel(
-      { people, price, name, image },
+      { people, price, name, image,stock },
       id_hotel
     );
     res.status(200).json(roomTypeCreated);
