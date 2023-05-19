@@ -1,4 +1,4 @@
-const { Booking, User, RoomType, Hotel } = require("../db");
+const { Booking, User, RoomType, Hotel, Cart } = require("../db");
 
 //*-------- GET ALL BOOKINGS-----------------
 
@@ -30,6 +30,7 @@ const getAllBookings = async (id_user) => {
 };
 
 //*-------- GET ALL BOOKINGS OF HOTEL--------------
+
 const getBookingHotel = async (id_user, id_hotel) => {
   const findHotel = await Hotel.findOne({
     where: {
@@ -47,8 +48,23 @@ const getBookingHotel = async (id_user, id_hotel) => {
       HotelId: id_hotel,
     },
   });
+  const bookings = await Promise.all(
+    bookingsHotel.map(async (booking) => {
+      const user = await User.findByPk(booking.UserId);
+      const hotel = await Hotel.findByPk(booking.HotelId);
 
-  return bookingsHotel;
+      return {
+        userEmail: user.email,
+        amount: booking.amount,
+        individualPrice: booking.price,
+        totalPrice: booking.amount * booking.price,
+        date: booking.date,
+        hotelName: hotel.name,
+      };
+    })
+  );
+
+  return bookings;
 };
 
 //*-------- GET ALL BOOKINGS OF USER--------------
@@ -59,7 +75,23 @@ const getBookingUser = async (id_user) => {
     },
   });
 
-  return bookingUser;
+  const bookings = await Promise.all(
+    bookingUser.map(async (booking) => {
+      const user = await User.findByPk(booking.UserId);
+      const hotel = await Hotel.findByPk(booking.HotelId);
+
+      return {
+        userEmail: user.email,
+        amount: booking.amount,
+        individualPrice: booking.price,
+        totalPrice: booking.amount * booking.price,
+        date: booking.date,
+        hotelName: hotel.name,
+      };
+    })
+  );
+
+  return bookings;
 };
 
 //*-------- POST BOOKING ---------------------
@@ -83,8 +115,7 @@ const postBooking = async (body, id_user) => {
 
     roomType.stock = newStock;
 
-    updates.push(roomType); //* SI SE HACIA SAVE() ACA, SI EL SIGUIENTE NO TENIA STOCK, ARROJABA ERROR PERO LOS ANTERIORES SE LES RESTABA EL STOCK
-
+    updates.push(roomType);
     const bookingData = {
       amount: body[i].amount,
       price: roomType.price,
@@ -94,7 +125,6 @@ const postBooking = async (body, id_user) => {
 
   await Promise.all(updates);
 
-  //* SAQUE EL SAVE AFUERA DEL BUCLE, ASI SE GUARDAN SOLO SI NO HUBO NINGUN ERROR
   await updates.map((roomtype) => roomtype.save());
 
   const createdBookings = await Booking.bulkCreate(bookings);
@@ -109,14 +139,14 @@ const postBooking = async (body, id_user) => {
 
     const hotel = await Hotel.findByPk(roomType.HotelId);
     await hotel.addBooking(createdBookings[i]);
-  }
 
-  await Cart.destroy({
-    where: {
-      UserId: id_user,
-      RoomTypeId: body[i].id,
-    },
-  });
+    await Cart.destroy({
+      where: {
+        UserId: id_user,
+        RoomTypeId: body[i].id,
+      },
+    });
+  }
 
   return "Reservation made successfully";
 };
