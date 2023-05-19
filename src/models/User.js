@@ -1,26 +1,26 @@
-const { DataTypes, INTEGER, Sequelize } = require("sequelize");
+const { INTEGER, STRING } = require("sequelize");
 
 module.exports = (sequelize) => {
   sequelize.define(
     "User",
     {
       id: {
-        type: DataTypes.INTEGER,
+        type: INTEGER,
         autoIncrement: true,
         primaryKey: true,
         allowNull: false,
       },
       username: {
-        type: DataTypes.STRING,
+        type: STRING,
         allowNull: false,
         unique: true,
       },
       password: {
-        type: DataTypes.STRING,
+        type: STRING,
         allowNull: false,
       },
       email: {
-        type: DataTypes.STRING,
+        type: STRING,
         allowNull: false,
         unique: true,
         validate: {
@@ -28,12 +28,15 @@ module.exports = (sequelize) => {
         },
       },
       rol: {
-        type: DataTypes.INTEGER,
+        type: INTEGER,
         allowNull: false,
         validate: {
           min: 1,
           max: 3,
         },
+      },
+      image: {
+        type: STRING,
       },
     },
     {

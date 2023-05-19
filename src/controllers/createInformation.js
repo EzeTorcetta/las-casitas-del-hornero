@@ -292,7 +292,6 @@ const CreateRoomTypes = async () => {
   //     include:{
   //         model: Hotel,
   //     }});
-  // console.log(mostrar);
 };
 
 const createInformation = async () => {
