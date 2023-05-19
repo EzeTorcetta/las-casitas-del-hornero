@@ -61,9 +61,17 @@ const getAllHotels = async (order, page) => {
 
 //*------------GET ALL HOTELS QUERY-------------------
 
-const getAllHotelsQuery = async (servicio, province, locality, department, rating, order, page, name) => {
+const getAllHotelsQuery = async (
+  servicio,
+  province,
+  locality,
+  department,
+  rating,
+  order,
+  page,
+  name
+) => {
   const whereClause = {};
-
 
   if (province) {
     whereClause.province = {
@@ -82,7 +90,6 @@ const getAllHotelsQuery = async (servicio, province, locality, department, ratin
       }
     }
   }
-
 
   if (rating) {
     rating = Number(rating);
@@ -242,7 +249,6 @@ const getDetailHotel = async (id) => {
     ],
   });
 
-  console.log(hotel);
   if (hotel) {
     return hotel;
   } else {
@@ -265,7 +271,7 @@ const createHotel = async (
     rating,
     description,
     services,
-    valoration
+    valoration,
   },
   id
 ) => {
@@ -289,7 +295,7 @@ const createHotel = async (
     location,
     rating,
     description,
-    valoration
+    valoration,
   });
 
   await newHotel.addServices(services);

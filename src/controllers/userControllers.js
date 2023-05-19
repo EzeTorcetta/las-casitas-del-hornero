@@ -36,7 +36,7 @@ const postUser = async ({ username, password, email, admin }) => {
   } else {
     const findUserByUsername = await User.findOne({ where: { username } });
     const findUserByEmail = await User.findOne({ where: { email } });
-    console.log(findUserByUsername);
+
     if (findUserByUsername) {
       throw new Error("Existing username");
     } else if (findUserByEmail) {
