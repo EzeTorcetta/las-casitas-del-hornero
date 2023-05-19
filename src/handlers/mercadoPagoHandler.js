@@ -1,8 +1,5 @@
 const { MERCADOPAGO_KEY } = process.env;
-//?mercado pago
-// SDK de Mercado Pago
 const mercadopago = require("mercadopago");
-// Agrega credenciales
 mercadopago.configure({
   access_token: MERCADOPAGO_KEY,
 });
