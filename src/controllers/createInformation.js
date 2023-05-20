@@ -51,12 +51,12 @@ const CreateService = () => {
 
 const CreateUsers = () => {
   const user = [];
-
+   
   user.push({
     username: "Juan Martin",
     password: "Contrasenia1",
     email: "juanmartin@gmail.com",
-    rol: 3,
+    rol: 2,
   });
 
   user.push({
@@ -70,14 +70,21 @@ const CreateUsers = () => {
     username: "Eze",
     password: "Contrasenia1",
     email: "eze@gmail.com",
-    rol: 2,
+    rol: 1,
   });
 
   user.push({
     username: "Manuel",
     password: "Contrasenia1",
     email: "manuel@gmail.com",
-    rol: 1,
+    rol: 2,
+  });
+  
+  user.push({
+    username: "SuperAdmin",
+    password: "Contrasenia1",
+    email: "superadmin@gmail.com",
+    rol: 3,
   });
 
   User.bulkCreate(user);
