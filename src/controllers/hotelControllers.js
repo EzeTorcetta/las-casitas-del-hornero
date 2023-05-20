@@ -224,6 +224,24 @@ const getAllHotelsQuery = async (
   return { allHotels, numPages };
 };
 
+//*------------GET USER HOTELS-------------------
+
+const getUserHotels = async (id_user) => {
+
+  const hotels = await Hotel.findAll({
+    where: {
+      UserId: id_user,
+    },
+  });
+
+  if (!hotels.length) {
+    throw new Error("The user does not have a hotel");
+  }
+
+  return hotels;
+};
+
+
 //*------------GET HOTEL DETAIL-------------------
 
 const getDetailHotel = async (id) => {
@@ -309,4 +327,5 @@ module.exports = {
   getDetailHotel,
   createHotel,
   getAllHotelsQuery,
+  getUserHotels
 };
