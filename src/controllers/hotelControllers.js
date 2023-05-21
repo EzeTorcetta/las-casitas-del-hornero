@@ -305,6 +305,38 @@ const getUserHotels = async (id_user) => {
   return hotels;
 };
 
+//*------------GET HOTEL DETAIL-------------------
+
+const getDetailHotel = async (id) => {
+  const hotel = await Hotel.findOne({
+    where: { id },
+
+    include: [
+      {
+        model: Service,
+        attributes: ["name"],
+        through: {
+          attributes: [],
+        },
+      },
+      {
+        model: RoomType,
+        attributes: ["id", "people", "price", "name", "image", "stock"],
+      },
+      {
+        model: Review,
+        attributes: ["id", "username", "punctuation", "review"],
+      },
+    ],
+  });
+
+  if (hotel) {
+    return hotel;
+  } else {
+    throw new Error("Hotel not found");
+  }
+};
+
 //*------------CREATE HOTEL-------------------
 
 const createHotel = async (
