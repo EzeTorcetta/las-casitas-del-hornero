@@ -279,21 +279,6 @@ const getUserHotels = async (id_user) => {
     where: {
       UserId: id_user,
     },
-  });
-
-  if (!hotels.length) {
-    throw new Error("The user does not have a hotel");
-  }
-
-  return hotels;
-};
-
-//*------------GET HOTEL DETAIL-------------------
-
-const getDetailHotel = async (id) => {
-  const hotel = await Hotel.findOne({
-    where: { id },
-
     include: [
       {
         model: Service,
@@ -313,11 +298,11 @@ const getDetailHotel = async (id) => {
     ],
   });
 
-  if (hotel) {
-    return hotel;
-  } else {
-    throw new Error("Hotel not found");
+  if (!hotels.length) {
+    throw new Error("The user does not have a hotel");
   }
+
+  return hotels;
 };
 
 //*------------CREATE HOTEL-------------------
