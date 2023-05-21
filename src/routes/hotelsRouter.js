@@ -8,6 +8,7 @@ const {
 
 hotelsRouter.get("/", getAllHotelsHandler);
 hotelsRouter.get("/:id_hotel", getDetailHotelHandler);
+
 hotelsRouter.post("/:id_user", postHotelHandler);
 
 module.exports = hotelsRouter;

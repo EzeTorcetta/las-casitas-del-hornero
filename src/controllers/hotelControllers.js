@@ -9,14 +9,20 @@ const { Op } = require("sequelize");
 const getAllHotels = async (order, page) => {
   let allHotels;
 
-  let includeOptions = {
-    model: Service,
-    attributes: ["name"],
-    required: true,
-    through: {
-      attributes: [],
+  let includeOptions = [
+    {
+      model: Service,
+      attributes: ["name"],
+      required: true,
+      through: {
+        attributes: [],
+      },
     },
-  };
+    {
+      model: Review,
+      attributes: ["id", "username", "punctuation", "review", "date", "image"],
+    },
+  ];
 
   const getOrderOptions = (order) => {
     switch (order) {
@@ -110,91 +116,182 @@ const getAllHotelsQuery = async (
     allHotels = await Hotel.findAll({
       where: whereClause,
       order: [["name", "ASC"]],
-      include: {
-        model: Service,
-        attributes: ["name"],
-        required: true,
-        through: {
-          attributes: [],
+      include: [
+        {
+          model: Service,
+          attributes: ["name"],
+          required: true,
+          through: {
+            attributes: [],
+          },
         },
-      },
+        {
+          model: Review,
+          attributes: [
+            "id",
+            "username",
+            "punctuation",
+            "review",
+            "date",
+            "image",
+          ],
+        },
+      ],
     });
   } else if (order === "NAMEDESC") {
     allHotels = await Hotel.findAll({
       where: whereClause,
       order: [["name", "DESC"]],
-      include: {
-        model: Service,
-        attributes: ["name"],
-        required: true,
-        through: {
-          attributes: [],
+      include: [
+        {
+          model: Service,
+          attributes: ["name"],
+          required: true,
+          through: {
+            attributes: [],
+          },
         },
-      },
+        {
+          model: Review,
+          attributes: [
+            "id",
+            "username",
+            "punctuation",
+            "review",
+            "date",
+            "image",
+          ],
+        },
+      ],
     });
   } else if (order === "RATINGASC") {
     allHotels = await Hotel.findAll({
       where: whereClause,
       order: [["rating", "ASC"]],
-      include: {
-        model: Service,
-        attributes: ["name"],
-        required: true,
-        through: {
-          attributes: [],
+      include: [
+        {
+          model: Service,
+          attributes: ["name"],
+          required: true,
+          through: {
+            attributes: [],
+          },
         },
-      },
+        {
+          model: Review,
+          attributes: [
+            "id",
+            "username",
+            "punctuation",
+            "review",
+            "date",
+            "image",
+          ],
+        },
+      ],
     });
   } else if (order === "RATINGDESC") {
     allHotels = await Hotel.findAll({
       where: whereClause,
       order: [["rating", "DESC"]],
-      include: {
-        model: Service,
-        attributes: ["name"],
-        required: true,
-        through: {
-          attributes: [],
+      include: [
+        {
+          model: Service,
+          attributes: ["name"],
+          required: true,
+          through: {
+            attributes: [],
+          },
         },
-      },
+        {
+          model: Review,
+          attributes: [
+            "id",
+            "username",
+            "punctuation",
+            "review",
+            "date",
+            "image",
+          ],
+        },
+      ],
     });
   } else if (order === "VALORATIONASC") {
     allHotels = await Hotel.findAll({
       where: whereClause,
       order: [["valoration", "ASC"]],
-      include: {
-        model: Service,
-        attributes: ["name"],
-        required: true,
-        through: {
-          attributes: [],
+      include: [
+        {
+          model: Service,
+          attributes: ["name"],
+          required: true,
+          through: {
+            attributes: [],
+          },
         },
-      },
+        {
+          model: Review,
+          attributes: [
+            "id",
+            "username",
+            "punctuation",
+            "review",
+            "date",
+            "image",
+          ],
+        },
+      ],
     });
   } else if (order === "VALORATIONDESC") {
     allHotels = await Hotel.findAll({
       where: whereClause,
       order: [["valoration", "DESC"]],
-      include: {
-        model: Service,
-        attributes: ["name"],
-        required: true,
-        through: {
-          attributes: [],
+      include: [
+        {
+          model: Service,
+          attributes: ["name"],
+          required: true,
+          through: {
+            attributes: [],
+          },
         },
-      },
+        {
+          model: Review,
+          attributes: [
+            "id",
+            "username",
+            "punctuation",
+            "review",
+            "date",
+            "image",
+          ],
+        },
+      ],
     });
   } else {
     allHotels = await Hotel.findAll({
       where: whereClause,
-      include: {
-        model: Service,
-        attributes: ["name"],
-        required: true,
-        through: {
-          attributes: [],
+      include: [
+        {
+          model: Service,
+          attributes: ["name"],
+          required: true,
+          through: {
+            attributes: [],
+          },
         },
-      },
+        {
+          model: Review,
+          attributes: [
+            "id",
+            "username",
+            "punctuation",
+            "review",
+            "date",
+            "image",
+          ],
+        },
+      ],
     });
   }
 
@@ -224,6 +321,46 @@ const getAllHotelsQuery = async (
   return { allHotels, numPages };
 };
 
+//*------------GET USER HOTELS -------------------
+
+const getUserHotels = async (id_user) => {
+  const hotels = await Hotel.findAll({
+    where: {
+      UserId: id_user,
+    },
+    include: [
+      {
+        model: Service,
+        attributes: ["name"],
+        through: {
+          attributes: [],
+        },
+      },
+      {
+        model: RoomType,
+        attributes: ["id", "people", "price", "name", "image", "stock"],
+      },
+      {
+        model: Review,
+        attributes: [
+          "id",
+          "username",
+          "punctuation",
+          "review",
+          "date",
+          "image",
+        ],
+      },
+    ],
+  });
+
+  if (!hotels.length) {
+    throw new Error("The user does not have a hotel");
+  }
+
+  return hotels;
+};
+
 //*------------GET HOTEL DETAIL-------------------
 
 const getDetailHotel = async (id) => {
@@ -244,7 +381,14 @@ const getDetailHotel = async (id) => {
       },
       {
         model: Review,
-        attributes: ["id", "username", "punctuation", "review"],
+        attributes: [
+          "id",
+          "username",
+          "punctuation",
+          "review",
+          "date",
+          "image",
+        ],
       },
     ],
   });
@@ -309,4 +453,5 @@ module.exports = {
   getDetailHotel,
   createHotel,
   getAllHotelsQuery,
+  getUserHotels,
 };

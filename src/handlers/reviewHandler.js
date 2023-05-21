@@ -2,6 +2,8 @@ const {
   getReviews,
   postReviews,
   deleteReviews,
+  deleteReviewUser,
+  putReview,
 } = require("../controllers/reviewsControllers");
 
 //* Handler que trae todas las review del  user
@@ -40,9 +42,32 @@ const deleteReviewHandler = async (req, res) => {
   }
 };
 
+//* Handler que borra el review del usuario
+
+const deleteReviewUserHandler = async (req, res) => {
+  const { username, id_review } = req.query;
+
+  try {
+    await deleteReviewUser(username, id_review);
+    res.status(200).json("Review successfully removed");
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+const putReviewHandler = async (req, res) => {
+  const { username, id_review, punctuation, review } = req.body;
+  try {
+    await putReview(username, id_review, punctuation, review);
+    res.status(200).json("Review successfully modified");
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
 module.exports = {
   postReviewHandler,
-
+  deleteReviewUserHandler,
   deleteReviewHandler,
   getReviewsHandler,
+  putReviewHandler,
 };
