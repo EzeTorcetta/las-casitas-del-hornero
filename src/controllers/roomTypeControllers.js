@@ -60,8 +60,45 @@ const createRoomTypesByHotel = async (
 //*------------GET TYPE ROOM DETAIL-------------------
 // const getDetailRoomType = async (typeRoomId) => {};
 
+//*------------PUT TYPE ROOM-------------------
+
+const putRoomType = async (id_roomtype,price,stock,image) => {
+  if(!id_roomtype){
+    throw new Error("Error")
+  }
+
+  const roomTypeFind = await RoomType.findByPk(id_roomtype)
+
+
+  if(!roomTypeFind){
+    throw new Error("RoomType not found")
+  }
+
+
+  if (stock && stock > 0) {
+    roomTypeFind.stock = stock;
+  }
+
+  if (price && price > 0) {
+    roomTypeFind.price = price;
+  }
+  
+  
+  if (image && typeof image === "string") {
+    roomTypeFind.image = image;
+  }
+  
+
+
+  await roomTypeFind.save();
+  
+  return;
+}
+
+
 module.exports = {
   getAllRoomTypes,
   getRoomTypesByHotel,
   createRoomTypesByHotel,
+  putRoomType
 };
