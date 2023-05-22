@@ -21,11 +21,27 @@ const getCart = async (id_user) => {
         hotelName: hotel.name,
       };
 
+  
+
       return roomtypeWithAmount;
     })
   );
 
-  if (carts.length) return carts;
+  const sortedCarts = carts.sort((a, b) => {
+    const hotelNameA = a.hotelName.toUpperCase();
+    const hotelNameB = b.hotelName.toUpperCase();
+
+    if (hotelNameA < hotelNameB) {
+      return -1;
+    }
+    if (hotelNameA > hotelNameB) {
+      return 1;
+    }
+    return 0;
+  });
+
+
+  if (sortedCarts.length) return sortedCarts;
   else throw new Error("Cart is empty");
 };
 
