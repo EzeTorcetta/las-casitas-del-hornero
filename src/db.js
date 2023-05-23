@@ -5,9 +5,11 @@ const path = require("path");
 const { DB_USER, DB_PASSWORD, DB_HOST, DB_NAME, DB_DEPLOY } = process.env;
 
 const sequelize = new Sequelize(
+
   // `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}`,
   DB_DEPLOY,
   { logging: false, native: false }
+
 );
 
 const basename = path.basename(__filename);
@@ -60,17 +62,19 @@ const Favorites = sequelize.define("Favorites");
 Hotel.belongsToMany(User, { through: Favorites });
 User.belongsToMany(Hotel, { through: Favorites });
 
+
 User.hasMany(Booking);
 Booking.belongsTo(User);
 
 RoomType.hasMany(Booking);
 Booking.belongsTo(RoomType);
 
+
 Hotel.hasMany(Booking);
 Booking.belongsTo(Hotel);
 
-Cart.belongsTo(User);
 
+Cart.belongsTo(User);
 Cart.belongsTo(RoomType);
 
 module.exports = {

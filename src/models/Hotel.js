@@ -57,7 +57,6 @@ module.exports = (sequelize) => {
           min: 1,
           max: 10,
         },
-
         allowNull: false,
       },
       province: {
