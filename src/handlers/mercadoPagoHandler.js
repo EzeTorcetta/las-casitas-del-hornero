@@ -1,36 +1,36 @@
-const { MERCADOPAGO_KEY } = process.env;
 const mercadopago = require("mercadopago");
+
 mercadopago.configure({
-  access_token: MERCADOPAGO_KEY,
+  access_token: process.env.ACCESS_TOKEN,
 });
+
 const mercadoPagoHandler = async (req, res) => {
-  //? Objeto que se va a vender
   const { product } = req.body;
-  let preference = {
-    //?Propiedades de lo que se va a vender (vienen atraves de un body desde el front)
-    items: {
-      // id:
-      // title: product.title
-      //* id. title, currency_id, picture-url,description, categoryid, quantity, unit-price
-    },
+  let preferences = {
+    items: [
+      // cada item del carrito es un objeto
+      {
+        title: "Ejemplo de reserva de hospedaje",
+        currency_id: "ARS",
+        description: "Descripcion de hospedaje",
+        quantity: 1,
+        unit_price: 10,
+      },
+    ],
     back_urls: {
-      //ADONDE SE REDIRIGE SEGUN QUE SUCEDE CON LA ACCION DE COMPRA
-      success: "",
-      failure: "",
-      pending: "",
+      success: "/http://localhost:3001",
+      failure: "/failure",
+      pending: "/pending",
     },
     auto_return: "approved",
-    binary_mode: true, //ESTO HACE QUE NO SE ACEPTEN PAGOS EN PENDIENTE
+    binary_mode: true,
   };
   mercadopago.preferences
     .create(preference)
     .then((response) => res.status(200).send({ response }))
-    .catch((error) => res.status(400).send({ error: error.message }));
-  //   res.status(200).send("Funciona");
+    .catch(error)
+    .send({ error: error.message });
 };
-
-response.init_point;
-//!La propiedad "init_point" de response nos redirige al pago
 module.exports = {
   mercadoPagoHandler,
 };
