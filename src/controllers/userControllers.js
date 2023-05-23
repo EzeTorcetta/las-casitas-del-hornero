@@ -64,11 +64,14 @@ const getAllUsers = async (id_user) => {
           [Op.not]: id_user,
         },
       },
+      order: [["id", "ASC"]],
       attributes: ["id", "username", "email", "rol"],
     });
   } else {
     throw new Error("Permission denied, you are not an administrator");
   }
+
+
 
   return findAllUsers;
 };
