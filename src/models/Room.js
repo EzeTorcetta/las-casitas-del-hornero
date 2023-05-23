@@ -1,20 +1,22 @@
-const { DataTypes, INTEGER, UUID } = require("sequelize");
+const { INTEGER, ARRAY, STRING, DATE } = require("sequelize");
 
 module.exports = (sequelize) => {
   sequelize.define(
     "Room",
     {
-        id:{
-            type: UUID,
-            defaultValue: DataTypes.UUIDV4,
-            allowNull: false,
-            unique: true,
-            primaryKey: true,
-        },
-        number:{
-            type: INTEGER,
-            allowNull: false,
-        }
+      id: {
+        type: INTEGER,
+        autoIncrement: true,
+        primaryKey: true,
+      },
+      number: {
+        type: INTEGER,
+        // autoIncrement: true,
+      },
+      dates: {
+        type: ARRAY(DATE),
+        defaultValue: ["2023-05-24", "2023-05-25", "2023-05-26", "2023-05-29", "2023-05-30", "2023-05-31"]
+      }
     },
     {
       timestamps: false,

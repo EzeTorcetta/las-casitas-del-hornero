@@ -1,6 +1,7 @@
 //?----------------------------IMPORTS----------------------------------
-const { Hotel, User, Service, Review, RoomType } = require("../db");
+const { Hotel, User, Service, Review, RoomType, Room } = require("../db");
 const { Op } = require("sequelize");
+const moment = require('moment');
 
 //?----------------------------CONTROLLERS------------------------------
 
@@ -22,6 +23,7 @@ const getAllHotels = async (order, page) => {
       model: Review,
       attributes: ["id", "username", "punctuation", "review", "date", "image"],
     },
+
   ];
 
   const getOrderOptions = (order) => {
@@ -75,8 +77,15 @@ const getAllHotelsQuery = async (
   rating,
   order,
   page,
-  name
+  name,
+  checkIn,
+  checkOut
 ) => {
+
+
+const formattedCheckIn = moment(checkIn, 'YYYY-MM-DD').toDate();
+const formattedCheckOut = moment(checkOut, 'YYYY-MM-DD').toDate();
+
   const whereClause = {};
 
   if (province) {
@@ -110,6 +119,7 @@ const getAllHotelsQuery = async (
     };
   }
 
+
   let allHotels;
 
   if (order === "NAMEASC") {
@@ -124,6 +134,10 @@ const getAllHotelsQuery = async (
           through: {
             attributes: [],
           },
+        },
+        {
+          model: RoomType
+
         },
         {
           model: Review,
@@ -152,6 +166,10 @@ const getAllHotelsQuery = async (
           },
         },
         {
+          model: RoomType
+
+        },
+        {
           model: Review,
           attributes: [
             "id",
@@ -176,6 +194,10 @@ const getAllHotelsQuery = async (
           through: {
             attributes: [],
           },
+        },
+        {
+          model: RoomType
+
         },
         {
           model: Review,
@@ -204,6 +226,10 @@ const getAllHotelsQuery = async (
           },
         },
         {
+          model: RoomType
+
+        },
+        {
           model: Review,
           attributes: [
             "id",
@@ -228,6 +254,10 @@ const getAllHotelsQuery = async (
           through: {
             attributes: [],
           },
+        },
+        {
+          model: RoomType
+
         },
         {
           model: Review,
@@ -256,6 +286,10 @@ const getAllHotelsQuery = async (
           },
         },
         {
+          model: RoomType
+
+        },
+        {
           model: Review,
           attributes: [
             "id",
@@ -280,6 +314,14 @@ const getAllHotelsQuery = async (
             attributes: [],
           },
         },
+        {
+          model: RoomType,
+          includes: {
+            model: Room
+          }
+
+        },
+
         {
           model: Review,
           attributes: [
@@ -312,6 +354,79 @@ const getAllHotelsQuery = async (
     });
   }
 
+ 
+  //* Traigo los Id de los hoteles que pasaron los filtros
+  const hotelsId = hoteles.map((hotel) => hotel.id)
+
+
+  
+  //* Traigo todas las rooms que pertenezcan a esos hoteles
+
+    checkIn= new Date(checkIn)
+    checkOut= new Date(checkOut)
+
+    console.log(checkIn);
+  //* 😲🤑😲🤑☹☹☹🙁😖🙁😖😖😖🙁🙁🙁☹
+
+    const rooms = await Room.findAll({
+      where: {
+        HotelId: {
+          [Op.in]: hotelsId
+        },
+        dates:{
+          [Op.not]:{
+
+            [Op.contains]: [checkIn,checkOut]
+          }
+        } 
+      }
+    });
+  
+
+    console.log(rooms[0].dataValues.dates)
+
+
+
+  //* Ahora que tenemos la rooms 🤑 tenemos que filtrar por check-in/ check-out 😎
+
+  // const roomFilters = await rooms.filter(room => room.dates )
+  // const filteredRooms = rooms.filter(room => {
+
+  //   for (let i=0; i< room.dates.length; i++){
+  //     if(checkIn > room.dates[i]){
+  //       for(let j = i+1; j< room.dates.length; j++){
+  //         if(checkOut < room.dates[j]){
+  //           return true
+  //         }
+  //       }
+  //       return false
+  //     }
+  //   }
+  //   return false
+
+  // });
+  // console.log(filteredRooms[0]);
+
+  // function checkAvailability(checkIn, checkOut) {
+  //   for (let i = 0; i < rooms.length; i++) {
+  //     let roomDates = rooms[i].dates;
+  //     for (let j = 0; j < roomDates.length - 1; j++) {
+  //       if (roomDates[j] < checkIn && roomDates[j + 1] > checkOut) {
+  //         return true; // Hay disponibilidad en esta habitación para las fechas seleccionadas
+  //       }
+  //     }
+  //   }
+  //   return false; // No hay disponibilidad en ninguna habitación para las fechas seleccionadas
+  // }
+  
+  // let isAvailable = checkAvailability(checkIn, checkOut);
+ 
+  
+
+
+
+
+  //* Paginado------------------------------
   const limit = 5;
   const count = hoteles.length;
   const numPages = Math.ceil(count / limit);
