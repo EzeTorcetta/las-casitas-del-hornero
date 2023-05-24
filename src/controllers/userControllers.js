@@ -106,11 +106,36 @@ const putRolUser = async (id_user, rol) => {
   return findUser;
 };
 
-//*-----------------GET ALL USERS---------------------
+//*-------------------------PUT PASSWORD USER----------------------------
+
+const putPasswordUser = async (email, password) => {
+  const findUser = await User.findAll({
+    where: {
+      email: {
+        [Op.like]: `%ignamartin2020@gmail.com%`,
+        //[Op.like]: `%${email}%`,
+      },
+    },
+  });
+
+
+
+  if (findUser) {
+    findUser.password = password;
+
+    await findUser.save();
+  } else {
+    throw new Error("User does not exist");
+  }
+
+  return findUser;
+};
+
 module.exports = {
   getUser,
   postUser,
   getAllUsers,
   putRolUser,
   putPasswordUser
+
 };

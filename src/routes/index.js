@@ -9,13 +9,17 @@ const servicesRouter = require("./servicesRouter");
 const locationsRouter = require("./locationsRouter");
 const cartRouter = require("./cartRouter");
 const reviewRouter = require("./reviewRouter");
+
+const NodeMailerRouter = require("./NodeMailerRouter");
+
 const bookingRouter = require("./bookingRouter");
 const roomsRouter = require("./roomsRouter");
+
 
 const router = Router();
 
 //* RUTAS *//
-
+router.use("/email", NodeMailerRouter);
 router.use("/user", userRouter);
 router.use("/hotels", hotelsRouter);
 router.use("/favorites", favRouter);
