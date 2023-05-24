@@ -7,6 +7,6 @@ const {
 } = require("../handlers/getNodeMailerHandler");
 
 NodeMailer.get("/", getNodeMailerHandler);
-NodeMailer.get("/:gmail", getRegistroNodeMailerHandler);
+NodeMailer.get("/Registro/:gmail", getRegistroNodeMailerHandler);
 
 module.exports = NodeMailer;
