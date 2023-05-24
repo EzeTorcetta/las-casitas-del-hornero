@@ -36,7 +36,7 @@ const postUser = async ({ username, password, email, admin }) => {
   } else {
     const findUserByUsername = await User.findOne({ where: { username } });
     const findUserByEmail = await User.findOne({ where: { email } });
-    console.log(findUserByUsername);
+
     if (findUserByUsername) {
       throw new Error("Existing username");
     } else if (findUserByEmail) {
@@ -64,14 +64,32 @@ const getAllUsers = async (id_user) => {
           [Op.not]: id_user,
         },
       },
+      order: [["id", "ASC"]],
       attributes: ["id", "username", "email", "rol"],
     });
   } else {
     throw new Error("Permission denied, you are not an administrator");
   }
 
+
+
   return findAllUsers;
 };
+
+//*---------------PUT ROL USER---------------------
+const putPasswordUser = async (email, password) => {
+  const findUser = await User.findOne({where:{
+    email
+  }})
+
+  if(!findUser){ throw new Error("User not exist")}
+
+  findUser.password = password
+
+  findUser.save()
+
+  return;
+}
 
 //*---------------PUT ROL USER---------------------
 const putRolUser = async (id_user, rol) => {
@@ -100,7 +118,7 @@ const putPasswordUser = async (email, password) => {
     },
   });
 
-  console.log(findUser);
+
 
   if (findUser) {
     findUser.password = password;
@@ -118,5 +136,6 @@ module.exports = {
   postUser,
   getAllUsers,
   putRolUser,
-  putPasswordUser,
+  putPasswordUser
+
 };

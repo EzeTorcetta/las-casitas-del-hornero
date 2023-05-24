@@ -3,7 +3,8 @@ const {
   postUser,
   getAllUsers,
   putRolUser,
-  putPasswordUser,
+  putPasswordUser
+
 } = require("../controllers/userControllers");
 
 //* Handler que verifica en la DB si existe el User
@@ -40,6 +41,18 @@ const postUserHandler = async (req, res) => {
   }
 };
 
+//* Handler que modifica la password del usuario
+const putPasswordUserHandler = async (req,res) => {
+  const {email,password} =req.body
+  try {
+    await putPasswordUser(email,password)
+    res.status(200).json("Password changed successfully!")
+  } catch (error) {
+    res.status(400).json({error: error.message})
+  }
+}
+
+//* Handler que modifica el rol de usuario
 const putRolUserHandler = async (req, res) => {
   const { id_user, rol } = req.body; //ID DEL USUARIO QUE LE VAMOS A CAMBIAR EL ROL
 
@@ -71,5 +84,5 @@ module.exports = {
   postUserHandler,
   getAllUsersHandler,
   putRolUserHandler,
-  putPasswordTheUserHandler,
+  putPasswordUserHandler
 };

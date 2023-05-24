@@ -1,5 +1,5 @@
 //?----------------------------IMPORTS--------------------------------
-const { RoomType, Hotel } = require("../db");
+const { RoomType, Hotel,Room } = require("../db");
 
 //?----------------------------CONTROLLERS------------------------------
 
@@ -23,7 +23,7 @@ const getRoomTypesByHotel = async (id_hotel) => {
 
 //*------------CREATE NEW ROOM TYPE-------------------
 const createRoomTypesByHotel = async (
-  { people, price, name, image },
+  { people, price, name, image,stock },
   id_hotel
 ) => {
   const hotelFind = await Hotel.findOne({
@@ -50,6 +50,17 @@ const createRoomTypesByHotel = async (
     image,
   });
 
+
+  //* Creacion de rooms por cantidad de Stock de determinado tipo de habitacion
+  const rooms = [];
+  for (let i = 1; i <= stock; i++) {
+    const newRoom = await Room.create({
+      number: i,
+    });
+    rooms.push(newRoom);
+    await newRoom.setRoomType(newRoomType);
+  }
+  
   await hotelFind.addRoomType(newRoomType);
 
   return newRoomType;
@@ -59,8 +70,43 @@ const createRoomTypesByHotel = async (
 //*------------GET TYPE ROOM DETAIL-------------------
 // const getDetailRoomType = async (typeRoomId) => {};
 
+//*------------PUT TYPE ROOM-------------------
+
+const putRoomType = async (id_roomtype,price,image) => {
+  if(!id_roomtype){
+    throw new Error("Error")
+  }
+
+  const roomTypeFind = await RoomType.findByPk(id_roomtype)
+
+
+  if(!roomTypeFind){
+    throw new Error("RoomType not found")
+  }
+
+
+
+
+  if (price && price > 0) {
+    roomTypeFind.price = price;
+  }
+  
+  
+  if (image && typeof image === "string") {
+    roomTypeFind.image = image;
+  }
+  
+
+
+  await roomTypeFind.save();
+  
+  return;
+}
+
+
 module.exports = {
   getAllRoomTypes,
   getRoomTypesByHotel,
   createRoomTypesByHotel,
+  putRoomType
 };
