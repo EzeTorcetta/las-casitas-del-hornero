@@ -1,5 +1,5 @@
 //?----------------------------IMPORTS--------------------------------
-const { RoomType, Hotel } = require("../db");
+const { RoomType, Hotel,Room } = require("../db");
 
 //?----------------------------CONTROLLERS------------------------------
 
@@ -48,9 +48,19 @@ const createRoomTypesByHotel = async (
     price,
     name,
     image,
-    stock
   });
 
+
+  //* Creacion de rooms por cantidad de Stock de determinado tipo de habitacion
+  const rooms = [];
+  for (let i = 1; i <= stock; i++) {
+    const newRoom = await Room.create({
+      number: i,
+    });
+    rooms.push(newRoom);
+    await newRoom.setRoomType(newRoomType);
+  }
+  
   await hotelFind.addRoomType(newRoomType);
 
   return newRoomType;
@@ -62,7 +72,7 @@ const createRoomTypesByHotel = async (
 
 //*------------PUT TYPE ROOM-------------------
 
-const putRoomType = async (id_roomtype,price,stock,image) => {
+const putRoomType = async (id_roomtype,price,image) => {
   if(!id_roomtype){
     throw new Error("Error")
   }
@@ -75,9 +85,7 @@ const putRoomType = async (id_roomtype,price,stock,image) => {
   }
 
 
-  if (stock && stock > 0) {
-    roomTypeFind.stock = stock;
-  }
+
 
   if (price && price > 0) {
     roomTypeFind.price = price;

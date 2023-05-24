@@ -4,6 +4,7 @@ const {
   deleteReviews,
   deleteReviewUser,
   putReview,
+ 
 } = require("../controllers/reviewsControllers");
 
 //* Handler que trae todas las review del  user
@@ -16,6 +17,18 @@ const getReviewsHandler = async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 };
+
+//* Handler que trae todas las review del hotel (para el hotel Detail) 😎😋😎
+
+const getAllReviewsHotelHandler = async (req,res) => {
+  const {id_hotel} = req.query
+  try {
+    const reviews = await getAllReviewsHotel(id_hotel)
+    res.status(200).json(reviews)
+  } catch (error) {
+    res.status(400).json({error: error.message})
+  }
+}
 
 //* Handler que postea la review al hotel enviado por params
 
@@ -55,6 +68,8 @@ const deleteReviewUserHandler = async (req, res) => {
   }
 };
 
+//* Handler que modifica la review indicada
+
 const putReviewHandler = async (req, res) => {
   const { username, id_review, punctuation, review } = req.body;
   try {
@@ -70,4 +85,6 @@ module.exports = {
   deleteReviewHandler,
   getReviewsHandler,
   putReviewHandler,
+  getAllReviewsHotelHandler
+
 };

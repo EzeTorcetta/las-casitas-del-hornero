@@ -43,13 +43,14 @@ const createRoomTypesHandler = async (req, res) => {
   }
 };
 
+//* Handler que modifica las propiedades de una RoomType
 const putRoomTypesHandler = async (req,res) => {
   const {id_roomtype} = req.params
-  const {price,image,stock} = req.body
+  const {price,image} = req.body
  
 
   try {
-    await putRoomType(id_roomtype, price,stock,image)
+    await putRoomType(id_roomtype, price,image)
     res.status(200).json("RoomType successfully modified")
   } catch (error) {
     res.status(400).json({ error: error.message });

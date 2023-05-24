@@ -27,13 +27,8 @@ module.exports = (sequelize) => {
         type: STRING,
         allowNull: false,
       },
-      stock: {
-        type: INTEGER,
-        allowNull: false,
-        validate: {
-          min: 0,
-        },
-      },
+     
+      
       
     },
     {

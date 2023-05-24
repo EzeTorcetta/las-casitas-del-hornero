@@ -51,6 +51,7 @@ const deleteAllCartHandler = async (req, res) => {
   }
 };
 
+//* Handler que modifica el  contador del cart indicado
 const putAmountCartHandler = async (req, res) => {
   const { id_user, id_roomtype } = req.params;
   const { putAmount } = req.query;

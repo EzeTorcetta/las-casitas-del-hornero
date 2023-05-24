@@ -77,6 +77,21 @@ const getAllUsers = async (id_user) => {
 };
 
 //*---------------PUT ROL USER---------------------
+const putPasswordUser = async (email, password) => {
+  const findUser = await User.findOne({where:{
+    email
+  }})
+
+  if(!findUser){ throw new Error("User not exist")}
+
+  findUser.password = password
+
+  findUser.save()
+
+  return;
+}
+
+//*---------------PUT ROL USER---------------------
 const putRolUser = async (id_user, rol) => {
   const findUser = await User.findByPk(id_user);
 
@@ -97,4 +112,5 @@ module.exports = {
   postUser,
   getAllUsers,
   putRolUser,
+  putPasswordUser
 };

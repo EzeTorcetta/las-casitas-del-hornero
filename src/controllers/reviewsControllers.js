@@ -11,11 +11,12 @@ const getReviews = async (username) => {
   return allReviewsUser;
 };
 
-//*----------GET ONE USER REVIEWS---------------------- Ni idea para que chota hice este
-const getReviewsHotel = async (username) => {
+//*----------GET ALL REVIEWS HOTEL----------------------
+
+const getAllReviewsHotel = async (id_hotel) => {
   const allReviewsUser = await Review.findAll({
     where: {
-      username,
+      HotelId : id_hotel
     },
   });
 
@@ -104,6 +105,7 @@ const deleteReviews = async (id_review) => {
   return;
 };
 
+//*------------DELETE REVIEW  USER-------------------
 const deleteReviewUser = async (username, id_review) => {
   if (!username || !id_review) {
     throw new Error("Error");
@@ -145,6 +147,7 @@ const deleteReviewUser = async (username, id_review) => {
   }
 };
 
+//*------------PUT REVIEW-------------------
 const putReview = async (username, id_review, punctuation, review) => {
   if (!username || !id_review) {
     throw new Error("Error");
@@ -197,4 +200,5 @@ module.exports = {
   deleteReviews,
   deleteReviewUser,
   putReview,
+  getAllReviewsHotel
 };
