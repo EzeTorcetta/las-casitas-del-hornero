@@ -358,7 +358,6 @@ const formattedCheckOut = moment(checkOut, 'YYYY-MM-DD').toDate();
   //* Traigo los Id de los hoteles que pasaron los filtros
   const hotelsId = hoteles.map((hotel) => hotel.id)
 
-
   
   //* Traigo todas las rooms que pertenezcan a esos hoteles
 
@@ -373,7 +372,10 @@ const formattedCheckOut = moment(checkOut, 'YYYY-MM-DD').toDate();
   checkIn = new Date(checkIn);
   checkOut = new Date(checkOut);
 
-  const fechas = rooms.filter((room)=>{
+
+  //* Se filtran las rooms que estan disponibles en las fechas de CheckIn y CheckOut
+
+  const roomsAvailable = rooms.filter((room)=>{
     let bool = false;
     if(room.dates.length){
       for (let i=0;i<room.dates.length; i++){
@@ -388,12 +390,21 @@ const formattedCheckOut = moment(checkOut, 'YYYY-MM-DD').toDate();
     return bool;
   })
 
+  const hotelsId2 = roomsAvailable.map((room) => room.HotelId)
+  
+  const hotelsAvailables = await Hotel.findAll({where:{
+    id: {
+      [Op.in]: hotelsId2
+    },
+  }})
+
+
   //* Paginado------------------------------
   const limit = 5;
-  const count = hoteles.length;
+  const count = hotelsAvailables.length;
   const numPages = Math.ceil(count / limit);
 
-  allHotels = hoteles.slice((page - 1) * limit, (page - 1) * limit + limit);
+  allHotels = hotelsAvailables.slice((page - 1) * limit, (page - 1) * limit + limit);
 
   return { allHotels, numPages };
 };

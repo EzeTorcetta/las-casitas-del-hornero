@@ -12,6 +12,6 @@ let transporter = nodemailer.createTransport({
   },
 });
 
-transporter.verify().then((response) => console.log("email enviado con exito"));
+transporter.verify().then((response) => console.log("NodeMailer conectado con exito"));
 
 module.exports = transporter;

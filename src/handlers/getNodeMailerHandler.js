@@ -6,7 +6,7 @@ const getNodeMailerHandler = async (req, res) => {
   try {
     const { email } = req.query;
 
-    console.log(email);
+
 
     await transporter.sendMail({
       from: '"CasitasDelHornero " <lacasitadelhornero2023@gmail.com>', // el que va enviar el correo
@@ -84,7 +84,7 @@ const getRegistroNodeMailerHandler = async (req, res) => {
   try {
     const { gmail } = req.params;
 
-    console.log(gmail);
+   
 
     await transporter.sendMail({
       from: '"CasitasDelHornero " <lacasitadelhornero2023@gmail.com>', // el que va enviar el correo

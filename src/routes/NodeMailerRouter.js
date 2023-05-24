@@ -1,12 +1,12 @@
 const { Router } = require("express");
-const NodeMailer = Router();
+const NodeMailerRouter = Router();
 
 const {
   getNodeMailerHandler,
   getRegistroNodeMailerHandler,
 } = require("../handlers/getNodeMailerHandler");
 
-NodeMailer.get("/", getNodeMailerHandler);
-NodeMailer.get("/Registro/:gmail", getRegistroNodeMailerHandler);
+NodeMailerRouter.get("/", getNodeMailerHandler);
+NodeMailerRouter.get("/Registro/:gmail", getRegistroNodeMailerHandler);
 
-module.exports = NodeMailer;
+module.exports = NodeMailerRouter;

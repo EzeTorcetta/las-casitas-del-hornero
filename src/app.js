@@ -12,6 +12,6 @@ server.use(morgan("dev"));
 server.use(express.json());
 
 server.use("/", routes);
-server.post(``);
+
 
 module.exports = server;

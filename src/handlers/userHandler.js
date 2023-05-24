@@ -64,20 +64,7 @@ const putRolUserHandler = async (req, res) => {
   }
 };
 
-const putPasswordTheUserHandler = async (req, res) => {
-  const { email } = req.params; //EL Email Del Usuario Para Cambiar la password
-  const { password } = req.query;
 
-  console.log(req.params);
-  console.log(password);
-
-  try {
-    putUser = await putPasswordUser(email, password);
-    res.status(200).json(putUser);
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
-};
 
 module.exports = {
   getUserHandler,

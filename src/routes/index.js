@@ -9,9 +9,7 @@ const servicesRouter = require("./servicesRouter");
 const locationsRouter = require("./locationsRouter");
 const cartRouter = require("./cartRouter");
 const reviewRouter = require("./reviewRouter");
-
 const NodeMailerRouter = require("./NodeMailerRouter");
-
 const bookingRouter = require("./bookingRouter");
 const roomsRouter = require("./roomsRouter");
 
