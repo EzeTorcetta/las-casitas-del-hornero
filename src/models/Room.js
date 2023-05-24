@@ -1,4 +1,4 @@
-const { INTEGER, ARRAY, STRING, DATE } = require("sequelize");
+const { INTEGER, ARRAY, DATE } = require("sequelize");
 
 module.exports = (sequelize) => {
   sequelize.define(

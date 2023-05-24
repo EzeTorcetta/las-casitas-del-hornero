@@ -362,69 +362,31 @@ const formattedCheckOut = moment(checkOut, 'YYYY-MM-DD').toDate();
   
   //* Traigo todas las rooms que pertenezcan a esos hoteles
 
-    checkIn= new Date(checkIn)
-    checkOut= new Date(checkOut)
+  const rooms = await Room.findAll({
+    where: {
+      HotelId: {
+        [Op.in]: hotelsId
+      },
+    }
+  });
 
-    console.log(checkIn);
-  //* 😲🤑😲🤑☹☹☹🙁😖🙁😖😖😖🙁🙁🙁☹
+  checkIn = new Date(checkIn);
+  checkOut = new Date(checkOut);
 
-    const rooms = await Room.findAll({
-      where: {
-        HotelId: {
-          [Op.in]: hotelsId
-        },
-        dates:{
-          [Op.not]:{
-
-            [Op.contains]: [checkIn,checkOut]
-          }
-        } 
+  const fechas = rooms.filter((room)=>{
+    let bool = false;
+    if(room.dates.length){
+      for (let i=0;i<room.dates.length; i++){
+        if(room.dates[i] < checkIn && room.dates[i+1] > checkOut){
+          bool = true
+        }
+        if(checkOut<room.dates[0]){bool=true; console.log(true)};
+        if(checkIn>room.dates[room.dates.length-1]){bool=true;console.log(true)}
       }
-    });
-  
-
-    console.log(rooms[0].dataValues.dates)
-
-
-
-  //* Ahora que tenemos la rooms 🤑 tenemos que filtrar por check-in/ check-out 😎
-
-  // const roomFilters = await rooms.filter(room => room.dates )
-  // const filteredRooms = rooms.filter(room => {
-
-  //   for (let i=0; i< room.dates.length; i++){
-  //     if(checkIn > room.dates[i]){
-  //       for(let j = i+1; j< room.dates.length; j++){
-  //         if(checkOut < room.dates[j]){
-  //           return true
-  //         }
-  //       }
-  //       return false
-  //     }
-  //   }
-  //   return false
-
-  // });
-  // console.log(filteredRooms[0]);
-
-  // function checkAvailability(checkIn, checkOut) {
-  //   for (let i = 0; i < rooms.length; i++) {
-  //     let roomDates = rooms[i].dates;
-  //     for (let j = 0; j < roomDates.length - 1; j++) {
-  //       if (roomDates[j] < checkIn && roomDates[j + 1] > checkOut) {
-  //         return true; // Hay disponibilidad en esta habitación para las fechas seleccionadas
-  //       }
-  //     }
-  //   }
-  //   return false; // No hay disponibilidad en ninguna habitación para las fechas seleccionadas
-  // }
-  
-  // let isAvailable = checkAvailability(checkIn, checkOut);
- 
-  
-
-
-
+    }
+    else bool = true;
+    return bool;
+  })
 
   //* Paginado------------------------------
   const limit = 5;
