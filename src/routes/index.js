@@ -8,10 +8,11 @@ const roomTypesRouter = require("./roomTypesRouter");
 const servicesRouter = require("./servicesRouter");
 const cartRouter = require("./cartRouter");
 const reviewRouter = require("./reviewRouter");
+const NodeMailerRouter = require("./NodeMailerRouter");
 const router = Router();
 
 //* RUTAS *//
-
+router.use("/email", NodeMailerRouter);
 router.use("/user", userRouter);
 router.use("/hotels", hotelsRouter);
 router.use("/favorites", favRouter);
