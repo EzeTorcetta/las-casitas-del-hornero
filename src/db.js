@@ -5,9 +5,8 @@ const path = require("path");
 const { DB_USER, DB_PASSWORD, DB_HOST, DB_NAME, DB_DEPLOY } = process.env;
 
 const sequelize = new Sequelize(
-
-  // `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}`,
-  DB_DEPLOY,
+  `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}`,
+  // DB_DEPLOY,
   { logging: false, native: false }
 
 );
@@ -47,8 +46,8 @@ RoomType.belongsTo(Hotel);
 RoomType.hasMany(Room);
 Room.belongsTo(RoomType);
 
-Room.hasMany(Check);
-Check.belongsTo(Room);
+Hotel.hasMany(Room);
+Room.belongsTo(Hotel);
 
 Hotel.belongsToMany(Service, { through: "HotelServices" });
 Service.belongsToMany(Hotel, { through: "HotelServices" });

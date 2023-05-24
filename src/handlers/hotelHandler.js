@@ -18,6 +18,8 @@ const getAllHotelsHandler = async (req, res) => {
     page,
     name,
     id_user,
+    checkIn,
+    checkOut
   } = req.query;
 
   try {
@@ -31,7 +33,9 @@ const getAllHotelsHandler = async (req, res) => {
           rating,
           order,
           page,
-          name
+          name,
+          checkIn,
+          checkOut
         ))
       : id_user
       ? (allHotels = await getUserHotels(id_user))
