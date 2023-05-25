@@ -6,8 +6,9 @@ const { DB_USER, DB_PASSWORD, DB_HOST, DB_NAME, DB_DEPLOY } = process.env;
 
 const sequelize = new Sequelize(
 //   `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}`,
-   DB_DEPLOY,
+  DB_DEPLOY,
   { logging: false, native: false }
+
 );
 
 const basename = path.basename(__filename);
@@ -34,11 +35,7 @@ let capsEntries = entries.map((entry) => [
   entry[1],
 ]);
 sequelize.models = Object.fromEntries(capsEntries);
-
-// En sequelize.models están todos los modelos importados como propiedades
-// Para relacionar los hacemos un destructuring
-const { Check, Hotel, Room, RoomType, Service, User, Review } =
-  sequelize.models;
+const { Check, Hotel, Room, RoomType, Service, User, Review, Booking, Cart } = sequelize.models
 
 User.hasMany(Hotel);
 Hotel.belongsTo(User);
@@ -49,12 +46,14 @@ RoomType.belongsTo(Hotel);
 RoomType.hasMany(Room);
 Room.belongsTo(RoomType);
 
+Hotel.hasMany(Room);
+Room.belongsTo(Hotel);
+
 Hotel.belongsToMany(Service, { through: "HotelServices" });
 Service.belongsToMany(Hotel, { through: "HotelServices" });
 
 Hotel.hasMany(Review);
 Review.belongsTo(Hotel);
-
 
 const Favorites = sequelize.define("Favorites");
 
@@ -62,10 +61,19 @@ Hotel.belongsToMany(User, { through: Favorites });
 User.belongsToMany(Hotel, { through: Favorites });
 
 
-const Cart = sequelize.define('Cart');
+User.hasMany(Booking);
+Booking.belongsTo(User);
 
-RoomType.belongsToMany(User, { through: Cart });
-User.belongsToMany(RoomType, { through: Cart });
+RoomType.hasMany(Booking);
+Booking.belongsTo(RoomType);
+
+
+Hotel.hasMany(Booking);
+Booking.belongsTo(Hotel);
+
+
+Cart.belongsTo(User);
+Cart.belongsTo(RoomType);
 
 
 

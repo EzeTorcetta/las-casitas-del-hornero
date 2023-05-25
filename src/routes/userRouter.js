@@ -6,6 +6,8 @@ const {
   postUserHandler,
   getAllUsersHandler,
   putRolUserHandler,
+  putPasswordUserHandler,
+  putStatusUserHandler
 } = require("../handlers/userHandler");
 
 const checkUserProperties = (req, res, next) => {
@@ -24,15 +26,9 @@ const checkUserProperties = (req, res, next) => {
 
 userRouter.post("/", checkUserProperties);
 userRouter.get("/:id_user", getAllUsersHandler);
+userRouter.put("/password", putPasswordUserHandler)
+userRouter.put("/status/:id_user",putStatusUserHandler)
 userRouter.put("/", putRolUserHandler);
+
 module.exports = userRouter;
 
-// const { Router } = require("express");
-// const userRouter = Router();
-
-// const { getUserHandler, postUserHandler } = require("../handlers/userHandler");
-
-// userRouter.get("/", getUserHandler); //enviamos por body el username y pass
-// userRouter.post("/", postUserHandler);
-
-// module.exports = userRouter;

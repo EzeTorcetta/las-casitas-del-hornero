@@ -17,12 +17,13 @@ const getUser = async (password, email) => {
     } else {
       const findUser2 = await User.findOne({
         where: { password, email },
-        attributes: ["id", "username", "email", "rol"],
+        attributes: ["id", "username", "email", "rol","status"],
       });
       if (!findUser2) {
         throw new Error("Missing password");
       }
 
+      if(!findUser2.status) throw new Error("The user is banned")
       return findUser2;
     }
   }
@@ -30,13 +31,13 @@ const getUser = async (password, email) => {
 
 //*---------------CREATE USER---------------------
 
-const postUser = async ({ username, password, email, admin }) => {
+const postUser = async ({ username, password, email }) => {
   if (!username || !password || !email) {
     throw new Error("Faltan datos");
   } else {
     const findUserByUsername = await User.findOne({ where: { username } });
     const findUserByEmail = await User.findOne({ where: { email } });
-    console.log(findUserByUsername);
+
     if (findUserByUsername) {
       throw new Error("Existing username");
     } else if (findUserByEmail) {
@@ -64,14 +65,32 @@ const getAllUsers = async (id_user) => {
           [Op.not]: id_user,
         },
       },
-      attributes: ["id", "username", "email", "rol"],
+      order: [["id", "ASC"]],
+      attributes: ["id", "username", "email", "rol","status"],
     });
   } else {
     throw new Error("Permission denied, you are not an administrator");
   }
 
+
+
   return findAllUsers;
 };
+
+//*---------------PUT PASSWORD USER---------------------
+const putPasswordUser = async (email, password) => {
+  const findUser = await User.findOne({where:{
+    email
+  }})
+
+  if(!findUser){ throw new Error("User not exist")}
+
+  findUser.password = password
+
+  findUser.save()
+
+  return;
+}
 
 //*---------------PUT ROL USER---------------------
 const putRolUser = async (id_user, rol) => {
@@ -88,10 +107,32 @@ const putRolUser = async (id_user, rol) => {
   return findUser;
 };
 
-//*-----------------GET ALL USERS---------------------
+//*------------- BANEAR USER -------------------------
+const putStatusUser = async (id_user) => {
+  const findUser = await User.findByPk(id_user);
+
+  if (findUser) {
+    if(findUser.status == true){findUser.status = false} else{
+
+      findUser.status == false
+    }
+   
+    await findUser.save();
+  } else {
+    throw new Error("User does not exist");
+  }
+
+  return findUser;
+};
+
+
+
+
 module.exports = {
   getUser,
   postUser,
   getAllUsers,
   putRolUser,
+  putPasswordUser,
+  putStatusUser
 };

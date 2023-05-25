@@ -1,35 +1,39 @@
-const { DataTypes, INTEGER, FLOAT, STRING } = require("sequelize");
+const { INTEGER,FLOAT,DATE, STRING } = require("sequelize");
 
 module.exports = (sequelize) => {
   sequelize.define(
-    "RoomType",
+    "Booking",
     {
       id: {
-        type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4,
+        type: INTEGER,
+        autoIncrement: true,
         allowNull: false,
         unique: true,
         primaryKey: true,
       },
-      people: {
+      amount:{
         type: INTEGER,
         allowNull: false,
+        validate: {
+            min: 1
+          },
       },
-      price: {
+      price:{
         type: FLOAT(2),
         allowNull: false,
       },
-      name: {
+      date: {
+        type: DATE,
+        defaultValue: sequelize.literal("CURRENT_TIMESTAMP"),
+      },
+      checkIn: {
         type: STRING,
         allowNull: false,
       },
-      image: {
+      checkOut: {
         type: STRING,
         allowNull: false,
       },
-     
-      
-      
     },
     {
       timestamps: false,
