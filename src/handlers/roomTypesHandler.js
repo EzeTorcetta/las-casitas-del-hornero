@@ -47,7 +47,7 @@ const createRoomTypesHandler = async (req, res) => {
 //* Handler que modifica las propiedades de una RoomType
 const putRoomTypesHandler = async (req,res) => {
   const {id_roomtype} = req.params
-  const {price,image} = req.body
+  const {price,image,id_user} = req.body
  
 
   try {

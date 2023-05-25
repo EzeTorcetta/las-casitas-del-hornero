@@ -123,10 +123,19 @@ const createRoomTypesByHotel = async (
 
 //*------------PUT TYPE ROOM-------------------
 
-const putRoomType = async (id_roomtype,price,image) => {
+const putRoomType = async (id_roomtype,price,image,id_user) => {
   if(!id_roomtype){
     throw new Error("Error")
   }
+
+  const hotel = await Hotel.findOne({where:{
+    id:roomType.HotelId,
+    UserId: id_user
+  }})
+
+  if(!hotel) throw new Error("The user does not have permissions to perform this action")
+
+
 
   const roomTypeFind = await RoomType.findByPk(id_roomtype)
 
