@@ -79,7 +79,7 @@ const getCart = async (id_user, checkIn, checkOut) => {
 
 
   if (sortedCart.length) return sortedCart;
-  else throw new Error("Cart is empty");
+  else throw new Error("El carrito esta vacio");
 };
 
 //*------------ ADD ITEM IN CART  -------------------
@@ -90,10 +90,10 @@ const postCart = async (id_user, id_roomtype) => {
   const room = await RoomType.findByPk(id_roomtype);
 
   if (!user) {
-    throw new Error("User not found");
+    throw new Error("Usuario no encontrado");
   }
   if (!room) {
-    throw new Error("Room not found");
+    throw new Error("Habitacion no encontrada");
   }
 
   const findCart = await Cart.findOne({
@@ -104,7 +104,7 @@ const postCart = async (id_user, id_roomtype) => {
   });
 
   if (findCart) {
-    throw new Error("Room already added!!");
+    throw new Error("Habitacion agregada!");
   }
   const cart = await Cart.create({
     UserId: user.id,
@@ -119,11 +119,11 @@ const deleteCart = async (id_user, id_roomtype) => {
   const user = await User.findByPk(id_user);
   const room = await RoomType.findByPk(id_roomtype);
   if (!room) {
-    throw new Error("Room not found");
+    throw new Error("Habitacion no encontrada");
   }
 
   if (!user) {
-    throw new Error("User not found");
+    throw new Error("Usuario no encontrado");
   }
 
   await Cart.destroy({
@@ -157,7 +157,7 @@ const putAmountCart = async (id_user, id_roomtype, putAmount) => {
     },
   });
   if (!room) {
-    throw new Error("Room not found");
+    throw new Error("Habitacion no encontrada");
   }
 
   if (putAmount === "up") {

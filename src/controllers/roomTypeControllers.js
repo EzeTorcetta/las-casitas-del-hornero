@@ -7,7 +7,7 @@ const { RoomType, Hotel,Room } = require("../db");
 const getAllRoomTypes = async () => {
   const roomTypes = await RoomType.findAll();
 
-  return roomTypes ? roomTypes : new Error("Room types not found");
+  return roomTypes ? roomTypes : new Error("Tipos de habitación no encontrados");
 };
 
 //*------------GET ALL TYPES ROOMS BY HOTEL ID-------------------
@@ -83,7 +83,7 @@ const createRoomTypesByHotel = async (
     },
   });
 
-  if (!hotelFind) throw new Error("User not found or User is not Admin");
+  if (!hotelFind) throw new Error("Usuario no encontrado o Usuario no es administrador");
 
   const roomFind = await RoomType.findOne({
     where: {
@@ -92,7 +92,7 @@ const createRoomTypesByHotel = async (
     },
   });
 
-  if (roomFind) throw new Error("Room type already exists.");
+  if (roomFind) throw new Error("El tipo de habitación ya existe");
 
   const newRoomType = await RoomType.create({
     people,
@@ -133,7 +133,7 @@ const putRoomType = async (id_roomtype,price,image,id_user) => {
     UserId: id_user
   }})
 
-  if(!hotel) throw new Error("The user does not have permissions to perform this action")
+  if(!hotel) throw new Error("El usuario no tiene permisos para realizar esta acción.")
 
 
 
@@ -141,7 +141,7 @@ const putRoomType = async (id_roomtype,price,image,id_user) => {
 
 
   if(!roomTypeFind){
-    throw new Error("RoomType not found")
+    throw new Error("Tipo de habitación no encontrado")
   }
 
 

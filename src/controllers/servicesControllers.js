@@ -5,7 +5,7 @@ const getAllServices = async () => {
   const allServices = await Service.findAll();
 
   if (!allServices.length) {
-    throw new Error("Services not found");
+    throw new Error("Servicios no encontrados");
   } else {
     return allServices;
   }
@@ -13,7 +13,7 @@ const getAllServices = async () => {
 
 //*-----------------POST Services---------------------
 const createServices = async ({ name }) => {
-  if (!name) throw new Error("You can't send an empty name");
+  if (!name) throw new Error("No puedes enviar un nombre vacío");
 
   const service = await Service.findOne({ where: { name } });
 
@@ -32,7 +32,7 @@ const deleteService = async (id) => {
   const service = await Service.findByPk(id);
 
   if (!service) {
-    throw new Error("Service does not exist");
+    throw new Error("El servicio no existe");
   } else {
     await Service.destroy({ where: { id } });
     return;

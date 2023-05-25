@@ -6,7 +6,7 @@ const getAllBookings = async (id_user) => {
   const findUser = await User.findByPk(id_user);
 
   if (!findUser.rol == 3) {
-    throw new Error("Permission denied, you are not an administrator");
+    throw new Error("Permiso denegado, no eres administrador");
   } else {
     const findAllBooking = await Booking.findAll();
     const bookings = await Promise.all(
@@ -42,7 +42,7 @@ const getBookingHotel = async (id_user, id_hotel) => {
   });
 
   if (!findHotel) {
-    throw new Error("Permission denied or Hotel does not exist");
+    throw new Error("Permiso denegado o el hotel no existe");
   }
 
   const bookingsHotel = await Booking.findAll({
@@ -104,7 +104,7 @@ const getBookingUser = async (id_user) => {
 const postBooking = async (body, id_user,checkIn,checkOut) => {
   const userFind = await User.findByPk(id_user)
 
-  if(!userFind){ throw  new Error("User not register")}
+  if(!userFind){ throw  new Error("Usuario no registrado")}
 
   const roomTypeIds = body.map((item) => item.id);
   const roomTypes = await RoomType.findAll({ where: { id: roomTypeIds } });
@@ -135,7 +135,7 @@ const postBooking = async (body, id_user,checkIn,checkOut) => {
     // busca la  roomtype macheando el primer id de roomtype enviado por body
     const roomType = roomTypes.find((rt) => rt.id === body[i].id);
 
-    if (body[i].amount == 0) throw new Error("Quantity cannot be 0");
+    if (body[i].amount == 0) throw new Error("La cantidad no puede ser 0");
 
     //Trae todas las habitaciones pertenecientes al RoomType
     const rooms = await Room.findAll({where:{ RoomTypeId: roomType.id}});
@@ -221,7 +221,7 @@ const postBooking = async (body, id_user,checkIn,checkOut) => {
     });
   }
 
-  return "Reservation made successfully";
+  return "Reservacion realizada con exito";
 };
 
 module.exports = {

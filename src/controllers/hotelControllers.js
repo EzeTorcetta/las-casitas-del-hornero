@@ -443,7 +443,7 @@ const getUserHotels = async (id_user) => {
   });
 
   if (!hotels.length) {
-    throw new Error("The user does not have a hotel");
+    throw new Error("El usuario no posee hoteles");
   }
 
   return hotels;
@@ -484,7 +484,7 @@ const getDetailHotel = async (id) => {
   if (hotel) {
     return hotel;
   } else {
-    throw new Error("Hotel not found");
+    throw new Error("Hotel no encontrado");
   }
 };
 
@@ -514,7 +514,7 @@ const createHotel = async (
     },
   });
 
-  if (!userFind) throw new Error("User not found or User is not Admin");
+  if (!userFind) throw new Error("Usuario no encontrado o no eres administrador");
 
   const newHotel = await Hotel.create({
     name,

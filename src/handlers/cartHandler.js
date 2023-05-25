@@ -24,7 +24,7 @@ const postCartHandler = async (req, res) => {
   const { id_user, id_roomtype } = req.params;
   try {
     await postCart(id_user, id_roomtype);
-    res.status(200).json("Room successfully added");
+    res.status(200).json("Habitacion agregada con exito");
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -35,7 +35,7 @@ const deleteCartHandler = async (req, res) => {
   const { id_user, id_roomtype } = req.params;
   try {
     await deleteCart(id_user, id_roomtype);
-    res.status(200).json("Room successfully removed");
+    res.status(200).json("Habitacion removida con exito");
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -46,7 +46,7 @@ const deleteAllCartHandler = async (req, res) => {
   const { id_user } = req.params;
   try {
     await deleteAllCart(id_user);
-    res.status(200).json("The cart was emptied");
+    res.status(200).json("El carro fue vaciado");
   } catch (error) {
     res.status(400).json({ error: error.message });
   }

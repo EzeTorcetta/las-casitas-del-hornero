@@ -14,10 +14,10 @@ const createRooms = async(id_roomType, stock,id_user) => {
       UserId: id_user
     }})
 
-    if(!hotel) throw new Error("The user does not have permissions to perform this action")
+    if(!hotel) throw new Error("El usuario no tiene permisos para realizar esta acción")
 
 
-    if (!roomType) throw new Error("Room type doesn't exists");
+    if (!roomType) throw new Error("El tipo de habitación no existe.");
 
 
     const lastRoom = await Room.findOne({
@@ -42,7 +42,7 @@ const createRooms = async(id_roomType, stock,id_user) => {
 
     
     const newRooms = await Room.findAll({where: {RoomTypeId: id_roomType}})
-    if(!newRooms.length) throw new Error("Something went wrong")
+    if(!newRooms.length) throw new Error("Algo salió mal")
     return newRooms;
 }
 
@@ -54,11 +54,11 @@ const deleteRooms = async(id_roomType,id_user) => {
     UserId: id_user
   }})
 
-  if(!hotel) throw new Error("The user does not have permissions to perform this action")
+  if(!hotel) throw new Error("El usuario no tiene permisos para realizar esta acción")
 
 
     const roomType = await RoomType.findByPk(id_roomType)
-    if (!roomType) throw new Error("Room type doesn't exists");
+    if (!roomType) throw new Error("El tipo de habitación no existe.");
 
     await Room.destroy({
         where: {RoomTypeId:id_roomType}

@@ -7,23 +7,23 @@ const { Op } = require("sequelize");
 //*-----------------GET USER---------------------
 const getUser = async (password, email) => {
   if (!password) {
-    throw new Error("No password");
+    throw new Error("No puede enviar una contraseña vacia");
   } else if (!email) {
-    throw new Error("No mail");
+    throw new Error("No puede enviar un email vacio");
   } else {
     const findUser = await User.findOne({ where: { email } });
     if (!findUser) {
-      throw new Error("User not exist");
+      throw new Error("El usuario no existe");
     } else {
       const findUser2 = await User.findOne({
         where: { password, email },
         attributes: ["id", "username", "email", "rol","status"],
       });
       if (!findUser2) {
-        throw new Error("Missing password");
+        throw new Error("Contraseña equivocada");
       }
 
-      if(!findUser2.status) throw new Error("The user is banned")
+      if(!findUser2.status) throw new Error("Usuario bloqueado")
       return findUser2;
     }
   }
@@ -39,9 +39,9 @@ const postUser = async ({ username, password, email }) => {
     const findUserByEmail = await User.findOne({ where: { email } });
 
     if (findUserByUsername) {
-      throw new Error("Existing username");
+      throw new Error("Ya existe el nombre de usuario");
     } else if (findUserByEmail) {
-      throw new Error("Existing email");
+      throw new Error("Ya existe el email");
     } else {
       await User.create({
         username,
@@ -69,7 +69,7 @@ const getAllUsers = async (id_user) => {
       attributes: ["id", "username", "email", "rol","status"],
     });
   } else {
-    throw new Error("Permission denied, you are not an administrator");
+    throw new Error("Permiso denegado, no eres administrador");
   }
 
 
@@ -83,7 +83,7 @@ const putPasswordUser = async (email, password) => {
     email
   }})
 
-  if(!findUser){ throw new Error("User not exist")}
+  if(!findUser){ throw new Error("El usuario no existe")}
 
   findUser.password = password
 
@@ -101,7 +101,7 @@ const putRolUser = async (id_user, rol) => {
 
     await findUser.save();
   } else {
-    throw new Error("User does not exist");
+    throw new Error("El usuario no existe");
   }
 
   return findUser;
@@ -119,7 +119,7 @@ const putStatusUser = async (id_user) => {
    
     await findUser.save();
   } else {
-    throw new Error("User does not exist");
+    throw new Error("El usuario no existe");
   }
 
   return findUser;
