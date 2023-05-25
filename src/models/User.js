@@ -1,4 +1,4 @@
-const { INTEGER, STRING } = require("sequelize");
+const { INTEGER, STRING,BOOLEAN } = require("sequelize");
 
 module.exports = (sequelize) => {
   sequelize.define(
@@ -38,6 +38,11 @@ module.exports = (sequelize) => {
       image: {
         type: STRING,
       },
+      status: {
+        type: BOOLEAN,
+        allowNull: false,
+        defaultValue: true
+      }
     },
     {
       timestamps: false,

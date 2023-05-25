@@ -3,7 +3,8 @@ const {
   postUser,
   getAllUsers,
   putRolUser,
-  putPasswordUser
+  putPasswordUser,
+  putStatusUser
 
 } = require("../controllers/userControllers");
 
@@ -19,7 +20,6 @@ const getUserHandler = async (req, res) => {
 };
 
 //* Handler que trae a todos los Users de la DB
-
 const getAllUsersHandler = async (req, res) => {
   const { id_user } = req.params;
   try {
@@ -35,7 +35,7 @@ const postUserHandler = async (req, res) => {
   const { username, password, email, admin } = req.body;
   try {
     await postUser({ username, password, email, admin });
-    res.status(200).json("Usuario posteado con exito");
+    res.status(200).json("User added successfully");
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -64,12 +64,23 @@ const putRolUserHandler = async (req, res) => {
   }
 };
 
-
+//* Handler para banear un user
+const putStatusUserHandler = async  (req,res) =>{
+  const {id_user} = req.params
+  fv
+  try {
+    await putStatusUser(id_user)
+    res.status(200).json("Status changed")
+  } catch (error) {
+    res.status(400).json({error: error.message})
+  }
+}
 
 module.exports = {
   getUserHandler,
   postUserHandler,
   getAllUsersHandler,
   putRolUserHandler,
-  putPasswordUserHandler
+  putPasswordUserHandler,
+  putStatusUserHandler
 };

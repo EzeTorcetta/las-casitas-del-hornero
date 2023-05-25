@@ -9,9 +9,10 @@ const {
 //* Handler que me trae todos los Favoritos
 const getCartHandler = async (req, res) => {
   const { id_user } = req.params;
+  const {checkIn, checkOut} = req.query
 
   try {
-    const cart = await getCart(id_user);
+    const cart = await getCart(id_user, checkIn, checkOut);
     res.status(200).json(cart);
   } catch (error) {
     res.status(400).json({ error: error.message });

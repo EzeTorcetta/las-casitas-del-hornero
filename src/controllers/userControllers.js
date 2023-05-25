@@ -17,12 +17,13 @@ const getUser = async (password, email) => {
     } else {
       const findUser2 = await User.findOne({
         where: { password, email },
-        attributes: ["id", "username", "email", "rol"],
+        attributes: ["id", "username", "email", "rol","status"],
       });
       if (!findUser2) {
         throw new Error("Missing password");
       }
 
+      if(!findUser2.status) throw new Error("The user is banned")
       return findUser2;
     }
   }
@@ -30,7 +31,7 @@ const getUser = async (password, email) => {
 
 //*---------------CREATE USER---------------------
 
-const postUser = async ({ username, password, email, admin }) => {
+const postUser = async ({ username, password, email }) => {
   if (!username || !password || !email) {
     throw new Error("Faltan datos");
   } else {
@@ -65,7 +66,7 @@ const getAllUsers = async (id_user) => {
         },
       },
       order: [["id", "ASC"]],
-      attributes: ["id", "username", "email", "rol"],
+      attributes: ["id", "username", "email", "rol","status"],
     });
   } else {
     throw new Error("Permission denied, you are not an administrator");
@@ -106,6 +107,24 @@ const putRolUser = async (id_user, rol) => {
   return findUser;
 };
 
+//*------------- BANEAR USER -------------------------
+const putStatusUser = async (id_user) => {
+  const findUser = await User.findByPk(id_user);
+
+  if (findUser) {
+    if(findUser.status == true){findUser.status = false} else{
+
+      findUser.status == false
+    }
+   
+    await findUser.save();
+  } else {
+    throw new Error("User does not exist");
+  }
+
+  return findUser;
+};
+
 
 
 
@@ -114,6 +133,6 @@ module.exports = {
   postUser,
   getAllUsers,
   putRolUser,
-  putPasswordUser
-
+  putPasswordUser,
+  putStatusUser
 };
