@@ -13,9 +13,9 @@ const postRoomsHandler = async (req, res) => {
 
 //* borrar todas las habitaciones de un tipo en particular
 const deleteRoomsHandler = async (req, res) => {
-    const {id_roomType} = req.body
+    const {id_roomType,id_user} = req.body
     try {
-        await deleteRooms(id_roomType);
+        await deleteRooms(id_roomType,id_user);
         res.status(200).json("Rooms deleted successfully")
     } catch (error) {
         res.status(400).json({ error: error.message });

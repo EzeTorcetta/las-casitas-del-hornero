@@ -48,7 +48,14 @@ const createRooms = async(id_roomType, stock,id_user) => {
 
 
 //*------ DELETE ALL ROOMS  -------------------------
-const deleteRooms = async(id_roomType) => {
+const deleteRooms = async(id_roomType,id_user) => {
+  const hotel = await Hotel.findOne({where:{
+    id:roomType.HotelId,
+    UserId: id_user
+  }})
+
+  if(!hotel) throw new Error("The user does not have permissions to perform this action")
+
 
     const roomType = await RoomType.findByPk(id_roomType)
     if (!roomType) throw new Error("Room type doesn't exists");
