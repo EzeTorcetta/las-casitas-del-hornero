@@ -6,12 +6,15 @@ const { RoomType, Room,Hotel } = require("../db");
 
 
 //*------ CREATE NEW ROOMS-------------------------
-const createRooms = async(id_roomType, stock) => {
+const createRooms = async(id_roomType, stock,id_user) => {
 
     const roomType = await RoomType.findByPk(id_roomType)
-    const hotel = await Hotel.findByPk(roomType.HotelId)
+    const hotel = await Hotel.findOne({where:{
+      id:roomType.HotelId,
+      UserId: id_user
+    }})
 
-
+    if(!hotel) throw new Error("The user does not have permissions to perform this action")
 
 
     if (!roomType) throw new Error("Room type doesn't exists");

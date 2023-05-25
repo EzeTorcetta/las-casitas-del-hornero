@@ -2,9 +2,9 @@ const { createRooms, deleteRooms } = require("../controllers/roomsControllers")
 
 //* handler para crear habitaciones de un tipo en particular
 const postRoomsHandler = async (req, res) => {
-    const {id_roomType, stock} = req.body
+    const {id_roomType, stock,id_user} = req.body
     try {
-        const newRooms = await createRooms(id_roomType, stock);
+        const newRooms = await createRooms(id_roomType, stock,id_user);
         res.status(200).json(newRooms)
     } catch (error) {
         res.status(400).json({ error: error.message });
