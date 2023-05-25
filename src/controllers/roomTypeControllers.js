@@ -11,13 +11,63 @@ const getAllRoomTypes = async () => {
 };
 
 //*------------GET ALL TYPES ROOMS BY HOTEL ID-------------------
-const getRoomTypesByHotel = async (id_hotel) => {
+const getRoomTypesByHotel = async (id_hotel, checkIn, checkOut) => {
+  checkIn = new Date(checkIn);
+  checkOut = new Date(checkOut);
+
+  const rooms = await Room.findAll({
+    where: {
+      HotelId: id_hotel,
+    },
+  });
+
+  const roomsAvailable = rooms.filter((room) => {
+    let bool = false;
+    if (room.dates.length) {
+      for (let i = 0; i < room.dates.length; i++) {
+        if (room.dates[i] < checkIn && room.dates[i + 1] > checkOut) {
+          bool = true;
+        }
+        if (checkOut < room.dates[0]) {
+          bool = true;
+          console.log(true);
+        }
+        if (checkIn > room.dates[room.dates.length - 1]) {
+          bool = true;
+          console.log(true);
+        }
+      }
+    } else bool = true;
+    return bool;
+  });
+
+  const typeRoomsId = roomsAvailable.map((room) => room.RoomTypeId);
+
+  const typeRoomsCount = typeRoomsId.reduce((acc, id) => {
+    acc[id] = (acc[id] || 0) + 1;
+    return acc;
+  }, {});
+
   const hotelRoomTypes = await RoomType.findAll({
     where: { HotelId: id_hotel },
   });
 
-  return hotelRoomTypes
-    ? hotelRoomTypes
+  const typerooms = hotelRoomTypes.map((roomType) => {
+    const quantity = typeRoomsCount[roomType.id] || 0;
+    
+    return {
+      id: roomType.id,
+      people: roomType.people,
+      price: roomType.price,
+      name: roomType.name,
+      image: roomType.image,
+      hotelId: roomType.hotelId,
+      stock: quantity,
+    }
+  });
+
+  return typerooms
+    ? typerooms
     : new Error("Hotel room types not found");
 };
 

@@ -465,7 +465,7 @@ const getDetailHotel = async (id) => {
       },
       {
         model: RoomType,
-        attributes: ["id", "people", "price", "name", "image", "stock"],
+        attributes: ["id", "people", "price", "name", "image"],
       },
       {
         model: Review,

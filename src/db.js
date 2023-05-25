@@ -61,7 +61,6 @@ Hotel.belongsToMany(User, { through: Favorites });
 User.belongsToMany(Hotel, { through: Favorites });
 
 
-
 User.hasMany(Booking);
 Booking.belongsTo(User);
 
@@ -71,8 +70,6 @@ Booking.belongsTo(RoomType);
 
 Hotel.hasMany(Booking);
 Booking.belongsTo(Hotel);
-
-
 
 
 Cart.belongsTo(User);

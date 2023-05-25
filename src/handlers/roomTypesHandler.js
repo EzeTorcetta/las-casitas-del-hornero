@@ -18,9 +18,10 @@ const getAllRoomTypesHandler = async (req, res) => {
 //* Handler que trae todos los tipos de habitación de un hotel (por id_hotel)
 const getRoomTypesHandler = async (req, res) => {
   const { id_hotel } = req.params;
+  const {checkIn,checkOut} = req.query
 
   try {
-    const roomType = await getRoomTypesByHotel(id_hotel);
+    const roomType = await getRoomTypesByHotel(id_hotel,checkIn,checkOut);
     res.status(200).json(roomType);
   } catch (error) {
     res.status(400).json({ error: error.message });
