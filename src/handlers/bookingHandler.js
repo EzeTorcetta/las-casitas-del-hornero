@@ -17,7 +17,7 @@ const getAllBookingsHandler = async (req, res) => {
   }
 };
 
-//* handler para traer todos las reservaciones de un usuario (por id)
+//* handler para traer todos las reservaciones de un hotel quuue pertenece a un usuario admin(por id)
 const getBookingHotelHandler = async (req, res) => {
   const { id_user, id_hotel } = req.query;
 
@@ -44,9 +44,10 @@ const getBookingUserHandler = async (req, res) => {
 //* handler para postear reservas nuevas
 const postBookingHandler = async (req, res) => {
   const { id_user } = req.params;
+  const { checkIn, checkOut } = req.query;
   const data = req.body;
   try {
-    const booking = await postBooking(data, id_user);
+    const booking = await postBooking(data, id_user, checkIn, checkOut );
     res.status(200).json(booking);
   } catch (error) {
     res.status(400).json({ error: error.message });

@@ -1,33 +1,70 @@
 //?----------------------------IMPORTS--------------------------------
 
-const { User, RoomType, Cart, Hotel } = require("../db");
+const { User, RoomType, Cart, Hotel, Room} = require("../db");
 
 //?----------------------------CONTROLLERS------------------------------
 
 //*------------ GET CART OF USER -------------------
-const getCart = async (id_user) => {
+const getCart = async (id_user, checkIn, checkOut) => {
+
+  // traigo el cart del usuario
   const cart = await Cart.findAll({
     where: { UserId: id_user },
   });
 
-  const carts = await Promise.all(
-    cart.map(async (cart) => {
-      const roomtype = await RoomType.findByPk(cart.RoomTypeId);
+
+  checkIn = new Date(checkIn);
+  checkOut = new Date(checkOut);
+
+
+  // guardamos en carts todos los roomtypes con la cantidad y stock 🛒🛒
+  const finalCart = await Promise.all(
+
+    // se recorre el carrito y devuelve por cada elemento el amount y stock (además de los otros datos)
+    cart.map(async (item) => {
+      const roomtype = await RoomType.findByPk(item.RoomTypeId);
       const hotel = await Hotel.findByPk(roomtype.HotelId);
+
+    const rooms = await Room.findAll({
+     where: {
+      RoomTypeId: roomtype.id,
+      },
+    });
+
+    // Se filtran las habitaciones disponibles
+    const roomsAvailable = rooms.filter((room) => {
+      let bool = false;
+      if (room.dates.length) {
+        for (let i = 0; i < room.dates.length; i++) {
+          if (room.dates[i] < checkIn && room.dates[i + 1] > checkOut) {
+            bool = true;
+          }
+          if (checkOut < room.dates[0]) {
+            bool = true;
+            console.log(true);
+          }
+          if (checkIn > room.dates[room.dates.length - 1]) {
+            bool = true;
+            console.log(true);
+          }
+        }
+      } else bool = true;
+      return bool;
+    });
 
       const roomtypeWithAmount = {
         ...roomtype.toJSON(),
-        amount: cart.amount,
+        amount: item.amount,
         hotelName: hotel.name,
+        stock: roomsAvailable.length
       };
-
-  
 
       return roomtypeWithAmount;
     })
   );
 
-  const sortedCarts = carts.sort((a, b) => {
+  //se ordena el carrito para que no baile todo
+  const sortedCart = finalCart.sort((a, b) => {
     const hotelNameA = a.hotelName.toUpperCase();
     const hotelNameB = b.hotelName.toUpperCase();
 
@@ -41,11 +78,11 @@ const getCart = async (id_user) => {
   });
 
 
-  if (sortedCarts.length) return sortedCarts;
+  if (sortedCart.length) return sortedCart;
   else throw new Error("Cart is empty");
 };
 
-//*------------ ADD CART  -------------------
+//*------------ ADD ITEM IN CART  -------------------
 
 const postCart = async (id_user, id_roomtype) => {
   const user = await User.findByPk(id_user);
@@ -107,6 +144,10 @@ const deleteAllCart = async (id_user) => {
 
   return;
 };
+
+
+//*------------ PUT AMOUNT OF ITEMS CART -------------------
+
 
 const putAmountCart = async (id_user, id_roomtype, putAmount) => {
   const room = await Cart.findOne({
