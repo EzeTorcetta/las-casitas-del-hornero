@@ -26,7 +26,14 @@ module.exports = (sequelize) => {
         type: DATE,
         defaultValue: sequelize.literal("CURRENT_TIMESTAMP"),
       },
-      
+      checkIn: {
+        type: STRING,
+        allowNull: false,
+      },
+      checkOut: {
+        type: STRING,
+        allowNull: false,
+      },
     },
     {
       timestamps: false,
