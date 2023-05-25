@@ -21,6 +21,8 @@ const getAllBookings = async (id_user) => {
           totalPrice: booking.amount * booking.price,
           date: booking.date,
           hotelName: hotel.name,
+          checkIn: booking.checkIn,
+          checkOut: booking.checkOut
         };
       })
     );
@@ -60,6 +62,8 @@ const getBookingHotel = async (id_user, id_hotel) => {
         totalPrice: booking.amount * booking.price,
         date: booking.date,
         hotelName: hotel.name,
+        checkIn: booking.checkIn,
+        checkOut: booking.checkOut
       };
     })
   );
@@ -87,6 +91,8 @@ const getBookingUser = async (id_user) => {
         totalPrice: booking.amount * booking.price,
         date: booking.date,
         hotelName: hotel.name,
+        checkIn: booking.checkIn,
+        checkOut: booking.checkOut
       };
     })
   );
@@ -170,7 +176,8 @@ const postBooking = async (body, id_user,checkIn,checkOut) => {
     const checkOutToString = checkOut.toString()
 
     // Pushea todas las rooms avaliables
-    updates.push(roomsAvailable);
+    updates.push(...roomsAvailable);
+    
     
     // crea la reserva y la pushea en bookingData
     const bookingData = {
@@ -185,6 +192,7 @@ const postBooking = async (body, id_user,checkIn,checkOut) => {
   await Promise.all(updates); // creo que no sirve ni pa mierda
   
   // se guardan las actualizaciones de las dates de cada habitacion
+  console.log(updates)
   await updates.map((rooms) => rooms.save());  
 
   // crea todas las reservas en la DB
