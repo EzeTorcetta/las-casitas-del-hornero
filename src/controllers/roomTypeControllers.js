@@ -73,12 +73,13 @@ const getRoomTypesByHotel = async (id_hotel, checkIn, checkOut) => {
 
 //*------------CREATE NEW ROOM TYPE-------------------
 const createRoomTypesByHotel = async (
-  { people, price, name, image,stock },
+  { people, price, name, image,stock,id_user },
   id_hotel
 ) => {
   const hotelFind = await Hotel.findOne({
     where: {
       id: id_hotel,
+      UserId: id_user
     },
   });
 

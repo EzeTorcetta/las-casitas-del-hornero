@@ -96,6 +96,10 @@ const getBookingUser = async (id_user) => {
 
 //*-------- POST BOOKING ---------------------
 const postBooking = async (body, id_user,checkIn,checkOut) => {
+  const userFind = await User.findByPk(id_user)
+
+  if(!userFind){ throw  new Error("User not register")}
+
   const roomTypeIds = body.map((item) => item.id);
   const roomTypes = await RoomType.findAll({ where: { id: roomTypeIds } });
 
