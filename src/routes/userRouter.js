@@ -6,8 +6,8 @@ const {
   postUserHandler,
   getAllUsersHandler,
   putRolUserHandler,
-  putPasswordUserHandler
-
+  putPasswordUserHandler,
+  putStatusUserHandler
 } = require("../handlers/userHandler");
 
 const checkUserProperties = (req, res, next) => {
@@ -27,6 +27,7 @@ const checkUserProperties = (req, res, next) => {
 userRouter.post("/", checkUserProperties);
 userRouter.get("/:id_user", getAllUsersHandler);
 userRouter.put("/password", putPasswordUserHandler)
+userRouter.put("/status/:id_user",putStatusUserHandler)
 userRouter.put("/", putRolUserHandler);
 
 module.exports = userRouter;
