@@ -43,7 +43,7 @@ const getAllHotelsHandler = async (req, res) => {
     if (allHotels.length || allHotels.allHotels?.length) {
       res.status(200).json(allHotels);
     } else
-      res.status(400).json({ error: "No hotel was found with the date sent" });
+      res.status(400).json({ error: "No se encontró ningún hotel con los datos solicitados" });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }

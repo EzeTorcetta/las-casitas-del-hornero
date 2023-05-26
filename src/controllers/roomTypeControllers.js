@@ -30,11 +30,11 @@ const getRoomTypesByHotel = async (id_hotel, checkIn, checkOut) => {
         }
         if (checkOut < room.dates[0]) {
           bool = true;
-          console.log(true);
+        
         }
         if (checkIn > room.dates[room.dates.length - 1]) {
           bool = true;
-          console.log(true);
+         
         }
       }
     } else bool = true;

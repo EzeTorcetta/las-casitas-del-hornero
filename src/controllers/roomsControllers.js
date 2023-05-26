@@ -35,7 +35,7 @@ const createRooms = async(id_roomType, stock,id_user) => {
       for (let i = 1; i <= stock; i++) {
         const roomNumber = lastRoomNumber + i;
        const newRoom = await Room.create({ number: roomNumber });
-       console.log(newRoom);
+      
         await roomType.addRoom(newRoom)
         await hotel.addRoom(newRoom)
       }

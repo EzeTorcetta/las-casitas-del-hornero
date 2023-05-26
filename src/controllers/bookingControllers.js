@@ -109,27 +109,36 @@ const postBooking = async (body, id_user,checkIn,checkOut) => {
   const roomTypeIds = body.map((item) => item.id);
   const roomTypes = await RoomType.findAll({ where: { id: roomTypeIds } });
 
+
   checkIn = new Date(checkIn);
   checkOut = new Date(checkOut);
 
+  checkIn.setDate(checkIn.getDate() + 1);
+  checkOut.setDate(checkOut.getDate() + 1);
   // Completar array entre checkIn y checkOut:
   const resultado = (checkIn, checkOut) => {
-    var dates = [];
-    var currentDate = checkIn;
+    let dates = [];
+    let currentDate = new Date(checkIn);
 
     while (currentDate <= checkOut) {
-      var year = currentDate.getFullYear();
-      var month = currentDate.getMonth() + 1; 
-      var day = currentDate.getDate();
+      let year = currentDate.getFullYear();
+      let month = currentDate.getMonth() + 1; 
+      let day = currentDate.getDate();
+      
       dates.push(year + '-' + month + '-' + day);
       currentDate.setDate(currentDate.getDate() + 1);
     }
     return dates;
   }
   
+  const fechasx = resultado(checkIn,checkOut)
+ 
+
+  
   const updates = [];
   const bookings = [];
 
+ 
   // recorrer cada roomType:
   for (let i = 0; i < body.length; i++) {
     // busca la  roomtype macheando el primer id de roomtype enviado por body
@@ -140,8 +149,9 @@ const postBooking = async (body, id_user,checkIn,checkOut) => {
     //Trae todas las habitaciones pertenecientes al RoomType
     const rooms = await Room.findAll({where:{ RoomTypeId: roomType.id}});
 
- 
     // Se guardan en roomsAvailable todas las rooms disponibles del tipo de habitación en particular
+
+  
     const roomsAvailable = rooms.filter((room)=>{
       let bool = false;
       if(room.dates.length){
@@ -149,13 +159,15 @@ const postBooking = async (body, id_user,checkIn,checkOut) => {
           if(room.dates[j] < checkIn && room.dates[j+1] > checkOut){ 
             bool = true
           }
-          if(checkOut<room.dates[0]){bool=true; console.log(true)};               //! BORRAR COLSOLE.LOG
-          if(checkIn>room.dates[room.dates.length-1]){bool=true;console.log(true)}   // ! BORRAR COLSOLE.LOG
+          if(checkOut<room.dates[0]){bool=true; };               
+          if(checkIn>room.dates[room.dates.length-1]){bool=true;}   
         }
       }
-      else bool = true;
       return bool;
     })
+
+
+
 
     // REVISAMOS QUE QUEDEN LA MISMA CANTIDAD O MAS HABITACIONES DISPONIBLES QUE LAS QUE EL WACHIN NECESITA
     const comprobacionStock = roomsAvailable.length - body[i].amount;
@@ -166,11 +178,13 @@ const postBooking = async (body, id_user,checkIn,checkOut) => {
     };
 
     // Se actualizan las dates  de cada habitacion(room) y se ordenan
-    for (let k=0;k<body[i].amount-1;k++){
-      roomsAvailable[k].dates = [...roomsAvailable[k].dates, ...resultado];
-      roomsAvailable[k].dates.sort((date1, date2) => date1 - date2);
+    for (let k=0;k<body[i].amount;k++){
+       roomsAvailable[k].dates = [...roomsAvailable[k].dates, ...fechasx];
+       roomsAvailable[k].dates.sort((date1, date2) => new Date(date1) - new Date(date2));
+     
     };
 
+  
     
     const checkInToString = checkIn.toString()
     const checkOutToString = checkOut.toString()
@@ -192,7 +206,7 @@ const postBooking = async (body, id_user,checkIn,checkOut) => {
   await Promise.all(updates); // creo que no sirve ni pa mierda
   
   // se guardan las actualizaciones de las dates de cada habitacion
-  console.log(updates)
+
   await updates.map((rooms) => rooms.save());  
 
   // crea todas las reservas en la DB
