@@ -67,7 +67,7 @@ const putRolUserHandler = async (req, res) => {
 //* Handler para banear un user
 const putStatusUserHandler = async  (req,res) =>{
   const {id_user} = req.params
-  fv
+  
   try {
     await putStatusUser(id_user)
     res.status(200).json("Estado cambiado")

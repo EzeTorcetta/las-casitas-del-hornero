@@ -114,7 +114,7 @@ const putStatusUser = async (id_user) => {
   if (findUser) {
     if(findUser.status == true){findUser.status = false} else{
 
-      findUser.status == false
+      findUser.status = true
     }
    
     await findUser.save();
