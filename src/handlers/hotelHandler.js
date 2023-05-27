@@ -25,7 +25,7 @@ const getAllHotelsHandler = async (req, res) => {
 
   try {
     let allHotels;
-    services || province || rating || name
+    services || province || rating || name || checkIn || checkOut
       ? (allHotels = await getAllHotelsQuery(
           services,
           province,
