@@ -54,7 +54,7 @@ module.exports = (sequelize) => {
       valoration: {
         type: FLOAT(2),
         validate: {
-          min: 0,
+          min: 1,
           max: 10,
         },
         defaultValue: 5,
