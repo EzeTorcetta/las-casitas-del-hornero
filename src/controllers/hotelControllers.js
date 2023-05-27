@@ -507,7 +507,7 @@ const createHotel = async (
     rating,
     description,
     services,
-    valoration,
+    
   },
   id
 ) => {
@@ -531,8 +531,7 @@ const createHotel = async (
     location,
     rating,
     description,
-    valoration,
-  });
+  })
 
   await newHotel.addServices(services);
   await userFind.addHotel(newHotel);
@@ -540,10 +539,28 @@ const createHotel = async (
   return newHotel;
 };
 
+
+const putStatusHotel = async(id_hotel) =>{
+  const findHotel = await Hotel.findByPk(id_hotel);
+
+  if (findHotel) {
+    if(findHotel.status == true){findHotel.status = false} else{
+
+      findHotel.status = true
+    }
+   
+    await findHotel.save();
+  } else {
+    throw new Error("El hotel no existe");
+  }
+
+  return findHotel;
+}
 module.exports = {
   getAllHotels,
   getDetailHotel,
   createHotel,
   getAllHotelsQuery,
   getUserHotels,
+  putStatusHotel
 };
