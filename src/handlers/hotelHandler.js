@@ -53,7 +53,7 @@ const getAllHotelsHandler = async (req, res) => {
 //* Handler que trae el hotel especifico de la DB
 const getDetailHotelHandler = async (req, res) => {
   const { id_hotel } = req.params;
-  const {checkIn,checkOut} = req.query
+ 
   try {
     const detailHotel = await getDetailHotel(id_hotel,checkIn,checkOut);
     res.status(200).json(detailHotel);
