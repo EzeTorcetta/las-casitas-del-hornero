@@ -53,5 +53,21 @@ const deleteRequest = async (id_user) => {
     return
 }
 
+const putRequest = async (id) => {
+    const request = await Request.findByPk(id)
 
-module.exports = { getRequest, postRequest, deleteRequest }
+    if (request) {
+        if (request.status == true) { request.status = false } else {
+
+            request.status = true
+        }
+
+        await request.save();
+    } else {
+        throw new Error("La peticion no existe");
+    }
+
+    return
+}
+
+module.exports = { getRequest, postRequest, deleteRequest, putRequest }
