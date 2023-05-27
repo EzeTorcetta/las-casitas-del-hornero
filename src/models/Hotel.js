@@ -1,4 +1,4 @@
-const { STRING, INTEGER, FLOAT, TEXT, ARRAY, DOUBLE } = require("sequelize");
+const { STRING, INTEGER, FLOAT, TEXT, ARRAY, DOUBLE,BOOLEAN } = require("sequelize");
 
 module.exports = (sequelize) => {
   sequelize.define(
@@ -54,10 +54,12 @@ module.exports = (sequelize) => {
       valoration: {
         type: FLOAT(2),
         validate: {
-          min: 1,
+          min: 0,
           max: 10,
         },
+        defaultValue: 5,
         allowNull: false,
+
       },
       province: {
         type: STRING,
@@ -72,6 +74,11 @@ module.exports = (sequelize) => {
         allowNull: false,
       },
       location: { type: ARRAY(DOUBLE), allowNull: false },
+      status: {
+        type: BOOLEAN,
+        allowNull: false,
+        defaultValue: true
+      }
     },
     {
       timestamps: false,

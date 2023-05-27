@@ -99,7 +99,6 @@ const CreateHotels = async () => {
     locality: "MARIA IGNACIA",
     location: [1200, -1200],
     rating: 2,
-    valoration: 8,
     description: "BLABLALBALABLA",
     image: [
       "https://media-cdn.tripadvisor.com/media/photo-s/16/1a/ea/54/hotel-presidente-4s.jpg",
@@ -115,7 +114,6 @@ const CreateHotels = async () => {
     locality: "LAS PIEDRITAS",
     location: [300, -300],
     rating: 3,
-    valoration: 4,
     description: "BLABLALBALABLA",
     image: [
       "https://media-cdn.tripadvisor.com/media/photo-s/16/1a/ea/54/hotel-presidente-4s.jpg",
@@ -131,7 +129,6 @@ const CreateHotels = async () => {
     locality: "EL BOLSON",
     location: [-2340, -3892],
     rating: 5,
-    valoration: 3,
     description: "BLABLALBALABLA",
     image: [
       "https://media-cdn.tripadvisor.com/media/photo-s/16/1a/ea/54/hotel-presidente-4s.jpg",

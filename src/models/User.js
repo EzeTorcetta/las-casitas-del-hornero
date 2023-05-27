@@ -13,7 +13,6 @@ module.exports = (sequelize) => {
       username: {
         type: STRING,
         allowNull: false,
-        unique: true,
       },
       password: {
         type: STRING,
@@ -37,6 +36,7 @@ module.exports = (sequelize) => {
       },
       image: {
         type: STRING,
+        allowNull: true,
       },
       status: {
         type: BOOLEAN,
