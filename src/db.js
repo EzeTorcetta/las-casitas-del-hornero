@@ -5,10 +5,9 @@ const path = require("path");
 const { DB_USER, DB_PASSWORD, DB_HOST, DB_NAME, DB_DEPLOY } = process.env;
 
 const sequelize = new Sequelize(
-//   `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}`,
+  // `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}`,
   DB_DEPLOY,
   { logging: false, native: false }
-
 );
 
 const basename = path.basename(__filename);
@@ -35,13 +34,12 @@ let capsEntries = entries.map((entry) => [
   entry[1],
 ]);
 sequelize.models = Object.fromEntries(capsEntries);
-const { Request, Hotel, Room, RoomType, Service, User, Review, Booking, Cart } = sequelize.models
-
+const { Request, Hotel, Room, RoomType, Service, User, Review, Booking, Cart } =
+  sequelize.models;
 
 User.hasMany(Request);
 
 Request.belongsTo(User);
-
 
 User.hasMany(Hotel);
 Hotel.belongsTo(User);
@@ -66,22 +64,17 @@ const Favorites = sequelize.define("Favorites");
 Hotel.belongsToMany(User, { through: Favorites });
 User.belongsToMany(Hotel, { through: Favorites });
 
-
 User.hasMany(Booking);
 Booking.belongsTo(User);
 
 RoomType.hasMany(Booking);
 Booking.belongsTo(RoomType);
 
-
 Hotel.hasMany(Booking);
 Booking.belongsTo(Hotel);
 
-
 Cart.belongsTo(User);
 Cart.belongsTo(RoomType);
-
-
 
 module.exports = {
   ...sequelize.models,
