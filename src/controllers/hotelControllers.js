@@ -83,8 +83,8 @@ const getAllHotelsQuery = async (
 ) => {
 
 
-const formattedCheckIn = moment(checkIn, 'YYYY-MM-DD').toDate();
-const formattedCheckOut = moment(checkOut, 'YYYY-MM-DD').toDate();
+  const formattedCheckIn = moment(checkIn, 'YYYY-MM-DD').toDate();
+  const formattedCheckOut = moment(checkOut, 'YYYY-MM-DD').toDate();
 
   const whereClause = {};
 
@@ -357,13 +357,13 @@ const formattedCheckOut = moment(checkOut, 'YYYY-MM-DD').toDate();
   let hotelsAvailables = hoteles
   //* Traigo los Id de los hoteles que pasaron los filtros
 
-  if(checkIn && checkOut){
+  if (checkIn && checkOut) {
 
     const hotelsId = hoteles.map((hotel) => hotel.id)
-  
-    
+
+
     //* Traigo todas las rooms que pertenezcan a esos hoteles
-  
+
     const rooms = await Room.findAll({
       where: {
         HotelId: {
@@ -371,35 +371,37 @@ const formattedCheckOut = moment(checkOut, 'YYYY-MM-DD').toDate();
         },
       }
     });
-  
+
     checkIn = new Date(checkIn);
     checkOut = new Date(checkOut);
-  
-  
+
+
     //* Se filtran las rooms que estan disponibles en las fechas de CheckIn y CheckOut
-  
-    const roomsAvailable = rooms.filter((room)=>{
+
+    const roomsAvailable = rooms.filter((room) => {
       let bool = false;
-      if(room.dates.length){
-        for (let i=0;i<room.dates.length; i++){
-          if(room.dates[i] < checkIn && room.dates[i+1] > checkOut){
+      if (room.dates.length) {
+        for (let i = 0; i < room.dates.length; i++) {
+          if (room.dates[i] < checkIn && room.dates[i + 1] > checkOut) {
             bool = true
           }
-          if(checkOut<room.dates[0]){bool=true; console.log(true)};
-          if(checkIn>room.dates[room.dates.length-1]){bool=true;console.log(true)}
+          if (checkOut < room.dates[0]) { bool = true; };
+          if (checkIn > room.dates[room.dates.length - 1]) { bool = true; }
         }
       }
       else bool = true;
       return bool;
     })
-  
+
     const hotelsId2 = roomsAvailable.map((room) => room.HotelId)
-    
-     hotelsAvailables = await Hotel.findAll({where:{
-      id: {
-        [Op.in]: hotelsId2
-      },
-    }})
+
+    hotelsAvailables = await Hotel.findAll({
+      where: {
+        id: {
+          [Op.in]: hotelsId2
+        },
+      }
+    })
   }
 
 
@@ -507,7 +509,7 @@ const createHotel = async (
     rating,
     description,
     services,
-    
+
   },
   id
 ) => {
@@ -540,15 +542,15 @@ const createHotel = async (
 };
 
 
-const putStatusHotel = async(id_hotel) =>{
+const putStatusHotel = async (id_hotel) => {
   const findHotel = await Hotel.findByPk(id_hotel);
 
   if (findHotel) {
-    if(findHotel.status == true){findHotel.status = false} else{
+    if (findHotel.status == true) { findHotel.status = false } else {
 
       findHotel.status = true
     }
-   
+
     await findHotel.save();
   } else {
     throw new Error("El hotel no existe");

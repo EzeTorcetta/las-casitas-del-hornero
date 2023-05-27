@@ -27,20 +27,20 @@ const getAllHotelsHandler = async (req, res) => {
     let allHotels;
     services || province || rating || name || checkIn || checkOut
       ? (allHotels = await getAllHotelsQuery(
-          services,
-          province,
-          locality,
-          department,
-          rating,
-          order,
-          page,
-          name,
-          checkIn,
-          checkOut
-        ))
+        services,
+        province,
+        locality,
+        department,
+        rating,
+        order,
+        page,
+        name,
+        checkIn,
+        checkOut
+      ))
       : id_user
-      ? (allHotels = await getUserHotels(id_user))
-      : (allHotels = await getAllHotels(order, page));
+        ? (allHotels = await getUserHotels(id_user))
+        : (allHotels = await getAllHotels(order, page));
     if (allHotels.length || allHotels.allHotels?.length) {
       res.status(200).json(allHotels);
     } else
@@ -53,7 +53,7 @@ const getAllHotelsHandler = async (req, res) => {
 //* Handler que trae el hotel especifico de la DB
 const getDetailHotelHandler = async (req, res) => {
   const { id_hotel } = req.params;
- 
+
   try {
     const detailHotel = await getDetailHotel(id_hotel);
     res.status(200).json(detailHotel);
@@ -77,7 +77,7 @@ const postHotelHandler = async (req, res) => {
     rating,
     location,
     services,
-  
+
   } = req.body;
   try {
     if (id_user) {
@@ -95,7 +95,7 @@ const postHotelHandler = async (req, res) => {
             locality,
             location,
             services,
-       
+
           },
           id_user
         );
@@ -109,14 +109,14 @@ const postHotelHandler = async (req, res) => {
   }
 };
 
-const putStatusHotelHandler = async  (req,res) =>{
-  const {id_hotel} = req.params
-  
+const putStatusHotelHandler = async (req, res) => {
+  const { id_hotel } = req.params
+
   try {
     await putStatusHotel(id_hotel)
     res.status(200).json("Estado cambiado")
   } catch (error) {
-    res.status(400).json({error: error.message})
+    res.status(400).json({ error: error.message })
   }
 }
 

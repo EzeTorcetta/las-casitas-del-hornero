@@ -1,4 +1,4 @@
-const { getRequest, postRequest, deleteRequest } = require("../controllers/requestControllers")
+const { getRequest, postRequest, deleteRequest, putRequest } = require("../controllers/requestControllers")
 
 const getRequestHandler = async (req, res) => {
 
@@ -32,9 +32,19 @@ const deleteRequestHandler = async (req, res) => {
    }
 };
 
+const putRequestHandler = async (req, res) => {
+   const { id } = req.params
+   try {
+      await putRequest(id)
+      res.status(200).json("Peticiones actualizada con exito!")
+   } catch (error) {
+      res.status(400).json({ error: error.message })
+   }
+};
+
 module.exports = {
    getRequestHandler,
    postRequestHandler,
-   deleteRequestHandler
-
+   deleteRequestHandler,
+   putRequestHandler
 };
