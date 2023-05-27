@@ -20,7 +20,7 @@ const postServicesHandler = async (req, res) => {
 
   try {
     await createServices({ name });
-    res.status(200).json("Service created successfully!!");
+    res.status(200).json("Servicio creado con exito");
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -32,7 +32,7 @@ const deleteServicesHandler = async (req, res) => {
 
   try {
     await deleteService(id_service);
-    res.status(200).json("Service delete successfully!!");
+    res.status(200).json("Servicio eliminado con exito");
   } catch (error) {
     res.status(400).json({ error: error.message });
   }

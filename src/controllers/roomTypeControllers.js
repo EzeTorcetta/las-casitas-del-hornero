@@ -7,64 +7,91 @@ const { RoomType, Hotel,Room } = require("../db");
 const getAllRoomTypes = async () => {
   const roomTypes = await RoomType.findAll();
 
-  return roomTypes ? roomTypes : new Error("Room types not found");
+  return roomTypes ? roomTypes : new Error("Tipos de habitación no encontrados");
 };
 
 //*------------GET ALL TYPES ROOMS BY HOTEL ID-------------------
 const getRoomTypesByHotel = async (id_hotel, checkIn, checkOut) => {
-  checkIn = new Date(checkIn);
-  checkOut = new Date(checkOut);
 
-  const rooms = await Room.findAll({
-    where: {
-      HotelId: id_hotel,
-    },
-  });
+  let typerooms
+  
+  if(checkIn && checkOut){
 
-  const roomsAvailable = rooms.filter((room) => {
-    let bool = false;
-    if (room.dates.length) {
-      for (let i = 0; i < room.dates.length; i++) {
-        if (room.dates[i] < checkIn && room.dates[i + 1] > checkOut) {
-          bool = true;
+    checkIn = new Date(checkIn);
+    checkOut = new Date(checkOut);
+  
+    const rooms = await Room.findAll({
+      where: {
+        HotelId: id_hotel,
+      },
+    });
+  
+    const roomsAvailable = rooms.filter((room) => {
+      let bool = false;
+      if (room.dates.length) {
+        for (let i = 0; i < room.dates.length; i++) {
+          if (room.dates[i] < checkIn && room.dates[i + 1] > checkOut) {
+            bool = true;
+          }
+          if (checkOut < room.dates[0]) {
+            bool = true;
+          
+          }
+          if (checkIn > room.dates[room.dates.length - 1]) {
+            bool = true;
+           
+          }
         }
-        if (checkOut < room.dates[0]) {
-          bool = true;
-          console.log(true);
-        }
-        if (checkIn > room.dates[room.dates.length - 1]) {
-          bool = true;
-          console.log(true);
-        }
+      } else bool = true;
+      return bool;
+    });
+  
+    const typeRoomsId = roomsAvailable.map((room) => room.RoomTypeId);
+  
+    const typeRoomsCount = typeRoomsId.reduce((acc, id) => {
+      acc[id] = (acc[id] || 0) + 1;
+      return acc;
+    }, {});
+  
+    const hotelRoomTypes = await RoomType.findAll({
+      where: { HotelId: id_hotel },
+    });
+  
+    typerooms = hotelRoomTypes.map((roomType) => {
+      const quantity = typeRoomsCount[roomType.id] || 0;
+      
+      return {
+        id: roomType.id,
+        people: roomType.people,
+        price: roomType.price,
+        name: roomType.name,
+        image: roomType.image,
+        hotelId: roomType.hotelId,
+        stock: quantity,
+        filtered : true
       }
-    } else bool = true;
-    return bool;
-  });
+    });
+  } else{
+    const hotelRoomTypes = await RoomType.findAll({
+      where: { HotelId: id_hotel },
+    });
 
-  const typeRoomsId = roomsAvailable.map((room) => room.RoomTypeId);
-
-  const typeRoomsCount = typeRoomsId.reduce((acc, id) => {
-    acc[id] = (acc[id] || 0) + 1;
-    return acc;
-  }, {});
-
-  const hotelRoomTypes = await RoomType.findAll({
-    where: { HotelId: id_hotel },
-  });
-
-  const typerooms = hotelRoomTypes.map((roomType) => {
-    const quantity = typeRoomsCount[roomType.id] || 0;
+    typerooms = hotelRoomTypes.map((roomType) => {
     
-    return {
-      id: roomType.id,
-      people: roomType.people,
-      price: roomType.price,
-      name: roomType.name,
-      image: roomType.image,
-      hotelId: roomType.hotelId,
-      stock: quantity,
-    }
-  });
+      
+      return {
+        id: roomType.id,
+        people: roomType.people,
+        price: roomType.price,
+        name: roomType.name,
+        image: roomType.image,
+        hotelId: roomType.hotelId,
+        stock: 0,
+        filtered : false
+      }
+    });
+
+  }
 
   return typerooms
     ? typerooms
@@ -83,7 +110,7 @@ const createRoomTypesByHotel = async (
     },
   });
 
-  if (!hotelFind) throw new Error("User not found or User is not Admin");
+  if (!hotelFind) throw new Error("Usuario no encontrado o Usuario no es administrador");
 
   const roomFind = await RoomType.findOne({
     where: {
@@ -92,7 +119,7 @@ const createRoomTypesByHotel = async (
     },
   });
 
-  if (roomFind) throw new Error("Room type already exists.");
+  if (roomFind) throw new Error("El tipo de habitación ya existe");
 
   const newRoomType = await RoomType.create({
     people,
@@ -133,7 +160,7 @@ const putRoomType = async (id_roomtype,price,image,id_user) => {
     UserId: id_user
   }})
 
-  if(!hotel) throw new Error("The user does not have permissions to perform this action")
+  if(!hotel) throw new Error("El usuario no tiene permisos para realizar esta acción.")
 
 
 
@@ -141,7 +168,7 @@ const putRoomType = async (id_roomtype,price,image,id_user) => {
 
 
   if(!roomTypeFind){
-    throw new Error("RoomType not found")
+    throw new Error("Tipo de habitación no encontrado")
   }
 
 

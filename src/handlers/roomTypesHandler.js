@@ -51,8 +51,10 @@ const putRoomTypesHandler = async (req,res) => {
  
 
   try {
-    await putRoomType(id_roomtype, price,image, id_user)
-    res.status(200).json("RoomType successfully modified")
+
+    await putRoomType(id_roomtype, price,image,id_user)
+
+    res.status(200).json("Tipo de habitacion modificada con exito")
   } catch (error) {
     res.status(400).json({ error: error.message });
   }

@@ -37,7 +37,7 @@ const postReviewHandler = async (req, res) => {
   const { punctuation, review, username } = req.body;
   try {
     await postReviews(id_hotel, punctuation, review, username);
-    res.status(200).json("Review published successfully");
+    res.status(200).json("Reseña publicada con éxito");
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -49,7 +49,7 @@ const deleteReviewHandler = async (req, res) => {
   const { id_review } = req.params;
   try {
     await deleteReviews(id_review);
-    res.status(200).json("Review successfully removed");
+    res.status(200).json("Reseña eliminada con éxito");
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -62,7 +62,7 @@ const deleteReviewUserHandler = async (req, res) => {
 
   try {
     await deleteReviewUser(username, id_review);
-    res.status(200).json("Review successfully removed");
+    res.status(200).json("Reseña eliminada con éxito");
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -74,7 +74,7 @@ const putReviewHandler = async (req, res) => {
   const { username, id_review, punctuation, review } = req.body;
   try {
     await putReview(username, id_review, punctuation, review);
-    res.status(200).json("Review successfully modified");
+    res.status(200).json("Reseña modificada con éxito");
   } catch (error) {
     res.status(400).json({ error: error.message });
   }

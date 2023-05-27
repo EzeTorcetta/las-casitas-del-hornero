@@ -35,7 +35,7 @@ const postUserHandler = async (req, res) => {
   const { username, password, email, admin } = req.body;
   try {
     await postUser({ username, password, email, admin });
-    res.status(200).json("User added successfully");
+    res.status(200).json("Usuario agregado con exito");
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -46,7 +46,7 @@ const putPasswordUserHandler = async (req,res) => {
   const {email,password} =req.body
   try {
     await putPasswordUser(email,password)
-    res.status(200).json("Password changed successfully!")
+    res.status(200).json("Contraseña cambiada con exito")
   } catch (error) {
     res.status(400).json({error: error.message})
   }
@@ -67,10 +67,10 @@ const putRolUserHandler = async (req, res) => {
 //* Handler para banear un user
 const putStatusUserHandler = async  (req,res) =>{
   const {id_user} = req.params
-  fv
+  
   try {
     await putStatusUser(id_user)
-    res.status(200).json("Status changed")
+    res.status(200).json("Estado cambiado")
   } catch (error) {
     res.status(400).json({error: error.message})
   }

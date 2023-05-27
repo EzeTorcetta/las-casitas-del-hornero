@@ -354,49 +354,53 @@ const formattedCheckOut = moment(checkOut, 'YYYY-MM-DD').toDate();
     });
   }
 
- 
+  let hotelsAvailables = hoteles
   //* Traigo los Id de los hoteles que pasaron los filtros
-  const hotelsId = hoteles.map((hotel) => hotel.id)
 
+  if(checkIn && checkOut){
+
+    const hotelsId = hoteles.map((hotel) => hotel.id)
   
-  //* Traigo todas las rooms que pertenezcan a esos hoteles
-
-  const rooms = await Room.findAll({
-    where: {
-      HotelId: {
-        [Op.in]: hotelsId
-      },
-    }
-  });
-
-  checkIn = new Date(checkIn);
-  checkOut = new Date(checkOut);
-
-
-  //* Se filtran las rooms que estan disponibles en las fechas de CheckIn y CheckOut
-
-  const roomsAvailable = rooms.filter((room)=>{
-    let bool = false;
-    if(room.dates.length){
-      for (let i=0;i<room.dates.length; i++){
-        if(room.dates[i] < checkIn && room.dates[i+1] > checkOut){
-          bool = true
-        }
-        if(checkOut<room.dates[0]){bool=true; console.log(true)};
-        if(checkIn>room.dates[room.dates.length-1]){bool=true;console.log(true)}
+    
+    //* Traigo todas las rooms que pertenezcan a esos hoteles
+  
+    const rooms = await Room.findAll({
+      where: {
+        HotelId: {
+          [Op.in]: hotelsId
+        },
       }
-    }
-    else bool = true;
-    return bool;
-  })
-
-  const hotelsId2 = roomsAvailable.map((room) => room.HotelId)
+    });
   
-  const hotelsAvailables = await Hotel.findAll({where:{
-    id: {
-      [Op.in]: hotelsId2
-    },
-  }})
+    checkIn = new Date(checkIn);
+    checkOut = new Date(checkOut);
+  
+  
+    //* Se filtran las rooms que estan disponibles en las fechas de CheckIn y CheckOut
+  
+    const roomsAvailable = rooms.filter((room)=>{
+      let bool = false;
+      if(room.dates.length){
+        for (let i=0;i<room.dates.length; i++){
+          if(room.dates[i] < checkIn && room.dates[i+1] > checkOut){
+            bool = true
+          }
+          if(checkOut<room.dates[0]){bool=true; console.log(true)};
+          if(checkIn>room.dates[room.dates.length-1]){bool=true;console.log(true)}
+        }
+      }
+      else bool = true;
+      return bool;
+    })
+  
+    const hotelsId2 = roomsAvailable.map((room) => room.HotelId)
+    
+     hotelsAvailables = await Hotel.findAll({where:{
+      id: {
+        [Op.in]: hotelsId2
+      },
+    }})
+  }
 
 
   //* Paginado------------------------------
@@ -443,7 +447,7 @@ const getUserHotels = async (id_user) => {
   });
 
   if (!hotels.length) {
-    throw new Error("The user does not have a hotel");
+    throw new Error("El usuario no posee hoteles");
   }
 
   return hotels;
@@ -484,7 +488,7 @@ const getDetailHotel = async (id) => {
   if (hotel) {
     return hotel;
   } else {
-    throw new Error("Hotel not found");
+    throw new Error("Hotel no encontrado");
   }
 };
 
@@ -503,7 +507,7 @@ const createHotel = async (
     rating,
     description,
     services,
-    valoration,
+    
   },
   id
 ) => {
@@ -514,7 +518,7 @@ const createHotel = async (
     },
   });
 
-  if (!userFind) throw new Error("User not found or User is not Admin");
+  if (!userFind) throw new Error("Usuario no encontrado o no eres administrador");
 
   const newHotel = await Hotel.create({
     name,
@@ -527,8 +531,7 @@ const createHotel = async (
     location,
     rating,
     description,
-    valoration,
-  });
+  })
 
   await newHotel.addServices(services);
   await userFind.addHotel(newHotel);
@@ -536,10 +539,28 @@ const createHotel = async (
   return newHotel;
 };
 
+
+const putStatusHotel = async(id_hotel) =>{
+  const findHotel = await Hotel.findByPk(id_hotel);
+
+  if (findHotel) {
+    if(findHotel.status == true){findHotel.status = false} else{
+
+      findHotel.status = true
+    }
+   
+    await findHotel.save();
+  } else {
+    throw new Error("El hotel no existe");
+  }
+
+  return findHotel;
+}
 module.exports = {
   getAllHotels,
   getDetailHotel,
   createHotel,
   getAllHotelsQuery,
   getUserHotels,
+  putStatusHotel
 };

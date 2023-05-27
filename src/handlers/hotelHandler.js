@@ -4,6 +4,7 @@ const {
   getDetailHotel,
   createHotel,
   getUserHotels,
+  putStatusHotel
 } = require("../controllers/hotelControllers");
 
 //* Handler que trae todos los hoteles de la DB
@@ -43,7 +44,7 @@ const getAllHotelsHandler = async (req, res) => {
     if (allHotels.length || allHotels.allHotels?.length) {
       res.status(200).json(allHotels);
     } else
-      res.status(400).json({ error: "No hotel was found with the date sent" });
+      res.status(400).json({ error: "No se encontró ningún hotel con los datos solicitados" });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -52,9 +53,9 @@ const getAllHotelsHandler = async (req, res) => {
 //* Handler que trae el hotel especifico de la DB
 const getDetailHotelHandler = async (req, res) => {
   const { id_hotel } = req.params;
-  const {checkIn,checkOut} = req.query
+ 
   try {
-    const detailHotel = await getDetailHotel(id_hotel,checkIn,checkOut);
+    const detailHotel = await getDetailHotel(id_hotel);
     res.status(200).json(detailHotel);
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -76,7 +77,7 @@ const postHotelHandler = async (req, res) => {
     rating,
     location,
     services,
-    valoration,
+  
   } = req.body;
   try {
     if (id_user) {
@@ -94,7 +95,7 @@ const postHotelHandler = async (req, res) => {
             locality,
             location,
             services,
-            valoration,
+       
           },
           id_user
         );
@@ -108,8 +109,22 @@ const postHotelHandler = async (req, res) => {
   }
 };
 
+const putStatusHotelHandler = async  (req,res) =>{
+  const {id_hotel} = req.params
+  
+  try {
+    await putStatusHotel(id_hotel)
+    res.status(200).json("Estado cambiado")
+  } catch (error) {
+    res.status(400).json({error: error.message})
+  }
+}
+
+
+
 module.exports = {
   getAllHotelsHandler,
   getDetailHotelHandler,
   postHotelHandler,
+  putStatusHotelHandler
 };

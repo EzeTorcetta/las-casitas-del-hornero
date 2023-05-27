@@ -41,7 +41,7 @@ const postReviews = async (id_hotel, punctuation, review, username) => {
   });
 
   if (!checkUser) {
-    throw new Error("You must make a reservation first!!");
+    throw new Error("Debes realizar una reservacion primero");
   }
 
   const findUser2 = await Review.findOne({
@@ -52,7 +52,7 @@ const postReviews = async (id_hotel, punctuation, review, username) => {
   });
 
   if (findUser2) {
-    throw new Error("You cannot post more than one review of the same hotel");
+    throw new Error("No puedes publicar más de una reseña en el mismo hotel");
   }
 
   const newReview = await Review.create({
@@ -83,7 +83,7 @@ const deleteReviews = async (id_review) => {
   const review = await Review.findByPk(id_review);
 
   if (!review) {
-    throw new Error("Review not found");
+    throw new Error("Reseña no encontrada");
   } else {
     await Review.destroy({ where: { id: id_review } });
   }
@@ -119,7 +119,7 @@ const deleteReviewUser = async (username, id_review) => {
   });
 
   if (!review) {
-    throw new Error("Review not found");
+    throw new Error("Reseña no encontrada");
   } else {
     const hotel = await Hotel.findByPk(review.HotelId);
 
@@ -163,7 +163,7 @@ const putReview = async (username, id_review, punctuation, review) => {
   const hotel = await Hotel.findByPk(reviewPut.HotelId);
 
   if (!review) {
-    throw new Error("Review not found");
+    throw new Error("Reseña no encontrada");
   } else {
     if (punctuation) {
       let puntActual = reviewPut.punctuation;

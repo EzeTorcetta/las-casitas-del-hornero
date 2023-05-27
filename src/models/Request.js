@@ -1,8 +1,8 @@
-const { INTEGER, STRING,BOOLEAN } = require("sequelize");
+const { INTEGER, TEXT, DATE, STRING, BOOLEAN } = require("sequelize");
 
 module.exports = (sequelize) => {
   sequelize.define(
-    "User",
+    "Request",
     {
       id: {
         type: INTEGER,
@@ -10,38 +10,29 @@ module.exports = (sequelize) => {
         primaryKey: true,
         allowNull: false,
       },
+      message: {
+        type: TEXT,
+        allowNull: true,
+      },
       username: {
         type: STRING,
-        allowNull: false,
-      },
-      password: {
-        type: STRING,
-        allowNull: false,
+        allowNull: false
       },
       email: {
         type: STRING,
         allowNull: false,
-        unique: true,
         validate: {
           isEmail: true,
         },
       },
-      rol: {
-        type: INTEGER,
-        allowNull: false,
-        validate: {
-          min: 1,
-          max: 3,
-        },
-      },
-      image: {
-        type: STRING,
-        allowNull: true,
+      date: {
+        type: DATE,
+        defaultValue: sequelize.literal("CURRENT_TIMESTAMP"),
       },
       status: {
         type: BOOLEAN,
         allowNull: false,
-        defaultValue: true
+        defaultValue: false
       }
     },
     {

@@ -35,7 +35,13 @@ let capsEntries = entries.map((entry) => [
   entry[1],
 ]);
 sequelize.models = Object.fromEntries(capsEntries);
-const { Check, Hotel, Room, RoomType, Service, User, Review, Booking, Cart } = sequelize.models
+const { Request, Hotel, Room, RoomType, Service, User, Review, Booking, Cart } = sequelize.models
+
+
+User.hasMany(Request);
+
+Request.belongsTo(User);
+
 
 User.hasMany(Hotel);
 Hotel.belongsTo(User);

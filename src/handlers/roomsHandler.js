@@ -16,7 +16,7 @@ const deleteRoomsHandler = async (req, res) => {
     const {id_roomType,id_user} = req.body
     try {
         await deleteRooms(id_roomType,id_user);
-        res.status(200).json("Rooms deleted successfully")
+        res.status(200).json("Habitacion eliminada con exito")
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
