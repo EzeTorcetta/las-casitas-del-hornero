@@ -56,7 +56,7 @@ const CreateUsers = () => {
     username: "Juan Martin",
     password: "Contrasenia1",
     email: "juanmartin@gmail.com",
-    rol: 3,
+    rol: 2,
     status: true
   });
 
@@ -80,6 +80,14 @@ const CreateUsers = () => {
     username: "Manuel",
     password: "Contrasenia1",
     email: "manuel@gmail.com",
+    rol: 3,
+    status: true
+  });
+
+  user.push({
+    username: "JosePE",
+    password: "Contrasenia1",
+    email: "josepe@gmail.com",
     rol: 1,
     status: true
   });
@@ -94,7 +102,7 @@ const CreateHotels = async () => {
     name: "MustafaHotel",
     email: "mustafahotel@gmail.com",
     phoneNumber: "01134531",
-    province: "BUENOS AIRES",
+    province: "Buenos Aires",
     department: "TANDIL",
     locality: "MARIA IGNACIA",
     location: [1200, -1200],
@@ -109,7 +117,7 @@ const CreateHotels = async () => {
     name: "MarioHotel",
     email: "MarioHotel@gmail.com",
     phoneNumber: "0264454531",
-    province: "SAN JUAN",
+    province: "San Juan",
     department: "POCITO",
     locality: "LAS PIEDRITAS",
     location: [300, -300],
@@ -124,7 +132,7 @@ const CreateHotels = async () => {
     name: "FabricioHotel",
     email: "fabriciohotel@gmail.com",
     phoneNumber: "0467897123",
-    province: "RIO NEGRO",
+    province: "Río Negro",
     department: "BARILOCHE",
     locality: "EL BOLSON",
     location: [-2340, -3892],

@@ -13,10 +13,8 @@ const getCart = async (id_user, checkIn, checkOut) => {
   });
 
 
-  checkIn = new Date(checkIn);
-  checkOut = new Date(checkOut);
-
-
+  
+  
   // guardamos en carts todos los roomtypes con la cantidad y stock 🛒🛒
   const finalCart = await Promise.all(
 
@@ -24,13 +22,18 @@ const getCart = async (id_user, checkIn, checkOut) => {
     cart.map(async (item) => {
       const roomtype = await RoomType.findByPk(item.RoomTypeId);
       const hotel = await Hotel.findByPk(roomtype.HotelId);
+      
+      const rooms = await Room.findAll({
+        where: {
+          RoomTypeId: roomtype.id,
+        },
+      });
+      
+      if (checkIn && checkOut){ 
 
-    const rooms = await Room.findAll({
-     where: {
-      RoomTypeId: roomtype.id,
-      },
-    });
-
+     checkIn = new Date(checkIn);
+     checkOut = new Date(checkOut);
+     
     // Se filtran las habitaciones disponibles
     const roomsAvailable = rooms.filter((room) => {
       let bool = false;
@@ -52,14 +55,22 @@ const getCart = async (id_user, checkIn, checkOut) => {
       return bool;
     });
 
-      const roomtypeWithAmount = {
+      return {
         ...roomtype.toJSON(),
         amount: item.amount,
         hotelName: hotel.name,
-        stock: roomsAvailable.length
-      };
-
-      return roomtypeWithAmount;
+        stock: roomsAvailable.length,
+        filtered: true
+      }
+    }else{
+      return {
+        ...roomtype.toJSON(),
+        amount: item.amount,
+        hotelName: hotel.name,
+        stock: 0,
+        filtered: false
+      }
+    }  
     })
   );
 

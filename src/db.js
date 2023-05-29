@@ -37,8 +37,8 @@ sequelize.models = Object.fromEntries(capsEntries);
 const { Request, Hotel, Room, RoomType, Service, User, Review, Booking, Cart } =
   sequelize.models;
 
+  
 User.hasMany(Request);
-
 Request.belongsTo(User);
 
 User.hasMany(Hotel);
