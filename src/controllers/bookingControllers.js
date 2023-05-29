@@ -174,7 +174,7 @@ const postBooking = async (body, id_user, checkIn, checkOut) => {
 
     // SI QUEDAN MENOS, ARROJAMOS UN ERROR (NO HAY STOCK!!!!!)
     if (comprobacionStock < 0) {
-      throw new Error("Out of stock");
+      throw new Error("No hay disponibilidad");
     };
 
     // Se actualizan las dates  de cada habitacion(room) y se ordenan
@@ -239,7 +239,6 @@ const postBooking = async (body, id_user, checkIn, checkOut) => {
 };
 
 //*-------- GET MONTHS BOOKING -----------------
-
 const getMonthBookings = async (id_user) => {
   const findUser = await User.findByPk(id_user);
 
@@ -302,41 +301,41 @@ const getMonthBookings = async (id_user) => {
       const date = booking[i].checkIn.split(" ");
       switch (date[1]) {
         case "Jan":
-          order[0].cant++;
-          break;
-        case "Feb":
-          order[1].cant++;
-          break;
-        case "Mar":
-          order[2].cant++;
-          break;
-        case "Apr":
-          order[3].cant++;
-          break;
-        case "May":
-          order[4].cant++;
-          break;
-        case "Jun":
-          order[5].cant++;
-          break;
-        case "Jul":
-          order[6].cant++;
-          break;
-        case "Aug":
-          order[7].cant++;
-          break;
-        case "Sep":
-          order[8].cant++;
-          break;
-        case "Oct":
-          order[9].cant++;
-          break;
-        case "Nov":
-          order[10].cant++;
-          break;
-        case "Dec":
-          order[11].cant++;
-          break;
+        order[0].cant += booking[i].amount;
+        break;
+      case "Feb":
+        order[1].cant += booking[i].amount;
+        break;
+      case "Mar":
+        order[2].cant += booking[i].amount;
+        break;
+      case "Apr":
+        order[3].cant += booking[i].amount;
+        break;
+      case "May":
+        order[4].cant += booking[i].amount;
+        break;
+      case "Jun":
+        order[5].cant += booking[i].amount;
+        break;
+      case "Jul":
+        order[6].cant += booking[i].amount;
+        break;
+      case "Aug":
+        order[7].cant += booking[i].amount;
+        break;
+      case "Sep":
+        order[8].cant += booking[i].amount;
+        break;
+      case "Oct":
+        order[9].cant += booking[i].amount;
+        break;
+      case "Nov":
+        order[10].cant += booking[i].amount;
+        break;
+      case "Dec":
+        order[11].cant += booking[i].amount;
+        break;
         default:
           break;
       }
@@ -347,7 +346,7 @@ const getMonthBookings = async (id_user) => {
   }
 };
 
-//*-------- GET PROVINCES  BOOKING -----------------
+//*-------- GET PROVINCES BOOKING -----------------
 const getProvinceBookings = async (id_user) => {
 
   const findUser = await User.findByPk(id_user);
@@ -359,6 +358,7 @@ const getProvinceBookings = async (id_user) => {
     findAllBooking.map(async (booking) => {
       const hotel = await Hotel.findByPk(booking.HotelId);
       return {
+        amount: booking.dataValues.amount,
         province: hotel.province,
       };
     })
@@ -465,85 +465,87 @@ const getProvinceBookings = async (id_user) => {
 
 
   for (let i = 0; i < bookings.length; i++) {
+    console.log(bookings[i]);
     switch (bookings[i].province) {
       case "Buenos Aires":
-        order[0].cant++
+        order[0].cant += bookings[i].amount;
         break;
       case "Ciudad Autónoma de Buenos Aires":
-        order[1].cant++
+        order[1].cant += bookings[i].amount;
         break;
       case "Catamarca":
-        order[2].cant++
+        order[2].cant += bookings[i].amount;
         break;
       case "Chaco":
-        order[3].cant++
+        order[3].cant += bookings[i].amount;
         break;
       case "Chubut":
-        order[4].cant++
+        order[4].cant += bookings[i].amount;
         break;
       case "Córdoba":
-        order[5].cant++
+        order[5].cant += bookings[i].amount;
         break;
       case "Corrientes":
-        order[6].cant++
+        order[6].cant += bookings[i].amount;
         break;
       case "Entre Ríos":
-        order[7].cant++
+        order[7].cant += bookings[i].amount;
         break;
       case "Formosa":
-        order[8].cant++
+        order[8].cant += bookings[i].amount;
         break;
       case "Jujuy":
-        order[9].cant++
+        order[9].cant += bookings[i].amount;
         break;
       case "La Pampa":
-        order[10].cant++
+        order[10].cant += bookings[i].amount;
         break;
       case "La Rioja":
-        order[11].cant++
+        order[11].cant += bookings[i].amount;
         break;
       case "Mendoza":
-        order[12].cant++
+        order[12].cant += bookings[i].amount;
         break;
       case "Misiones":
-        order[13].cant++
+        order[13].cant += bookings[i].amount;
         break;
       case "Neuquén":
-        order[14].cant++
+        order[14].cant += bookings[i].amount;
         break;
       case "Río Negro":
-        order[15].cant++
+        order[15].cant += bookings[i].amount;
         break;
       case "Salta":
-        order[16].cant++
+        order[16].cant += bookings[i].amount;
         break;
       case "San Juan":
-        order[17].cant++
+        order[17].cant += bookings[i].amount;
         break;
       case "San Luis":
-        order[18].cant++
+        order[18].cant += bookings[i].amount;
         break;
       case "Santa Cruz":
-        order[19].cant++
+        order[19].cant += bookings[i].amount;
         break;
       case "Santa Fe":
-        order[20].cant++
+        order[20].cant += bookings[i].amount;
         break;
       case "Santiago del Estero":
-        order[21].cant++
+        order[21].cant += bookings[i].amount;
         break;
       case "Tierra del Fuego, Antártida e Islas del Atlántico Sur":
-        order[22].cant++
+        order[22].cant += bookings[i].amount;
         break;
       case "Tucumán":
-        order[23].cant++
+        order[23].cant += bookings[i].amount;
         break;
       default:
         break;
     }
-
   }
+
   console.log(order);
+ 
   order = order.sort((a, b) => b.cant - a.cant);
   return order;
 }
@@ -556,31 +558,27 @@ const getUserBookings = async (id_user) => {
 
   const booking = await Booking.findAll();
   let users = [];
-  //* 👷🏻‍♂️ LABURANDO!!
-
+ 
   for (let i = 0; i < booking.length; i++) {
     let cant = 0;
-    console.log("para el user:", booking[i].UserId)
 
-    if (!users || !users.find(user => user.id == booking[i].UserId)) {
+    if (!users.find(user => user.user == booking[i].UserId)) {
 
       for (let j = 0; j < booking.length; j++) {
-        console.log("la cantidad es:", cant)
-        if (booking[i].UserId === booking[j].UserId) {
-          cant++;
+        
+        if (booking[i].UserId == booking[j].UserId) {
+          cant += booking[j].amount;
         };
 
       };
-
-      users.push({
-        user: booking[i].UserId,
-        cant
-      });
+      if(!users.find(user => user.user == booking[i].UserId)){
+        users.push({
+          user: booking[i].UserId,
+          cant
+        });
+      }
     }
-    else break;
-  };
-  // console.log(users);
-
+  };  
 
   users = users.sort((a, b) => b.cant - a.cant);
   users = await Promise.all(users.map(async (user) => {
@@ -588,52 +586,61 @@ const getUserBookings = async (id_user) => {
     return user;
   }));
 
-  console.log(users);
   return users;
 
 };
 
-//*-------- GET MORE BOOKING BY PARTNER -----------------
+//*-------- GET MOST BOOKING BY PARTNER ----------------- 
 const getMostBookingPartner = async (id_user) => {
   const findUser = await User.findByPk(id_user);
   if (findUser.rol != 2) throw new Error("Permiso denegado, no eres partner");
 
   const booking = await Booking.findAll();
-
+  let hotels = []
   //Creo el primer for para recorrer todos los bookings
   for (let i = 0; i < booking.length; i++) {
-    cant = 0;
+    let cant = 0;
     //Pregunto si existe order o si ya existe en order una variable que se llame como el id del hotel.
-    if (!order || !order.find(or => or.id === booking[i].HotelId)) {
+    if (!hotels.find(hotel => hotel.hotel == booking[i].HotelId)) {
       //Si no existe recorro de nuevo booking para contar la cantidad de veces que aparecio ese nombre 
       for (let j = 0; j < booking.length; j++) {
-        if (booking[i].HotelId === booking[j].HotelId) {
-          cant++;
+        if (booking[i].HotelId == booking[j].HotelId) {
+          cant += booking[j].amount;
         }
       }
       //realizo un push con el nombre y la cantidad
-      order.push({
-        id: booking[i].HotelId,
-        cant
-      });
+      if(!hotels.find(hotel => hotel.hotel == booking[i].HotelId)){
+        hotels.push({
+          hotel: booking[i].HotelId,
+          cant
+        });
+      }
     }
     //Si existe el nombre en el order, entonces se saltea ese booking[i]
     else break;
   };
 
   //Una vez que tengo todos los nombre de los hoteles y sus cantidades, los ordeno de mas acantidad a menos cantidad.
-  order.sort((hotelA, HotelB) => HotelB.cant - hotelA.cant);
+  hotels.sort((hotelA, HotelB) => HotelB.cant - hotelA.cant);
 
   //Por ultimo realizo un map y busco todos los hoteles con esos ID
-  let hotels = order.map(async (hotel) => {
-    retun({
-      hotel: Hotel.findByPk(hotel.HotelId),
-      cant
-    })
-  });
+  hotels = await Promise.all (hotels.map(async (hotel)=>{
+    hotel.hotel = await Hotel.findByPk(hotel.hotel);
+    return {
+      hotel: hotel.hotel.dataValues,
+      cant: hotel.cant
+    };
+  }));
 
-  hotels = hotels.filter((hotel) => { return hotel.UserId = id_user });
-  return hotels;
+  const hotelsAdmin = [];
+
+  for (let i=0;i<hotels.length; i++){
+    if(hotels[i].hotel.UserId == id_user){
+      hotelsAdmin.push(hotels[i]);
+    };
+  };
+
+  return hotelsAdmin;
 }
 
 //*-------- GET MORE BOOKING BY PARTNER -----------------
@@ -641,11 +648,15 @@ const getMonthBookingPartner = async (id_user) => {
   const findUser = await User.findByPk(id_user);
   if (findUser.rol != 2) throw new Error("Permiso denegado, no eres partner");
 
-  let booking = await Booking.findAll();
-  booking = booking.filter(async (book) => {
-    hotel = await Hotel.findByPk(book.HotelId);
-    return hotel.UserId === id_user;
-  });
+  let bookingAll = await Booking.findAll();
+
+  let booking = [];
+  for(let i=0;i<bookingAll.length;i++){
+    const hotel = await Hotel.findByPk(bookingAll[i].HotelId);
+    if (hotel.UserId == id_user){
+      booking.push(bookingAll[i]);
+    }
+  }
 
   let order = [
     {
@@ -699,43 +710,43 @@ const getMonthBookingPartner = async (id_user) => {
   ]
 
   for (let i = 0; i < booking.length; i++) {
-    const date = booking[i].checkIn.split("-");
+    const date = booking[i].checkIn.split(" ");
     switch (date[1]) {
-      case "01":
-        order[0].cant++;
+      case "Jan":
+        order[0].cant += booking[i].amount;
         break;
-      case "02":
-        order[1].cant++;
+      case "Feb":
+        order[1].cant += booking[i].amount;
         break;
-      case "03":
-        order[2].cant++;
+      case "Mar":
+        order[2].cant += booking[i].amount;
         break;
-      case "04":
-        order[3].cant++;
+      case "Apr":
+        order[3].cant += booking[i].amount;
         break;
-      case "05":
-        order[4].cant++;
+      case "May":
+        order[4].cant += booking[i].amount;
         break;
-      case "06":
-        order[5].cant++;
+      case "Jun":
+        order[5].cant += booking[i].amount;
         break;
-      case "07":
-        order[6].cant++;
+      case "Jul":
+        order[6].cant += booking[i].amount;
         break;
-      case "08":
-        order[7].cant++;
+      case "Aug":
+        order[7].cant += booking[i].amount;
         break;
-      case "09":
-        order[8].cant++;
+      case "Sep":
+        order[8].cant += booking[i].amount;
         break;
-      case "10":
-        order[9].cant++;
+      case "Oct":
+        order[9].cant += booking[i].amount;
         break;
-      case "11":
-        order[10].cant++;
+      case "Nov":
+        order[10].cant += booking[i].amount;
         break;
-      case "12":
-        order[11].cant++;
+      case "Dec":
+        order[11].cant += booking[i].amount;
         break;
       default:
         break;
@@ -745,8 +756,6 @@ const getMonthBookingPartner = async (id_user) => {
   order = order.sort((a, b) => b.cant - a.cant);
   return order;
 };
-
-
 
 module.exports = {
   getAllBookings,

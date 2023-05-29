@@ -56,7 +56,7 @@ const CreateUsers = () => {
     username: "Juan Martin",
     password: "Contrasenia1",
     email: "juanmartin@gmail.com",
-    rol: 3,
+    rol: 2,
     status: true
   });
 
@@ -80,6 +80,14 @@ const CreateUsers = () => {
     username: "Manuel",
     password: "Contrasenia1",
     email: "manuel@gmail.com",
+    rol: 3,
+    status: true
+  });
+
+  user.push({
+    username: "JosePE",
+    password: "Contrasenia1",
+    email: "josepe@gmail.com",
     rol: 1,
     status: true
   });
@@ -124,7 +132,7 @@ const CreateHotels = async () => {
     name: "FabricioHotel",
     email: "fabriciohotel@gmail.com",
     phoneNumber: "0467897123",
-    province: "Rio Negro",
+    province: "Río Negro",
     department: "BARILOCHE",
     locality: "EL BOLSON",
     location: [-2340, -3892],

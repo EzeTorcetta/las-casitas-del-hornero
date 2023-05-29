@@ -560,16 +560,18 @@ const putStatusHotel = async (id_hotel) => {
 }
 
 //* Modificar datos de un hotel
-const updateHotel = async(id_hotel, body) => {
+const updateHotel = async(id_hotel,{description,rating,image,phoneNumber} ) => {
+
   const findHotel = await Hotel.findByPk(id_hotel);
-  
+ 
   if(findHotel){
-    if(body.description) findHotel.description = body.description
-    if(body.rating) findHotel.rating = body.rating
-    if(body.image.length) findHotel.image = body.image
-    if(body.phoneNumber) findHotel.phoneNumber = body.phoneNumber
-  } else {
+    if(description) findHotel.description = description
+    if(rating) findHotel.rating = rating
+    if(image) findHotel.image = image 
+    if(phoneNumber) findHotel.phoneNumber = phoneNumber
     await findHotel.save()
+  } else {
+    throw new Error("El hotel no existe");
   }
   
   return findHotel;
@@ -584,10 +586,13 @@ const getFilterSuperAdminHotels = async (id_superAdmin,filter) => {
 
   if(findUser.rol !== 3) throw new Error("Permiso denegado, no eres administrador");
 
+
+ 
   switch (filter){
     case "rated":
       //traigo todos los hoteles y los oredeno dependiendo la valoracion
-      hotels = hotels.sort((hotelA,hotelB)=>hotelA.valoration-hotelB.valoration);
+      hotels.sort((hotelA,hotelB)=>hotelB.valoration - hotelA.valoration);
+
       break;
 
     case "booking":
@@ -598,35 +603,40 @@ const getFilterSuperAdminHotels = async (id_superAdmin,filter) => {
       for (let i=0; i<booking.length; i++){
         cant=0;
         //Pregunto si existe order o si ya existe en order una variable que se llame como el id del hotel.
-        if(!order || !order.find(or=>or.id===booking[i].HotelId)){
+        if(!order.find(or=>or.id===booking[i].HotelId)){
           //Si no existe recorro de nuevo booking para contar la cantidad de veces que aparecio ese nombre 
           for (let j=0;j<booking.length; j++){
             if(booking[i].HotelId===booking[j].HotelId){
-              cant++;
+              cant += booking[j].amount;
             }
           }
           //realizo un push con el nombre y la cantidad
-          order.push({
-            id:booking[i].HotelId,
-            cant
-          });
+          if(!order.find(or=>or.id===booking[i].HotelId)){
+            order.push({
+              id:booking[i].HotelId,
+              cant
+            });
+          }
         }
         //Si existe el nombre en el order, entonces se saltea ese booking[i]
         else break;
       }
 
-      //Una vez que tengo todos los nombre de los hoteles y sus cantidades, los ordeno de mas acantidad a menos cantidad.
+
+      //Una vez que tengo todos los nombre de los hoteles y sus cantidades, los ordeno de mas cantidad a menos cantidad.
       order.sort((hotelA,HotelB)=>HotelB.cant-hotelA.cant);
       
       //Por ultimo realizo un map y busco todos los hoteles con esos ID
-      hotels = order.map(async(hotel)=>{ 
-        retun({
-          hotel: Hotel.findByPk(hotel.HotelId),
-          cant
-        })
-      })
-      break;
 
+      
+      hotels = await Promise.all(order.map(async (hotel) => {
+      let hotelFind = await Hotel.findByPk(hotel.id);
+        return{
+          hotelFind,
+          cant: hotel.cant
+        }
+      }));
+      break;
     default: 
       hotels;
       break;

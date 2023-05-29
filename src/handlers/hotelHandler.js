@@ -126,9 +126,9 @@ const putStatusHotelHandler = async (req, res) => {
 //* Handler para modificar un hotel
 const updateHotelHandler = async(req, res) => {
   const { id_hotel } = req.params;
-  const {body} = req.body;
+  const {description,rating,image,phoneNumber} = req.body;
   try {
-    await updateHotel(id_hotel, body)
+    await updateHotel(id_hotel,{description,rating,image,phoneNumber})
     res.status(200).json("Hotel actualizado con éxito!")
   } catch (error) {
     res.status(400).json({ error: error.message });
