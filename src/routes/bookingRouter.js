@@ -6,6 +6,11 @@ const {
   getBookingHotelHandler,
   getAllBookingsHandler,
   postBookingHandler,
+  getProvinceBookingsHandler,
+  getMonthBookingsHandler,
+  getMostBookingPartnerHandler,
+  getUserBookingsHandler,
+  getMonthBookingPartnerHandler
 } = require("../handlers/bookingHandler");
 
 const checkUserProperties = (req, res) => {
@@ -26,8 +31,13 @@ const checkUserProperties = (req, res) => {
   return res.status(400).json({ error: "No es por aca lince" });
 };
 
-bookingRouter.get("/", checkUserProperties);
-
 bookingRouter.put("/:id_user", postBookingHandler);
+bookingRouter.get("/", checkUserProperties);
+bookingRouter.get("/province/:id_superadmin", getProvinceBookingsHandler);
+bookingRouter.get("/month/:id_superadmin", getMonthBookingsHandler);
+bookingRouter.get("/mostBooking/:id_admin", getMostBookingPartnerHandler);
+bookingRouter.get("/monthPartner/:id_admin", getMonthBookingPartnerHandler);
+bookingRouter.get("/mostBookingUser/:id_superadmin", getUserBookingsHandler);
+
 
 module.exports = bookingRouter;

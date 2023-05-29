@@ -1,5 +1,5 @@
 //?----------------------------IMPORTS----------------------------------
-const { Hotel, User, Service, Review, RoomType, Room } = require("../db");
+const { Hotel, User, Service, Review, RoomType, Room, Booking } = require("../db");
 const { Op } = require("sequelize");
 const moment = require('moment');
 
@@ -541,7 +541,7 @@ const createHotel = async (
   return newHotel;
 };
 
-
+//* Cambiar estado del hotel (deshabilitarlo o banearlo)
 const putStatusHotel = async (id_hotel) => {
   const findHotel = await Hotel.findByPk(id_hotel);
 
@@ -558,11 +558,89 @@ const putStatusHotel = async (id_hotel) => {
 
   return findHotel;
 }
+
+//* Modificar datos de un hotel
+const updateHotel = async(id_hotel, body) => {
+  const findHotel = await Hotel.findByPk(id_hotel);
+  
+  if(findHotel){
+    if(body.description) findHotel.description = body.description
+    if(body.rating) findHotel.rating = body.rating
+    if(body.image.length) findHotel.image = body.image
+    if(body.phoneNumber) findHotel.phoneNumber = body.phoneNumber
+  } else {
+    await findHotel.save()
+  }
+  
+  return findHotel;
+  
+}
+
+//*Trae todos los hoteles y los ordena por valoration o por mas reservados
+const getFilterSuperAdminHotels = async (id_superAdmin,filter) => {
+  const findUser = await User.findByPk(id_superAdmin);
+  const booking = await Booking.findAll();
+  let hotels = await Hotel.findAll();
+
+  if(findUser.rol !== 3) throw new Error("Permiso denegado, no eres administrador");
+
+  switch (filter){
+    case "rated":
+      //traigo todos los hoteles y los oredeno dependiendo la valoracion
+      hotels = hotels.sort((hotelA,hotelB)=>hotelA.valoration-hotelB.valoration);
+      break;
+
+    case "booking":
+      //Creo una variable order para guardar los hoteles con su cantidad y sus id. order lo utilizo para ordenar los hoteles.
+      const order = [];
+
+      //Creo el primer for para recorrer todos los bookings
+      for (let i=0; i<booking.length; i++){
+        cant=0;
+        //Pregunto si existe order o si ya existe en order una variable que se llame como el id del hotel.
+        if(!order || !order.find(or=>or.id===booking[i].HotelId)){
+          //Si no existe recorro de nuevo booking para contar la cantidad de veces que aparecio ese nombre 
+          for (let j=0;j<booking.length; j++){
+            if(booking[i].HotelId===booking[j].HotelId){
+              cant++;
+            }
+          }
+          //realizo un push con el nombre y la cantidad
+          order.push({
+            id:booking[i].HotelId,
+            cant
+          });
+        }
+        //Si existe el nombre en el order, entonces se saltea ese booking[i]
+        else break;
+      }
+
+      //Una vez que tengo todos los nombre de los hoteles y sus cantidades, los ordeno de mas acantidad a menos cantidad.
+      order.sort((hotelA,HotelB)=>HotelB.cant-hotelA.cant);
+      
+      //Por ultimo realizo un map y busco todos los hoteles con esos ID
+      hotels = order.map(async(hotel)=>{ 
+        retun({
+          hotel: Hotel.findByPk(hotel.HotelId),
+          cant
+        })
+      })
+      break;
+
+    default: 
+      hotels;
+      break;
+  }
+  return hotels;
+};
+
 module.exports = {
   getAllHotels,
   getDetailHotel,
   createHotel,
   getAllHotelsQuery,
   getUserHotels,
-  putStatusHotel
+  putStatusHotel,
+  updateHotel,
+  getFilterSuperAdminHotels
 };

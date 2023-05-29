@@ -5,8 +5,8 @@ const path = require("path");
 const { DB_USER, DB_PASSWORD, DB_HOST, DB_NAME, DB_DEPLOY } = process.env;
 
 const sequelize = new Sequelize(
-  // `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}`,
-  DB_DEPLOY,
+  `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}`,
+  // DB_DEPLOY,
   { logging: false, native: false }
 );
 
@@ -37,8 +37,8 @@ sequelize.models = Object.fromEntries(capsEntries);
 const { Request, Hotel, Room, RoomType, Service, User, Review, Booking, Cart } =
   sequelize.models;
 
+  
 User.hasMany(Request);
-
 Request.belongsTo(User);
 
 User.hasMany(Hotel);

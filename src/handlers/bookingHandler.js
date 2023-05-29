@@ -3,6 +3,10 @@ const {
   getBookingUser,
   getBookingHotel,
   postBooking,
+  getProvinceBookings,
+  getMonthBookings,
+  getMostBookingPartner,
+  getUserBookings
 } = require("../controllers/bookingControllers");
 
 //* handler para traer todos las reservaciones (para el gigachad mega admin)
@@ -10,17 +14,16 @@ const getAllBookingsHandler = async (req, res) => {
   const { id_superadmin } = req.query;
 
   try {
-    const getAllBokings = await getAllBookings(id_superadmin);
-    res.status(200).json(getAllBokings);
+    const allBookings = await getAllBookings(id_superadmin);
+    res.status(200).json(allBookings);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
 };
 
-//* handler para traer todos las reservaciones de un hotel quuue pertenece a un usuario admin(por id)
+//* handler para traer todos las reservaciones de un hotel que pertenece a un usuario admin(por id)
 const getBookingHotelHandler = async (req, res) => {
   const { id_user, id_hotel } = req.query;
-
   try {
     const bookingsHotel = await getBookingHotel(id_user, id_hotel);
     res.status(200).json(bookingsHotel);
@@ -54,9 +57,70 @@ const postBookingHandler = async (req, res) => {
   }
 };
 
+//* handler para traer las provincias mas visitadas
+const getProvinceBookingsHandler = async (req, res) => {
+  const { id_superadmin } = req.params;
+  try {
+    const province = await getProvinceBookings(id_superadmin);
+    res.status(200).json(province);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+//* handler para traer los meses que mas se reservo 
+const getMonthBookingsHandler = async (req, res) => {
+  const { id_superadmin } = req.params;
+  try {
+    const month = await getMonthBookings(id_superadmin);
+    res.status(200).json(month);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+//* handler para el usuario que mas se reservo 
+const getUserBookingsHandler = async (req, res) => {
+  const { id_superadmin } = req.params;
+  try {
+    const month = await getUserBookings(id_superadmin);
+    res.status(200).json(month);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+//* handler para ver los hoteles mas reservados de un admin
+const getMostBookingPartnerHandler = async (req, res) => {
+  const { id_admin } = req.params;
+  try {
+    const month = await getMostBookingPartner(id_admin);       //! CREO RETORNA HOTELES
+    res.status(200).json(month);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+//* handler para ver los meses que mas se reservaron de los hoteles de un admin
+const getMonthBookingPartnerHandler = async (req, res) => {
+  const { id_admin } = req.params;
+  try {
+    const month = await getMonthBookingPartner(id_admin);
+    res.status(200).json(month);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+
 module.exports = {
   getAllBookingsHandler,
   postBookingHandler,
   getBookingHotelHandler,
   getBookingUserHandler,
+  getProvinceBookingsHandler,
+  getMonthBookingsHandler,
+  getMostBookingPartnerHandler,
+  getUserBookingsHandler,
+  getMonthBookingPartnerHandler
 };
