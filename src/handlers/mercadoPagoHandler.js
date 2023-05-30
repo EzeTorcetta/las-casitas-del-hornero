@@ -6,19 +6,30 @@ mercadopago.configure({
 
 const mercadoPagoHandler = async (req, res) => {
   const { product } = req.body;
-  let preferences = {
-    items: [
+  let preference = {
+    items: 
+     [
       // cada item del carrito es un objeto
       {
-        title: "Ejemplo de reserva de hospedaje",
-        currency_id: "ARS",
-        description: "Descripcion de hospedaje",
-        quantity: 1,
-        unit_price: 10,
+        title: "Reserva",
+        currency_id: "ARS",          //* MONEDA
+        description: "Una habitacion muy bonita",   
+        quantity: 1,                //* CANTIDAD
+        category_id:"travels",    //CATEGORIA    
+        unit_price: 1000,       //* PRECIO POR UNIDAD
+        picture_url: "http://www.myapp.com/myimage.jpg",
+        
       },
+      // {
+      //   title: "Reserva",
+      //   currency_id: "ARS",          //* MONEDA
+      //   description: "Individual",    
+      //   quantity: 3,          //* CANTIDAD
+      //   unit_price: 500,  
+      // }
     ],
     back_urls: {
-      success: "/http://localhost:3001",
+      success: "https://www.facebook.com/",
       failure: "/failure",
       pending: "/pending",
     },
@@ -28,8 +39,7 @@ const mercadoPagoHandler = async (req, res) => {
   mercadopago.preferences
     .create(preference)
     .then((response) => res.status(200).send({ response }))
-    .catch(error)
-    .send({ error: error.message });
+    .catch((error) => res.status(400).send({error: error.message}))
 };
 module.exports = {
   mercadoPagoHandler,
