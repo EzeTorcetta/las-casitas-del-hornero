@@ -235,7 +235,7 @@ const postBooking = async (body, id_user, checkIn, checkOut) => {
     });
   }
 
-  return "Reservacion realizada con exito";
+  return fechasx.length-1;
 };
 
 //*-------- GET MONTHS BOOKING -----------------
