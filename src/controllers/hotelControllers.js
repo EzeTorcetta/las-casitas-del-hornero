@@ -432,7 +432,7 @@ const getUserHotels = async (id_user) => {
       },
       {
         model: RoomType,
-        attributes: ["id", "people", "price", "name", "image", "stock"],
+        attributes: ["id", "people", "price", "name", "image"]
       },
       {
         model: Review,
