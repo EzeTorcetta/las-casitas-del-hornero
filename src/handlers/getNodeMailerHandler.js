@@ -238,7 +238,7 @@ const getNodeMailerBaneoHandler = async (req, res) => {
                 "
               >
                 <div style="width: 100%; background-color: white; margin: 20px">
-                <h1>Tu cuenta a sido baneada temporalmente</h1>
+                <h1>Tu cuenta ha sido bloqueada temporalmente</h1>
                 </div>
               </div>
             </div>
