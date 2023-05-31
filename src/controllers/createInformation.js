@@ -1,53 +1,53 @@
 const { User, Hotel, RoomType, Service } = require("../db");
 
-// const CreateService = () => {
-//   const services = [];
+const CreateService = () => {
+  const services = [];
 
-//   services.push({
-//     name: "Desayuno gratis",
-//   });
-//   services.push({
-//     name: "Pileta",
-//   });
-//   services.push({
-//     name: "Hotel frente a la playa",
-//   });
-//   services.push({
-//     name: "Wi-Fi",
-//   });
-//   services.push({
-//     name: "Estacionamiento",
-//   });
-//   services.push({
-//     name: "Aire acondicionado",
-//   });
-//   services.push({
-//     name: "Restaurante",
-//   });
-//   services.push({
-//     name: "Mascotas permitidas",
-//   });
-//   services.push({
-//     name: "Familias",
-//   });
-//   services.push({
-//     name: "Bañera de hidromasaje",
-//   });
-//   services.push({
-//     name: "Spa",
-//   });
-//   services.push({
-//     name: "Gimnasio",
-//   });
-//   services.push({
-//     name: "Acceso silla de ruedas",
-//   });
-//   services.push({
-//     name: "Ascensor",
-//   });
+  services.push({
+    name: "Desayuno gratis",
+  });
+  services.push({
+    name: "Pileta",
+  });
+  services.push({
+    name: "Hotel frente a la playa",
+  });
+  services.push({
+    name: "Wi-Fi",
+  });
+  services.push({
+    name: "Estacionamiento",
+  });
+  services.push({
+    name: "Aire acondicionado",
+  });
+  services.push({
+    name: "Restaurante",
+  });
+  services.push({
+    name: "Mascotas permitidas",
+  });
+  services.push({
+    name: "Familias",
+  });
+  services.push({
+    name: "Bañera de hidromasaje",
+  });
+  services.push({
+    name: "Spa",
+  });
+  services.push({
+    name: "Gimnasio",
+  });
+  services.push({
+    name: "Acceso silla de ruedas",
+  });
+  services.push({
+    name: "Ascensor",
+  });
 
-//   Service.bulkCreate(services);
-// };
+  Service.bulkCreate(services);
+};
 
 const CreateUsers = () => {
   const user = [];
@@ -304,7 +304,7 @@ const CreateUsers = () => {
 // };
 
 const createInformation = async () => {
-//   await CreateService();
+  await CreateService();
   await CreateUsers();
 //   await CreateHotels();
 //   await CreateRoomTypes();
