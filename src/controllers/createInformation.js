@@ -1,4 +1,4 @@
-// const { User, Hotel, RoomType, Service } = require("../db");
+const { User, Hotel, RoomType, Service } = require("../db");
 
 // const CreateService = () => {
 //   const services = [];
@@ -49,51 +49,51 @@
 //   Service.bulkCreate(services);
 // };
 
-// const CreateUsers = () => {
-//   const user = [];
+const CreateUsers = () => {
+  const user = [];
 
-//   user.push({
-//     username: "Juan Martin",
-//     password: "Contrasenia1",
-//     email: "juanmartin@gmail.com",
-//     rol: 2,
-//     status: true
-//   });
+  user.push({
+    username: "Juan Martin",
+    password: "Contrasenia1",
+    email: "juanmartin@gmail.com",
+    rol: 2,
+    status: true
+  });
 
-//   user.push({
-//     username: "Jose",
-//     password: "Contrasenia1",
-//     email: "jose@gmail.com",
-//     rol: 1,
-//     status: true
-//   });
+  user.push({
+    username: "Jose",
+    password: "Contrasenia1",
+    email: "jose@gmail.com",
+    rol: 1,
+    status: true
+  });
 
-//   user.push({
-//     username: "Eze",
-//     password: "Contrasenia1",
-//     email: "eze@gmail.com",
-//     rol: 2,
-//     status: true
-//   });
+  user.push({
+    username: "Eze",
+    password: "Contrasenia1",
+    email: "eze@gmail.com",
+    rol: 2,
+    status: true
+  });
 
-//   user.push({
-//     username: "Manuel",
-//     password: "Contrasenia1",
-//     email: "manuel@gmail.com",
-//     rol: 3,
-//     status: true
-//   });
+  user.push({
+    username: "Manuel",
+    password: "Contrasenia1",
+    email: "manuel@gmail.com",
+    rol: 3,
+    status: true
+  });
 
-//   user.push({
-//     username: "JosePE",
-//     password: "Contrasenia1",
-//     email: "josepe@gmail.com",
-//     rol: 1,
-//     status: true
-//   });
+  user.push({
+    username: "JosePE",
+    password: "Contrasenia1",
+    email: "josepe@gmail.com",
+    rol: 1,
+    status: true
+  });
 
-//   User.bulkCreate(user);
-// };
+  User.bulkCreate(user);
+};
 
 // const CreateHotels = async () => {
 //   const hoteles = [];
@@ -303,11 +303,11 @@
 //   //     }});
 // };
 
-// const createInformation = async () => {
+const createInformation = async () => {
 //   await CreateService();
-//   await CreateUsers();
+  await CreateUsers();
 //   await CreateHotels();
 //   await CreateRoomTypes();
-// };
+};
 
-// module.exports = createInformation;
+module.exports = createInformation;
