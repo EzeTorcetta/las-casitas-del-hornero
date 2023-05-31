@@ -6,8 +6,20 @@ const {
   getUserHotels,
   putStatusHotel,
   updateHotel,
-  getFilterSuperAdminHotels
+  getFilterSuperAdminHotels,
+  getAllHotelsAdmin
 } = require("../controllers/hotelControllers");
+
+const getAllHotelsAdminHandler = async (req, res) => {
+  const { id_superAdmin } = req.params
+  try {
+    const allHotels = await getAllHotelsAdmin(id_superAdmin)
+
+    res.status(200).json(allHotels)
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+}
 
 //* Handler que trae todos los hoteles de la DB
 const getAllHotelsHandler = async (req, res) => {
@@ -124,11 +136,11 @@ const putStatusHotelHandler = async (req, res) => {
 };
 
 //* Handler para modificar un hotel
-const updateHotelHandler = async(req, res) => {
+const updateHotelHandler = async (req, res) => {
   const { id_hotel } = req.params;
-  const {description,rating,image,phoneNumber} = req.body;
+  const { description, rating, image, phoneNumber } = req.body;
   try {
-    await updateHotel(id_hotel,{description,rating,image,phoneNumber})
+    await updateHotel(id_hotel, { description, rating, image, phoneNumber })
     res.status(200).json("Hotel actualizado con éxito!")
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -136,10 +148,10 @@ const updateHotelHandler = async(req, res) => {
 };
 
 //* Trae todos los hoteles y los ordena por valoration o por mas reservados
-const getFilterSuperAdminHotelsHandler = async(req, res) => {
+const getFilterSuperAdminHotelsHandler = async (req, res) => {
   const { id_superAdmin, filter } = req.params;
   try {
-    const hotels = await getFilterSuperAdminHotels(id_superAdmin,filter);
+    const hotels = await getFilterSuperAdminHotels(id_superAdmin, filter);
     res.status(200).json(hotels);
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -153,5 +165,5 @@ module.exports = {
   putStatusHotelHandler,
   updateHotelHandler,
   getFilterSuperAdminHotelsHandler,
-
+  getAllHotelsAdminHandler
 };

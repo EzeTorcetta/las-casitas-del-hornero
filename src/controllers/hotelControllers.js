@@ -5,6 +5,21 @@ const moment = require('moment');
 
 //?----------------------------CONTROLLERS------------------------------
 
+const getAllHotelsAdmin = async (id_superAdmin) => {
+  const findUser = await User.findByPk(id_superAdmin)
+
+
+  if (!findUser) { throw new Error("El usuario no existe") }
+
+  if (findUser.rol != 3) { throw new Error("No tienes permisos") }
+
+  const findHotels = await Hotel.findAll()
+
+
+  return findHotels
+
+}
+
 //*------------GET ALL HOTELS -------------------
 
 const getAllHotels = async (order, page) => {
@@ -560,38 +575,38 @@ const putStatusHotel = async (id_hotel) => {
 }
 
 //* Modificar datos de un hotel
-const updateHotel = async(id_hotel,{description,rating,image,phoneNumber} ) => {
+const updateHotel = async (id_hotel, { description, rating, image, phoneNumber }) => {
 
   const findHotel = await Hotel.findByPk(id_hotel);
- 
-  if(findHotel){
-    if(description) findHotel.description = description
-    if(rating) findHotel.rating = rating
-    if(image) findHotel.image = image 
-    if(phoneNumber) findHotel.phoneNumber = phoneNumber
+
+  if (findHotel) {
+    if (description) findHotel.description = description
+    if (rating) findHotel.rating = rating
+    if (image) findHotel.image = image
+    if (phoneNumber) findHotel.phoneNumber = phoneNumber
     await findHotel.save()
   } else {
     throw new Error("El hotel no existe");
   }
-  
+
   return findHotel;
-  
+
 }
 
 //*Trae todos los hoteles y los ordena por valoration o por mas reservados
-const getFilterSuperAdminHotels = async (id_superAdmin,filter) => {
+const getFilterSuperAdminHotels = async (id_superAdmin, filter) => {
   const findUser = await User.findByPk(id_superAdmin);
   const booking = await Booking.findAll();
   let hotels = await Hotel.findAll();
 
-  if(findUser.rol !== 3) throw new Error("Permiso denegado, no eres administrador");
+  if (findUser.rol !== 3) throw new Error("Permiso denegado, no eres administrador");
 
 
- 
-  switch (filter){
+
+  switch (filter) {
     case "rated":
       //traigo todos los hoteles y los oredeno dependiendo la valoracion
-      hotels.sort((hotelA,hotelB)=>hotelB.valoration - hotelA.valoration);
+      hotels.sort((hotelA, hotelB) => hotelB.valoration - hotelA.valoration);
 
       break;
 
@@ -600,20 +615,20 @@ const getFilterSuperAdminHotels = async (id_superAdmin,filter) => {
       const order = [];
 
       //Creo el primer for para recorrer todos los bookings
-      for (let i=0; i<booking.length; i++){
-        cant=0;
+      for (let i = 0; i < booking.length; i++) {
+        cant = 0;
         //Pregunto si existe order o si ya existe en order una variable que se llame como el id del hotel.
-        if(!order.find(or=>or.id===booking[i].HotelId)){
+        if (!order.find(or => or.id === booking[i].HotelId)) {
           //Si no existe recorro de nuevo booking para contar la cantidad de veces que aparecio ese nombre 
-          for (let j=0;j<booking.length; j++){
-            if(booking[i].HotelId===booking[j].HotelId){
+          for (let j = 0; j < booking.length; j++) {
+            if (booking[i].HotelId === booking[j].HotelId) {
               cant += booking[j].amount;
             }
           }
           //realizo un push con el nombre y la cantidad
-          if(!order.find(or=>or.id===booking[i].HotelId)){
+          if (!order.find(or => or.id === booking[i].HotelId)) {
             order.push({
-              id:booking[i].HotelId,
+              id: booking[i].HotelId,
               cant
             });
           }
@@ -624,20 +639,20 @@ const getFilterSuperAdminHotels = async (id_superAdmin,filter) => {
 
 
       //Una vez que tengo todos los nombre de los hoteles y sus cantidades, los ordeno de mas cantidad a menos cantidad.
-      order.sort((hotelA,HotelB)=>HotelB.cant-hotelA.cant);
-      
+      order.sort((hotelA, HotelB) => HotelB.cant - hotelA.cant);
+
       //Por ultimo realizo un map y busco todos los hoteles con esos ID
 
-      
+
       hotels = await Promise.all(order.map(async (hotel) => {
-      let hotelFind = await Hotel.findByPk(hotel.id);
-        return{
+        let hotelFind = await Hotel.findByPk(hotel.id);
+        return {
           hotelFind,
           cant: hotel.cant
         }
       }));
       break;
-    default: 
+    default:
       hotels;
       break;
   }
@@ -652,5 +667,6 @@ module.exports = {
   getUserHotels,
   putStatusHotel,
   updateHotel,
-  getFilterSuperAdminHotels
+  getFilterSuperAdminHotels,
+  getAllHotelsAdmin
 };
