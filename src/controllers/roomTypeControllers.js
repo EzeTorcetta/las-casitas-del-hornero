@@ -1,5 +1,5 @@
 //?----------------------------IMPORTS--------------------------------
-const { RoomType, Hotel,Room } = require("../db");
+const { RoomType, Hotel, Room } = require("../db");
 
 //?----------------------------CONTROLLERS------------------------------
 
@@ -14,18 +14,18 @@ const getAllRoomTypes = async () => {
 const getRoomTypesByHotel = async (id_hotel, checkIn, checkOut) => {
 
   let typerooms
-  
-  if(checkIn && checkOut){
+
+  if (checkIn && checkOut) {
 
     checkIn = new Date(checkIn);
     checkOut = new Date(checkOut);
-  
+
     const rooms = await Room.findAll({
       where: {
         HotelId: id_hotel,
       },
     });
-  
+
     const roomsAvailable = rooms.filter((room) => {
       let bool = false;
       if (room.dates.length) {
@@ -35,31 +35,31 @@ const getRoomTypesByHotel = async (id_hotel, checkIn, checkOut) => {
           }
           if (checkOut < room.dates[0]) {
             bool = true;
-          
+
           }
           if (checkIn > room.dates[room.dates.length - 1]) {
             bool = true;
-           
+
           }
         }
       } else bool = true;
       return bool;
     });
-  
+
     const typeRoomsId = roomsAvailable.map((room) => room.RoomTypeId);
-  
+
     const typeRoomsCount = typeRoomsId.reduce((acc, id) => {
       acc[id] = (acc[id] || 0) + 1;
       return acc;
     }, {});
-  
+
     const hotelRoomTypes = await RoomType.findAll({
       where: { HotelId: id_hotel },
     });
-  
+
     typerooms = hotelRoomTypes.map((roomType) => {
       const quantity = typeRoomsCount[roomType.id] || 0;
-      
+
       return {
         id: roomType.id,
         people: roomType.people,
@@ -68,17 +68,17 @@ const getRoomTypesByHotel = async (id_hotel, checkIn, checkOut) => {
         image: roomType.image,
         hotelId: roomType.hotelId,
         stock: quantity,
-        filtered : true
+        filtered: true
       }
     });
-  } else{
+  } else {
     const hotelRoomTypes = await RoomType.findAll({
       where: { HotelId: id_hotel },
     });
 
     typerooms = hotelRoomTypes.map((roomType) => {
-    
-      
+
+
       return {
         id: roomType.id,
         people: roomType.people,
@@ -87,7 +87,7 @@ const getRoomTypesByHotel = async (id_hotel, checkIn, checkOut) => {
         image: roomType.image,
         hotelId: roomType.hotelId,
         stock: 0,
-        filtered : false
+        filtered: false
       }
     });
 
@@ -100,7 +100,7 @@ const getRoomTypesByHotel = async (id_hotel, checkIn, checkOut) => {
 
 //*------------CREATE NEW ROOM TYPE-------------------
 const createRoomTypesByHotel = async (
-  { people, price, name, image,stock,id_user },
+  { people, price, name, image, stock, id_user },
   id_hotel
 ) => {
   const hotelFind = await Hotel.findOne({
@@ -137,8 +137,9 @@ const createRoomTypesByHotel = async (
     });
     rooms.push(newRoom);
     await newRoom.setRoomType(newRoomType);
+    await hotelFind.addRoom(newRoom)
   }
-  
+
   await hotelFind.addRoomType(newRoomType);
 
   return newRoomType;
@@ -150,24 +151,26 @@ const createRoomTypesByHotel = async (
 
 //*------------PUT TYPE ROOM-------------------
 
-const putRoomType = async (id_roomtype,price,image,id_user) => {
-  if(!id_roomtype){
+const putRoomType = async (id_roomtype, price, image, id_user) => {
+  if (!id_roomtype) {
     throw new Error("Error")
   }
 
-  const hotel = await Hotel.findOne({where:{
-    id:roomType.HotelId,
-    UserId: id_user
-  }})
+  const hotel = await Hotel.findOne({
+    where: {
+      id: roomType.HotelId,
+      UserId: id_user
+    }
+  })
 
-  if(!hotel) throw new Error("El usuario no tiene permisos para realizar esta acción.")
+  if (!hotel) throw new Error("El usuario no tiene permisos para realizar esta acción.")
 
 
 
   const roomTypeFind = await RoomType.findByPk(id_roomtype)
 
 
-  if(!roomTypeFind){
+  if (!roomTypeFind) {
     throw new Error("Tipo de habitación no encontrado")
   }
 
@@ -177,16 +180,16 @@ const putRoomType = async (id_roomtype,price,image,id_user) => {
   if (price && price > 0) {
     roomTypeFind.price = price;
   }
-  
-  
+
+
   if (image && typeof image === "string") {
     roomTypeFind.image = image;
   }
-  
+
 
 
   await roomTypeFind.save();
-  
+
   return;
 }
 

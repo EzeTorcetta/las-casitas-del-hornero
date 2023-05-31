@@ -64,6 +64,9 @@ const getAllHotels = async (order, page) => {
 
   if (orderOptions) {
     allHotels = await Hotel.findAll({
+      where: {
+        status: true,
+      },
       order: orderOptions,
       include: includeOptions,
     });
@@ -103,6 +106,7 @@ const getAllHotelsQuery = async (
 
   const whereClause = {};
 
+  whereClause.status = true;
   if (province) {
     whereClause.province = {
       [Op.iLike]: `%${province}`,
@@ -436,6 +440,7 @@ const getUserHotels = async (id_user) => {
   const hotels = await Hotel.findAll({
     where: {
       UserId: id_user,
+      status: true
     },
     include: [
       {
@@ -447,7 +452,7 @@ const getUserHotels = async (id_user) => {
       },
       {
         model: RoomType,
-        attributes: ["id", "people", "price", "name", "image", "stock"],
+        attributes: ["id", "people", "price", "name", "image"],
       },
       {
         model: Review,
