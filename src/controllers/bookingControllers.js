@@ -358,7 +358,7 @@ const getProvinceBookings = async (id_user) => {
     findAllBooking.map(async (booking) => {
       const hotel = await Hotel.findByPk(booking.HotelId);
       return {
-        amount: booking.dataValues.amount,
+        amount: booking.amount,
         province: hotel.province,
       };
     })
@@ -544,7 +544,7 @@ const getProvinceBookings = async (id_user) => {
     }
   }
 
-  console.log(order);
+  
  
   order = order.sort((a, b) => b.cant - a.cant);
   return order;
