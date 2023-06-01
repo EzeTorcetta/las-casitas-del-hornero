@@ -11,8 +11,8 @@ const mercadoPagoHandler = async (req, res) => {
   let preference = {
     items: [],
     back_urls: {
-      success: "https://www.linkedin.com/in/ignacio-martin-339542263/",
-      failure: "https://www.linkedin.com/in/ignacio-martin-339542263/",
+      success: "https://casitas-del-hornero-8mam7k5m2-maximustxt.vercel.app/Home",
+      failure: "https://casitas-del-hornero-8mam7k5m2-maximustxt.vercel.app/Home",
       pending: "/pending",
     },
     auto_return: "approved",
