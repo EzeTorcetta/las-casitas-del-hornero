@@ -75,14 +75,13 @@ const getCart = async (id_user, checkIn, checkOut) => {
   );
 
   //se ordena el carrito para que no baile todo
-  const sortedCart = finalCart.sort((a, b) => {
-    const hotelNameA = a.hotelName.toUpperCase();
-    const hotelNameB = b.hotelName.toUpperCase();
+ const sortedCart = finalCart.sort((a, b) => {
 
-    if (hotelNameA < hotelNameB) {
+
+    if (a.id < b.id) {
       return -1;
     }
-    if (hotelNameA > hotelNameB) {
+    if (a.id > b.id) {
       return 1;
     }
     return 0;
