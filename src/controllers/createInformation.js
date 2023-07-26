@@ -1,6 +1,10 @@
 const { User, Hotel, RoomType, Service } = require("../db");
 
 const CreateService = () => {
+
+  const servicesCharged = Service.findAll();
+
+  if(servicesCharged.length === 0){
   const services = [];
 
   services.push({
@@ -47,9 +51,13 @@ const CreateService = () => {
   });
 
   Service.bulkCreate(services);
+  }
+  
 };
 
 const CreateUsers = () => {
+
+  
   const user = [];
 
   user.push({
