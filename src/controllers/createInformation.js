@@ -1,8 +1,8 @@
 const { User, Hotel, RoomType, Service } = require("../db");
 
-const CreateService = () => {
+const CreateService = async () => {
 
-  const servicesCharged = Service.findAll();
+  const servicesCharged = await Service.findAll();
 
   if(servicesCharged.length === 0){
   const services = [];
